@@ -19,6 +19,10 @@ FEEDS			?= $(topdir)/feeds
 DESTDIR			?= $(topdir)/local
 PREFIX			?= /usr
 
+PORTS_ENVS		= USE_GLOBALBASE=yes				\
+			  USE_ALTERNATIVE=yes				\
+			  ALTERNATIVE_WRKDIR=$(DESTDIR)/src
+
 # include ports package at here...
 include $(portdir)/Tools/tools.mk
 
