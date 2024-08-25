@@ -1,0 +1,3 @@
+[submodule "make/uports"]
+	path = make/uports
+	url = https://github.com/lyc/uports.git
