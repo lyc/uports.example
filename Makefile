@@ -15,6 +15,7 @@ portdir			:= $(sitedir)/uports
 #   3. then, include tools.mk to activate GROUP capability.
 #
 
+FEEDS			?= $(topdir)/feeds
 DESTDIR			?= $(topdir)/local
 PREFIX			?= /usr
 
