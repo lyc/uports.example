@@ -2,6 +2,8 @@
 #
 #
 
+all: debug
+
 topdir			:= $(shell pwd)
 sitedir			:= $(topdir)/make
 portdir			:= $(sitedir)/uports
@@ -27,14 +29,45 @@ PORTS_ENVS		= USE_GLOBALBASE=yes				\
 include $(portdir)/Tools/tools.mk
 
 #
+# add your own setting...
+#
+
+INCLUDES		= -I$(PREFIX)/include -I.
+CPPFLAGS		+=
+CFLAGS			=
+CFLAGS_D		=
+LDFLAGS			= -lpthread -lm
+LDFLAGS_D		=
+
+EXTRA_EXCLUDE_TARGETS	+= $(depends_exclude_targets) env
+
+# add your all modules at here, please be noted
+#
+#  - It is not allow to have multiple files or folders with same name
+#    in whole source tree
+#  - application folder must be declared after library folder
+#    in your module list
+#
+
+modules			+= libs/libutils
+ifneq (,$(filter test,$(MAKECMDGOALS)))
+modules			+= tests/11-tree
+endif
+
+#
+# get all together...
+#
+
+include $(sitedir)/nonrecursive.mk
+
+#
 # define your own targets...
 #
 
 env: $(addsuffix .install,pkg-config cmake) 
-
+test: debug
 clean:
 	@find . -type f -name \*~ -o -name .DS_Store | xargs rm -fr
-
 distclean: ports.distclean clean
 	@rm -fr depend $(DESTDIR)
 	@rm -fr $(addprefix $(portdir)/,distfiles packages)
