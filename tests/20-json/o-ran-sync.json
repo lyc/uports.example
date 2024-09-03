@@ -1,0 +1,458 @@
+{
+  "o-ran-sync:sync": [
+    "FALSE",
+    "container",
+    {
+      "synce-config": [
+        "FALSE",
+        "container",
+        {
+          "acceptance-list-of-ssm": [
+            "FALSE",
+            "leaf-list",
+            "enumeration",
+            "/o-ran-sync:sync/synce-config/acceptance-list-of-ssm"
+          ],
+          "ssm-timeout": [
+            "FALSE",
+            "leaf",
+            "uint16",
+            "/o-ran-sync:sync/synce-config/ssm-timeout"
+          ]
+        }
+      ],
+      "ptp-status": [
+        "FALSE",
+        "container",
+        {
+          "clock-identity": [
+            "FALSE",
+            "leaf",
+            "string",
+            "/o-ran-sync:sync/ptp-status/clock-identity"
+          ],
+          "partial-timing-supported": [
+            "FALSE",
+            "leaf",
+            "boolean",
+            "/o-ran-sync:sync/ptp-status/partial-timing-supported"
+          ],
+          "sources": [
+            "FALSE",
+            "list",
+            {
+              "ptp-timescale": [
+                "FALSE",
+                "leaf",
+                "boolean",
+                "/o-ran-sync:sync/ptp-status/sources[0]/ptp-timescale"
+              ],
+              "time-traceable": [
+                "FALSE",
+                "leaf",
+                "boolean",
+                "/o-ran-sync:sync/ptp-status/sources[0]/time-traceable"
+              ],
+              "current-utc-offset": [
+                "FALSE",
+                "leaf",
+                "int16",
+                "/o-ran-sync:sync/ptp-status/sources[0]/current-utc-offset"
+              ],
+              "local-port-number": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/ptp-status/sources[0]/local-port-number"
+              ],
+              "steps-removed": [
+                "FALSE",
+                "leaf",
+                "uint16",
+                "/o-ran-sync:sync/ptp-status/sources[0]/steps-removed"
+              ],
+              "time-source": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/ptp-status/sources[0]/time-source"
+              ],
+              "frequency-traceable": [
+                "FALSE",
+                "leaf",
+                "boolean",
+                "/o-ran-sync:sync/ptp-status/sources[0]/frequency-traceable"
+              ],
+              "leap61": [
+                "FALSE",
+                "leaf",
+                "boolean",
+                "/o-ran-sync:sync/ptp-status/sources[0]/leap61"
+              ],
+              "state": [
+                "FALSE",
+                "leaf",
+                "enumeration",
+                "/o-ran-sync:sync/ptp-status/sources[0]/state"
+              ],
+              "grandmaster-clock-identity": [
+                "FALSE",
+                "leaf",
+                "string",
+                "/o-ran-sync:sync/ptp-status/sources[0]/grandmaster-clock-identity"
+              ],
+              "source-port-number": [
+                "FALSE",
+                "leaf",
+                "uint16",
+                "/o-ran-sync:sync/ptp-status/sources[0]/source-port-number"
+              ],
+              "priority1": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/ptp-status/sources[0]/priority1"
+              ],
+              "clock-class": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/ptp-status/sources[0]/clock-class"
+              ],
+              "priority2": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/ptp-status/sources[0]/priority2"
+              ],
+              "two-step-flag": [
+                "FALSE",
+                "leaf",
+                "boolean",
+                "/o-ran-sync:sync/ptp-status/sources[0]/two-step-flag"
+              ],
+              "clock-accuracy": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/ptp-status/sources[0]/clock-accuracy"
+              ],
+              "source-clock-identity": [
+                "FALSE",
+                "leaf",
+                "string",
+                "/o-ran-sync:sync/ptp-status/sources[0]/source-clock-identity"
+              ],
+              "current-utc-offset-valid": [
+                "FALSE",
+                "leaf",
+                "boolean",
+                "/o-ran-sync:sync/ptp-status/sources[0]/current-utc-offset-valid"
+              ],
+              "leap59": [
+                "FALSE",
+                "leaf",
+                "boolean",
+                "/o-ran-sync:sync/ptp-status/sources[0]/leap59"
+              ],
+              "offset-scaled-log-variance": [
+                "FALSE",
+                "leaf",
+                "uint16",
+                "/o-ran-sync:sync/ptp-status/sources[0]/offset-scaled-log-variance"
+              ]
+            }
+          ],
+          "clock-class": [
+            "FALSE",
+            "leaf",
+            "uint8",
+            "/o-ran-sync:sync/ptp-status/clock-class"
+          ],
+          "reporting-period": [
+            "FALSE",
+            "leaf",
+            "uint8",
+            "/o-ran-sync:sync/ptp-status/reporting-period"
+          ],
+          "lock-state": [
+            "FALSE",
+            "leaf",
+            "enumeration",
+            "/o-ran-sync:sync/ptp-status/lock-state"
+          ]
+        }
+      ],
+      "gnss-status": [
+        "FALSE",
+        "container",
+        {
+          "reporting-period": [
+            "FALSE",
+            "leaf",
+            "uint8",
+            "/o-ran-sync:sync/gnss-status/reporting-period"
+          ],
+          "gnss-data": [
+            "FALSE",
+            "container",
+            {
+              "satellites-tracked": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/gnss-status/gnss-data/satellites-tracked"
+              ],
+              "location": [
+                "FALSE",
+                "container",
+                {
+                  "latitude": [
+                    "FALSE",
+                    "leaf",
+                    [
+                      "decimal64",
+                      8
+                    ],
+                    "/o-ran-sync:sync/gnss-status/gnss-data/location/latitude"
+                  ],
+                  "altitude": [
+                    "FALSE",
+                    "leaf",
+                    "int64",
+                    "/o-ran-sync:sync/gnss-status/gnss-data/location/altitude"
+                  ],
+                  "longitude": [
+                    "FALSE",
+                    "leaf",
+                    [
+                      "decimal64",
+                      8
+                    ],
+                    "/o-ran-sync:sync/gnss-status/gnss-data/location/longitude"
+                  ]
+                }
+              ]
+            }
+          ],
+          "name": [
+            "FALSE",
+            "leaf",
+            "string",
+            "/o-ran-sync:sync/gnss-status/name"
+          ],
+          "gnss-sync-status": [
+            "FALSE",
+            "leaf",
+            "enumeration",
+            "/o-ran-sync:sync/gnss-status/gnss-sync-status"
+          ]
+        }
+      ],
+      "sync-capability": [
+        "FALSE",
+        "container",
+        {
+          "sync-t-tsc": [
+            "FALSE",
+            "leaf",
+            "enumeration",
+            "/o-ran-sync:sync/sync-capability/sync-t-tsc"
+          ]
+        }
+      ],
+      "ptp-config": [
+        "FALSE",
+        "container",
+        {
+          "domain-number": [
+            "FALSE",
+            "leaf",
+            "uint8",
+            "/o-ran-sync:sync/ptp-config/domain-number"
+          ],
+          "accepted-clock-classes": [
+            "FALSE",
+            "list",
+            {
+              "clock-classes": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/ptp-config/accepted-clock-classes[0]/clock-classes"
+              ]
+            }
+          ],
+          "g-8275-1-config": [
+            "FALSE",
+            "container",
+            {
+              "multicast-mac-address": [
+                "FALSE",
+                "leaf",
+                "enumeration",
+                "/o-ran-sync:sync/ptp-config/g-8275-1-config/multicast-mac-address"
+              ],
+              "delay-asymmetry": [
+                "FALSE",
+                "leaf",
+                "int16",
+                "/o-ran-sync:sync/ptp-config/g-8275-1-config/delay-asymmetry"
+              ]
+            }
+          ],
+          "g-8275-2-config": [
+            "FALSE",
+            "container",
+            {
+              "log-inter-sync-period": [
+                "FALSE",
+                "leaf",
+                "int8",
+                "/o-ran-sync:sync/ptp-config/g-8275-2-config/log-inter-sync-period"
+              ],
+              "local-ip-port": [
+                "FALSE",
+                "leaf",
+                "string",
+                "/o-ran-sync:sync/ptp-config/g-8275-2-config/local-ip-port"
+              ],
+              "log-inter-announce-period": [
+                "FALSE",
+                "leaf",
+                "int8",
+                "/o-ran-sync:sync/ptp-config/g-8275-2-config/log-inter-announce-period"
+              ],
+              "master-ip-configuration": [
+                "FALSE",
+                "list",
+                {
+                  "local-priority": [
+                    "FALSE",
+                    "leaf",
+                    "uint8",
+                    "/o-ran-sync:sync/ptp-config/g-8275-2-config/master-ip-configuration[0]/local-priority"
+                  ],
+                  "ip-address": [
+                    "FALSE",
+                    "leaf",
+                    "string",
+                    "/o-ran-sync:sync/ptp-config/g-8275-2-config/master-ip-configuration[0]/ip-address"
+                  ]
+                }
+              ]
+            }
+          ],
+          "ptp-profile": [
+            "FALSE",
+            "leaf",
+            "enumeration",
+            "/o-ran-sync:sync/ptp-config/ptp-profile"
+          ]
+        }
+      ],
+      "gnss-config": [
+        "FALSE",
+        "container",
+        {
+          "polarity": [
+            "FALSE",
+            "leaf",
+            "enumeration",
+            "/o-ran-sync:sync/gnss-config/polarity"
+          ],
+          "anti-jam-enable": [
+            "FALSE",
+            "leaf",
+            "boolean",
+            "/o-ran-sync:sync/gnss-config/anti-jam-enable"
+          ],
+          "enable": [
+            "FALSE",
+            "leaf",
+            "boolean",
+            "/o-ran-sync:sync/gnss-config/enable"
+          ],
+          "cable-delay": [
+            "FALSE",
+            "leaf",
+            "uint16",
+            "/o-ran-sync:sync/gnss-config/cable-delay"
+          ],
+          "satellite-constelation-list": [
+            "FALSE",
+            "leaf-list",
+            "enumeration",
+            "/o-ran-sync:sync/gnss-config/satellite-constelation-list"
+          ]
+        }
+      ],
+      "synce-status": [
+        "FALSE",
+        "container",
+        {
+          "reporting-period": [
+            "FALSE",
+            "leaf",
+            "uint8",
+            "/o-ran-sync:sync/synce-status/reporting-period"
+          ],
+          "sources": [
+            "FALSE",
+            "list",
+            {
+              "local-port-number": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/synce-status/sources[0]/local-port-number"
+              ],
+              "quality-level": [
+                "FALSE",
+                "leaf",
+                "uint8",
+                "/o-ran-sync:sync/synce-status/sources[0]/quality-level"
+              ],
+              "state": [
+                "FALSE",
+                "leaf",
+                "enumeration",
+                "/o-ran-sync:sync/synce-status/sources[0]/state"
+              ]
+            }
+          ],
+          "lock-state": [
+            "FALSE",
+            "leaf",
+            "enumeration",
+            "/o-ran-sync:sync/synce-status/lock-state"
+          ]
+        }
+      ],
+      "sync-status": [
+        "FALSE",
+        "container",
+        {
+          "supported-reference-types": [
+            "FALSE",
+            "list",
+            {
+              "item": [
+                "FALSE",
+                "leaf",
+                "enumeration",
+                "/o-ran-sync:sync/sync-status/supported-reference-types[0]/item"
+              ]
+            }
+          ],
+          "sync-state": [
+            "FALSE",
+            "leaf",
+            "enumeration",
+            "/o-ran-sync:sync/sync-status/sync-state"
+          ]
+        }
+      ]
+    }
+  ]
+}

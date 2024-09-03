@@ -1,0 +1,20 @@
+{
+  "orderID": 12345,
+  "shopperName": "John Smith",
+  "shopperEmail": "johnsmith@example.com",
+  "contents": [
+    [ 1.2, null, true, { "tp": "j1" }],
+    {
+      "productID": 34,
+      "productName": "SuperWidget",
+      "quantity": 1
+    },
+    {
+      "productID": 56,
+      "productName": "WonderWidget",
+      "quantity": 3
+    }
+  ],
+  "lyc": [ 2,3,4,"xyz" ],
+  "orderCompleted": true
+}

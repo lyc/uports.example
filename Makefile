@@ -52,6 +52,7 @@ EXTRA_EXCLUDE_TARGETS	+= $(depends_exclude_targets) env
 modules			+= libs/libutils
 ifneq (,$(filter test,$(MAKECMDGOALS)))
 modules			+= tests/11-tree
+modules			+= tests/20-json
 endif
 
 #

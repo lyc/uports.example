@@ -1,0 +1,14 @@
+{
+    "o-ran-sync:sync": {
+        "sync-status": {
+            "sync-state": "LOCKED"
+        },
+        "sync-capability": {
+            "sync-t-tsc": "CLASS_B"
+        },
+        "ptp-status": {
+            "lock-state": "LOCKED",
+            "clock-class": 255
+        }
+    }
+}
