@@ -53,6 +53,8 @@ modules			+= libs/libutils
 ifneq (,$(filter test,$(MAKECMDGOALS)))
 modules			+= tests/11-tree
 modules			+= tests/20-json
+else
+modules			+= src
 endif
 
 #
