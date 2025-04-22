@@ -49,6 +49,8 @@ EXTRA_EXCLUDE_TARGETS	+= $(depends_exclude_targets) env
 
 modules			+= libs/libutils
 ifneq (,$(filter test,$(MAKECMDGOALS)))
+modules			+= tests/01-utils
+modules			+= tests/02-thread
 modules			+= tests/11-tree
 modules			+= tests/20-json
 else
@@ -65,7 +67,7 @@ include $(sitedir)/nonrecursive.mk
 # define your own targets...
 #
 
-env: $(addsuffix .install,pkg-config cmake) 
+env: $(addsuffix .install,pkg-config cmake)
 test: debug
 clean:
 	@find . -type f -name \*~ -o -name .DS_Store | xargs rm -fr
