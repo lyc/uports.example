@@ -1,0 +1,13 @@
+prefix=%PREFIX%
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: libiconv
+Description: A character set conversion librar
+Version: %VERSION%
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lcharset -liconv
+Cflags: -I${includedir}
