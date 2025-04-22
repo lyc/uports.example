@@ -1,0 +1,13 @@
+prefix=%PREFIX%
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: libffcall
+Description: Builds Foreign function call interface in embedded interpreters
+Version: %VERSION%
+
+Requires:
+Libs: -L${libdir} -lffcall
+Cflags: -I${includedir}

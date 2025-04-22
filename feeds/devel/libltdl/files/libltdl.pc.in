@@ -1,0 +1,13 @@
+prefix=%PREFIX%
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: libltdl
+Description: System independent dlopen wrapper
+Version: %VERSION%
+
+Requires:
+Libs: -L${libdir} -lltdl
+Cflags: -I${includedir}
