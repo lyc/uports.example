@@ -1,0 +1,13 @@
+prefix=%PREFIX%
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: lua
+Description: Lua programming language
+Version: %VERSION%
+
+Requires:
+Libs: -L${libdir} -llua -lm -ldl
+Cflags: -I${includedir}

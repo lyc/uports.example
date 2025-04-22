@@ -1,0 +1,226 @@
+From 5184e861ee6b957ab549c7b406ce4d207aba63b2 Mon Sep 17 00:00:00 2001
+From: Max Lee <max_lee@pegatroncorp.com>
+Date: Mon, 5 Aug 2024 11:31:49 +0800
+Subject: [PATCH] add share library support
+
+---
+ Makefile      | 48 ++++++++++++++++++++++++++++++++++--------------
+ src/Makefile  | 49 ++++++++++++++++++++++++++++++++++++++++++-------
+ src/luaconf.h |  2 +-
+ 3 files changed, 77 insertions(+), 22 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 72ca8ff..de23647 100644
+--- a/Makefile
++++ b/Makefile
+@@ -4,19 +4,19 @@
+ # == CHANGE THE SETTINGS BELOW TO SUIT YOUR ENVIRONMENT =======================
+
+ # Your platform. See PLATS for possible values.
+-PLAT= guess
++PLAT?= none
+
+ # Where to install. The installation starts in the src and doc directories,
+ # so take care if INSTALL_TOP is not an absolute path. See the local target.
+ # You may want to make INSTALL_LMOD and INSTALL_CMOD consistent with
+ # LUA_ROOT, LUA_LDIR, and LUA_CDIR in luaconf.h.
+-INSTALL_TOP= /usr/local
+-INSTALL_BIN= $(INSTALL_TOP)/bin
+-INSTALL_INC= $(INSTALL_TOP)/include
+-INSTALL_LIB= $(INSTALL_TOP)/lib
+-INSTALL_MAN= $(INSTALL_TOP)/man/man1
+-INSTALL_LMOD= $(INSTALL_TOP)/share/lua/$V
+-INSTALL_CMOD= $(INSTALL_TOP)/lib/lua/$V
++INSTALL_TOP?= /usr
++INSTALL_BIN= $(DESTDIR)$(INSTALL_TOP)/bin
++INSTALL_INC= $(DESTDIR)$(INSTALL_TOP)/include
++INSTALL_LIB= $(DESTDIR)$(INSTALL_TOP)/lib
++INSTALL_MAN= $(DESTDIR)$(INSTALL_TOP)/man/man1
++INSTALL_LMOD= $(DESTDIR)$(INSTALL_TOP)/share/lua/$(LUA_V)
++INSTALL_CMOD= $(DESTDIR)$(INSTALL_TOP)/lib/lua/$(LUA_V)
+
+ # How to install. If your install program does not support "-p", then
+ # you may have to run ranlib on the installed liblua.a.
+@@ -41,12 +41,18 @@ PLATS= guess aix bsd c89 freebsd generic ios linux linux-readline macosx mingw p
+ # What to install.
+ TO_BIN= lua luac
+ TO_INC= lua.h luaconf.h lualib.h lauxlib.h lua.hpp
+-TO_LIB= liblua.a
++ifneq ($(findstring $(PLAT),linux macosx),)
++ifneq ($(findstring linux,$(PLAT)),)
++TO_LIB= liblua.a liblua.so.$(LUA_R)
++else
++TO_LIB= liblua.a liblua.$(LUA_R).dylib
++endif
++endif
+ TO_MAN= lua.1 luac.1
+
+ # Lua version and release.
+-V= 5.4
+-R= $V.7
++export LUA_V=5.4
++export LUA_R=$(LUA_V).7
+
+ # Targets start here.
+ all:	$(PLAT)
+@@ -60,12 +66,26 @@ install: dummy
+ 	cd src && $(INSTALL_DATA) $(TO_INC) $(INSTALL_INC)
+ 	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
+ 	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
++ifneq ($(findstring $(PLAT),linux macosx),)
++ifneq ($(findstring linux,$(PLAT)),)
++	(cd $(INSTALL_LIB) && /sbin/ldconfig -nv . >/dev/null && ln -sf liblua.so.$(LUA_R) liblua.so)
++else
++	(cd $(INSTALL_LIB); ln -s liblua.$(LUA_R).dylib liblua.$(LUA_V).dylib; ln -s liblua.$(LUA_V).dylib liblua.dylib)
++endif
++endif
+
+ uninstall:
+ 	cd src && cd $(INSTALL_BIN) && $(RM) $(TO_BIN)
+ 	cd src && cd $(INSTALL_INC) && $(RM) $(TO_INC)
+ 	cd src && cd $(INSTALL_LIB) && $(RM) $(TO_LIB)
+ 	cd doc && cd $(INSTALL_MAN) && $(RM) $(TO_MAN)
++ifneq ($(findstring $(PLAT),linux macosx),)
++ifneq ($(findstring linux,$(PLAT)),)
++	(cd $(INSTALL_LIB) && $(RM) $(LUA_SO).*)
++else
++	(cd $(INSTALL_LIB) && $(RM) $(patsubst %,%.*.dylib,$(patsubst %.dylib,%,$(LUA_SO))))
++endif
++endif
+
+ local:
+ 	$(MAKE) install INSTALL_TOP=../install
+@@ -77,8 +97,8 @@ dummy:
+ echo:
+ 	@cd src && $(MAKE) -s echo
+ 	@echo "PLAT= $(PLAT)"
+-	@echo "V= $V"
+-	@echo "R= $R"
++	@echo "V= $(LUA_V)"
++	@echo "R= $(LUA_R)"
+ 	@echo "TO_BIN= $(TO_BIN)"
+ 	@echo "TO_INC= $(TO_INC)"
+ 	@echo "TO_LIB= $(TO_LIB)"
+@@ -95,7 +115,7 @@ echo:
+
+ # Echo pkg-config data.
+ pc:
+-	@echo "version=$R"
++	@echo "version=$(LUA_R)"
+ 	@echo "prefix=$(INSTALL_TOP)"
+ 	@echo "libdir=$(INSTALL_LIB)"
+ 	@echo "includedir=$(INSTALL_INC)"
+diff --git a/src/Makefile b/src/Makefile
+index b771196..7eefa1a 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -4,10 +4,16 @@
+ # == CHANGE THE SETTINGS BELOW TO SUIT YOUR ENVIRONMENT =======================
+
+ # Your platform. See PLATS for possible values.
+-PLAT= guess
+-
+-CC= gcc -std=gnu99
+-CFLAGS= -O2 -Wall -Wextra -DLUA_COMPAT_5_3 $(SYSCFLAGS) $(MYCFLAGS)
++PLAT?= none
++
++CC?= gcc -std=gnu99
++ifneq ($(findstring $(PLAT),linux macosx),)
++ifneq ($(findstring linux,$(PLAT)),)
++CFLAGS= -O2 -Wall -fPIC -Wextra -DLUA_COMPAT_5_3 $(SYSCFLAGS) $(MYCFLAGS)
++else
++CFLAGS= -O2 -Wall -fno-common -Wextra -DLUA_COMPAT_5_3 $(SYSCFLAGS) $(MYCFLAGS)
++endif
++endif
+ LDFLAGS= $(SYSLDFLAGS) $(MYLDFLAGS)
+ LIBS= -lm $(SYSLIBS) $(MYLIBS)
+
+@@ -22,7 +28,7 @@ SYSLIBS=
+
+ MYCFLAGS=
+ MYLDFLAGS=
+-MYLIBS=
++MYLIBS= -lncurses
+ MYOBJS=
+
+ # Special flags for compiler modules; -Os reduces code size.
+@@ -33,6 +39,9 @@ CMCFLAGS=
+ PLATS= guess aix bsd c89 freebsd generic ios linux linux-readline macosx mingw posix solaris
+
+ LUA_A=	liblua.a
++ifneq ($(findstring $(PLAT),linux macosx),)
++LUA_SO= liblua.$(if $(findstring linux,$(PLAT)),so,dylib)
++endif
+ CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o
+ LIB_O=	lauxlib.o lbaselib.o lcorolib.o ldblib.o liolib.o lmathlib.o loadlib.o loslib.o lstrlib.o ltablib.o lutf8lib.o linit.o
+ BASE_O= $(CORE_O) $(LIB_O) $(MYOBJS)
+@@ -44,7 +53,7 @@ LUAC_T=	luac
+ LUAC_O=	luac.o
+
+ ALL_O= $(BASE_O) $(LUA_O) $(LUAC_O)
+-ALL_T= $(LUA_A) $(LUA_T) $(LUAC_T)
++ALL_T= $(LUA_A) $(LUA_SO) $(LUA_T) $(LUAC_T)
+ ALL_A= $(LUA_A)
+
+ # Targets start here.
+@@ -57,11 +66,30 @@ o:	$(ALL_O)
+ a:	$(ALL_A)
+
+ $(LUA_A): $(BASE_O)
++	@echo "building static library"
+ 	$(AR) $@ $(BASE_O)
+ 	$(RANLIB) $@
+
++ifneq ($(findstring $(PLAT),linux macosx),)
++$(LUA_SO): $(BASE_O)
++ifneq ($(findstring linux,$(PLAT)),)
++	@echo "building share library (so)"
++	$(CC) -o $@.$(LUA_R) $(MYLDFLAGS) -shared -Wl,-soname,$@.$(LUA_V) $(BASE_O) $(LDFLAGS)
++	/sbin/ldconfig -nv . >/dev/null
++	ln -sf $@.$(LUA_R) $@
++else
++	@echo "building share library (dylib)"
++	realname=$(patsubst %,%.$(LUA_R).dylib,$(patsubst %.dylib,%,$@)); \
++	soname=$(patsubst %,%.$(LUA_V).dylib,$(patsubst %.dylib,%,$@));	\
++	$(CC) -dynamiclib -o $$realname $(MYLDFLAGS) -install_name $$soname -compatibility_version $(LUA_V) -current_version $(LUA_R) $(BASE_O) $(LDFLAGS); \
++	ln -s $$realname $$soname; 					\
++	ln -s $$soname $@
++endif
++endif
++
+ $(LUA_T): $(LUA_O) $(LUA_A)
+-	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
++#	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
++	$(CC) -o $@ $(LDFLAGS) $(LUA_O) -L. -llua $(LIBS)
+
+ $(LUAC_T): $(LUAC_O) $(LUA_A)
+ 	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
+@@ -71,6 +99,13 @@ test:
+
+ clean:
+ 	$(RM) $(ALL_T) $(ALL_O)
++ifneq ($(findstring $(PLAT),linux macosx),)
++ifneq ($(findstring linux,$(PLAT)),)
++	$(RM) -fr $(LUA_SO).*
++else
++	$(RM) -fr $(patsubst %,%.*.dylib,$(patsubst %.dylib,%,$(LUA_SO)))
++endif
++endif
+
+ depend:
+ 	@$(CC) $(CFLAGS) -MM l*.c
+diff --git a/src/luaconf.h b/src/luaconf.h
+index 33bb580..0a6343e 100644
+--- a/src/luaconf.h
++++ b/src/luaconf.h
+@@ -223,7 +223,7 @@
+
+ #else			/* }{ */
+
+-#define LUA_ROOT	"/usr/local/"
++#define LUA_ROOT	"%PREFIX%/"
+ #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
+ #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
+
+--
+2.32.0
