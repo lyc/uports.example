@@ -1,0 +1,14 @@
+./lib/pkgconfig/libltdl.pc
+./lib/pkgconfig
+./lib/libltdl.so.7.3.3
+./lib/libltdl.so.7
+./lib/libltdl.so
+./lib/libltdl.la
+./lib/libltdl.a
+./lib
+./include/ltdl.h
+./include/libltdl/lt_system.h
+./include/libltdl/lt_error.h
+./include/libltdl/lt_dlloader.h
+./include/libltdl
+./include
