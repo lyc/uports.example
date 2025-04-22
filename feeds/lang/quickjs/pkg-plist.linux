@@ -1,0 +1,15 @@
+./lib/pkgconfig/quickjs.pc
+./lib/pkgconfig/quickjs.lto.pc
+./lib/pkgconfig
+./lib/quickjs/libquickjs.lto.a
+./lib/quickjs/libquickjs.a
+./lib/quickjs
+./lib
+./include/quickjs/quickjs.h
+./include/quickjs/quickjs-libc.h
+./include/quickjs
+./include
+./bin/qjscalc
+./bin/qjsc
+./bin/qjs
+./bin

@@ -1,0 +1,13 @@
+prefix=%PREFIX%
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: quickjs.lto
+Description: QuickJS is a small and embedded Javascript engine. (lto)
+Version: %VERSION%
+
+Requires:
+Libs: -L${libdir}/quickjs -lquickjs.lto -lm -ldl -lpthread
+Cflags: -I${includedir}

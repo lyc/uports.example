@@ -1,0 +1,24 @@
+From 1a92ecbdbb26a2fe1e0f784e6b95d47d5471d124 Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Sat, 10 Jun 2023 21:47:18 +0800
+Subject: [PATCH] allow config prefix from $(PREFIX)
+
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 49b1f6f..c0ee816 100644
+--- a/Makefile
++++ b/Makefile
+@@ -41,7 +41,7 @@ CONFIG_DEFAULT_AR=y
+ endif
+
+ # installation directory
+-prefix=/usr/local
++prefix?=/usr/local
+
+ # use the gprof profiler
+ #CONFIG_PROFILE=y
+--
+2.39.0
