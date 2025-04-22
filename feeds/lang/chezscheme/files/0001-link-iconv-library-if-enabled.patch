@@ -1,0 +1,24 @@
+From d356c410ffa0bb2d456b422b359e9a350328bd36 Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Sat, 10 Aug 2024 13:51:11 +0800
+Subject: [PATCH] link iconv library if enabled
+
+---
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 2b4b594..0d8973b 100755
+--- a/configure
++++ b/configure
+@@ -845,7 +845,7 @@ if [ "$addflags" = "yes" ] ; then
+
+   case "${flagsm}" in
+     *le|*gnu)
+-        LIBS="${LIBS} -lm -ldl ${ncursesLib} -lrt"
++        LIBS="${LIBS} -lm -ldl ${iconvLib} ${ncursesLib} -lrt"
+         ;;
+     *fb|*ob)
+         LIBS="${LIBS} ${iconvLib} -lm ${ncursesLib}"
+--
+2.39.2
