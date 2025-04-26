@@ -21,7 +21,7 @@ FEEDS			?= $(topdir)/feeds
 DESTDIR			?= $(topdir)/local
 PREFIX			?= /usr
 
-PORTS_GROUP_DEFAULT	= textproc
+PORTS_GROUP_DEFAULT	= compiler
 
 # include ports package at here...
 include $(portdir)/Tools/tools.mk
