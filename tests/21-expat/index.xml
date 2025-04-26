@@ -1,0 +1,2130 @@
+<html>
+<script src="mootools-1.2.4-core.js"></script>
+<script src="PureMVC_JS_2_0.js"></script>
+<script src="q.js"></script>
+<script src="/home/app.js"></script>
+<style type="text/css">
+#main{
+  position:relative;
+  height:480px;
+  width:640px;
+}
+
+#header{
+  	position:relative;
+	height:69px;
+	width:640px;
+	background-image:url('img/call_ui/header.png');
+	color:#ffffff;
+	font-size:20px;
+}
+
+#h_t1{
+	position:absolute;
+	left:0px;
+	top:20px;
+	width:261px;
+	height:28px;
+    line-height: 28px;
+	text-align:center;
+}
+
+#h_t2{
+	position:absolute;
+	left:275px;
+	top:19px;
+	width:353px;
+	height:32px;
+	line-height:32px;
+	font-size:26px;
+}
+
+#h_t3{
+	position:absolute;
+	left:275px;
+	top:38px;
+	width:353px;
+	height:25px;
+	visibility:hidden;
+}
+
+#h_t4{
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:261px;
+	height:25px;
+	text-align:center;
+}
+
+#h_p1{
+	position:absolute;
+	left:6px;
+	top:21px;
+	width:24px;
+	height:24px;
+	background-image:url('img/call_ui_header_icons/header_headset.png');
+	visibility:hidden;
+}
+
+#h_p_bt{
+	position:absolute;
+	left:30px;
+	top:21px;
+	width:24px;
+	height:24px;
+	visibility:visible;
+}
+
+#h_p2{
+	position:absolute;
+	left:261px;
+	top:19px;
+	width:2px;
+	height:31px;
+	background-image:url('img/call_ui/header_separator.png');
+	visibility:hidden;
+}
+
+#h_p3{
+	position:absolute;
+	top:9px;
+	left:585px;
+	width:50px;
+	height:50px;
+    background-image:'none';
+}
+
+/*center */
+#center{
+	position:relative;
+	display:none;
+	width:640px;
+	height:352px;
+}
+
+#cl{
+	position:absolute;
+	top:0px;
+	width:260px;
+	left:0px;
+	height:352px;
+}
+
+.cl{
+	position: absolute;
+	left:0px;
+	width:260px;
+	height:88px;
+}
+
+.cl_t1{
+	position: absolute;
+	top: 28px;
+	left: 40px;
+	width: 214px;
+	height: 35px;
+	line-height:32px;
+	font-size:22px;
+}
+
+.cl_t2{
+	position: absolute;
+	left:40px;
+	top: 47px;
+	height: 25px;
+	line-height:25px;
+	font-size:20px;
+}
+
+.cl_t3{
+	position: absolute;
+	top: 47px;
+	left: 204px;
+	width: 50px;
+	height: 25px;
+	line-height:25px;
+	font-size:20px;
+	text-align:center;
+}
+
+.cl_p1{
+	position: absolute;
+	top: 25px; 
+	left: 2px; 
+	height: 42px;
+	width: 32px;
+}
+
+.cl_p2{
+	position: absolute;
+	top: 30px;
+	left: 226px;
+	width: 28px;
+	height: 28px;
+}
+
+.cl_p3{
+	position: absolute;
+	top: 19px;
+	left: 226px;
+	width: 28px;
+	height: 28px;
+}
+
+#cr{
+    position:absolute;
+    top:0px;
+    left:260px;
+    width:380px;
+    height:352px;
+    line-height:32px;
+    font-size:26px;
+}
+
+.cr{
+	position: absolute;
+    left: 0px;
+	width:380px;
+	height:88px;
+}
+
+.cr_mwi{
+	position:absolute;
+	left:324px;
+	top:0px;
+	width:56px;
+	height:88px;
+	background-image:url('img/call_ui/idle_call_key.png');
+	visibility:hidden;
+}
+
+.cr_p1{
+	position:absolute;
+	left:345px;
+	top:28px;
+	width:32px;
+	height:32px;
+}
+
+.cr_p2{
+	position:absolute;
+	top:7px;
+	left:360px;
+	width:17px;
+	height:17px;
+}
+
+.cr_t1{
+    position: absolute;
+    top: 28px;
+    left: 40px;
+    height: 32px;
+    width: 233px;
+    line-height:32px;
+    font-size:22px;
+}
+
+.cr_t2{
+    position: absolute;
+    top: 47px;
+    left: 40px;
+    width: 233px;
+    height: 25px;
+    line-height:25px;
+    font-size:20px;
+    visibility:hidden;
+}
+
+.cr_t3{
+	position: absolute;
+	top: 32px;
+	left: 283px;
+	width: 55px;
+	height: 25px;
+	line-height:25px;
+    font-size:20px;
+}
+
+.cr_t4{
+    position: absolute;
+    top: 36px;
+    left: 8px;
+    width: 28px;
+    height: 16px;
+    text-align:center;
+    font-size:14px;
+    line-height:16px;
+}
+
+.cr_t5{
+    position: absolute;
+    top: 77px;
+    left: 40px;
+    width: 298px;
+    height: 50px;
+    font-size:22px;
+    line-height:32px;
+    visibility:hidden;
+}
+.cr_t6{
+    position: absolute;
+    top: 109px;
+    left: 40px;
+    width: 298px;
+    height: 50px;
+    font-size:22px;
+    line-height:32px;
+    visibility:hidden;
+}
+
+.cr_tmwi{
+	position: absolute;
+	top: 48px;
+	left: 331px;
+	width: 50px;
+	height: 25px;
+	line-height:20px;
+	font-size:20px;
+	text-align:center;
+}
+
+/* footer */
+#footer{
+   position:absolute;
+   top: 428px;
+   height:52px;
+   line-height:25px;
+   font-size: 20px;
+   text-align:center;
+}
+
+.sk{
+  position:absolute;
+  background-image:url('img/softk/softk_default.png');
+  height:52px;
+  line-height:52px;
+  width:156px;
+  top:0px;
+  visibility:hidden;
+}
+
+.sk_texttopic{
+  position:absolute;
+  height:52px;
+  width:156px;
+  top:0px;
+  visibility:hidden;
+}
+
+#softkeyPageIcon{
+    position: absolute;
+    top: 11px;
+    left: 500px;
+    height: 8px;
+    width: 33px;
+    display:none;
+}
+
+#sk_icon1{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 8px;
+    width: 11px;
+}
+
+#sk_icon2{
+    position: absolute;
+    top: 0px;
+    left: 11px;
+    height: 8px;
+    width: 11px;
+}
+
+#sk_icon3{
+    position: absolute;
+    top: 0px;
+    left: 22px;
+    height: 8px;
+    width: 11px;
+}
+
+/* volume bar*/
+#volDiv{
+    background-image:url('img/notifications/hud_container.png');
+    position:absolute;
+    height:80px;
+    width:400px;
+    left:120px;
+    top:200px;
+    display:none;
+}
+
+/* Alert window */
+#alertDiv{
+  position:absolute;
+  height:167px;
+  width:400px;
+  top:313px;
+  left:120px;
+  visibility:hidden;
+  line-height:28px;
+  font-size:20px;
+  word-wrap:break-word;
+}
+
+#alertHeader{
+  position:absolute;
+  background-image:url('img/notifications/alert_header.png');
+  height:38px;
+  width:400px;
+  top:0px;
+  left:0px;
+}
+
+#alert_Text{
+  position:absolute;
+  width:371px;
+  top:45px;
+  left:14px;
+}
+
+#alert_Icon{
+  position:absolute;
+  height:48px;
+  width:48px;
+  top:47px;
+  left:11px;
+  visibility:hidden;
+}
+
+#alertBrightness{
+  position:absolute;
+  height:33px;
+  width:321px;
+  top:56px;
+  left:70px;
+  visibility:hidden;
+}
+
+
+#ab_p1{
+  position:absolute;
+  height:15px;
+  width:320px;
+  top:9px;
+}
+
+#ab_p2{
+  position:absolute;
+  height:9px;
+  width:160px;
+  top:12px;
+  left:3px;
+}
+
+#ab_p3{
+  position:absolute;
+  height:33px;
+  width:12px;
+  top:0px;
+  left:160px;
+}
+
+#alertButtonDiv{
+  position:absolute;
+  height:52px;
+  width:314px;
+  top:115px;
+  left:43px;
+  line-height:52px;
+}
+
+/* for button */
+.bton{
+  position:absolute;
+  background-image:url('img/softk/softk_default.png');
+  height:52px;
+  width:156px;
+  font-size: 20px;
+  text-align:center;
+}
+
+/* video camera*/
+#videoDiv{
+  position:absolute;
+  display:none;
+  height:380px;
+  width:500px;
+  top:50px;
+  left:70px;
+}
+
+#videoHeader{
+  position:absolute;
+  height:40px;
+  width:500px;
+  top:0px;
+  left:0px;
+  line-height:25px;
+  font-size:20px;
+}
+
+#camera{
+  position:absolute;
+  height:240px;
+  width:320px;
+  top:60px;
+  left:90px;
+}
+
+#videoBrightnessDiv{
+  position:absolute;
+  height:48px;
+  width:448px;
+  top:315px;
+  left:26px;
+}
+
+#videoIcon{
+  position:absolute;
+  height:48px;
+  width:48px;
+  top:0px;
+  left:0px;
+}
+
+#vbn_p1{
+  position:absolute;
+  height:15px;
+  width:328px;
+  top:16.5px;
+  left:60px;
+}
+
+#vbn_p2{
+  position:absolute;
+  height:9px;
+  width:48px;
+  top:19.5px;
+  left:63px;
+}
+
+#vbn_p3{
+  position:absolute;
+  height:33px;
+  width:12px;
+  top:7.5px;
+  left:111px;
+}
+
+/* callDetail */
+#menu{
+  position:absolute;
+  visibility:hidden;
+  background-color:#FFF;
+  height:380px;
+  width:500px;
+  top:51px;
+  left:70px;
+}
+
+#menu_header{
+  position:absolute;
+  background-image:url('img/list_elements/list_header.png');
+  height:39px;
+  width:500px;
+  top:0px;
+  left:0px;
+  line-height:28px;
+  font-size:20px;
+  color:#FFF;
+}
+
+#headerText1{
+  position:absolute;
+  text-align:left;
+  height:28px;
+  width:478px;
+  top:5px;
+  left:12px;
+}
+
+#headerText2{
+  position:absolute;
+  text-align:right;
+  height:28px;
+  width:478px;
+  top:5px;
+  left:12px;
+  visibility:hidden;
+}
+
+#menu_prompt{
+  position:absolute;
+  background-image:url('img/list_elements/list_prompt.png');
+  height:50px;
+  width:500px;
+  top:39px;
+  left:0px;
+  font-size:20px;
+  visibility:hidden;
+}
+
+#promptPic1{
+  position:absolute;
+  height:35px;
+  width:480px;
+  top:8px;
+  left:10px;
+  visibility:hidden;
+}
+
+#promptText1{
+  position:absolute;
+  text-align:left;
+  height:28px;
+  width:478px;
+  top:12px;
+  left:12px;
+  line-height: 28px;
+  font-size:20px;
+}
+
+#menu_body{
+  position:absolute;
+  height:340px;
+  width:500px;
+  top:89px;
+  left:0px;
+  visibility:hidden;
+}
+.menu_item{
+  position:absolute;
+  background-image:url('img/list_elements/list_item.png');
+  height:68px;
+  width:500px;
+  left:0px;
+}
+.menu_bg1{
+  position:absolute;
+  height:25px;
+  width:442px;
+  top:16px;
+  left:44px;
+  visibility:hidden;
+}
+.menu_bg2{
+  position:absolute;
+  height:25px;
+  width:442px;
+  top:16px;
+  left:44px;
+  visibility:hidden;
+}
+.itemPic1{
+  position:absolute;
+  height:32px;
+  width:32px;
+  top:18px;
+  left:5px;
+  visibility:hidden;
+}
+
+.itemPic2{
+  position:absolute;
+  height:32px;
+  width:24px;
+  top:15px;
+  left:472px;
+  visibility:hidden;
+}
+
+.itemPic3{
+  position:absolute;
+  height:35px;
+  width:235px;
+  top:11px;
+  left:243px;
+  visibility:hidden;
+}
+
+.itemPic4{
+  position:absolute;
+  height:32px;
+  width:80px;
+  top:15px;
+  left:334px;
+  visibility:hidden;
+}
+.itemText1{
+  position:absolute;
+  height:28px;
+  width:442px;
+  top:20px;
+  left:44px;
+  font-size:20px;
+  line-height:28px;
+  visibility:hidden;
+}
+.itemText2{
+  position:absolute;
+  background-image:none;
+  height:28px;
+  width:442px;
+  top:20px;
+  left:44px;
+  font-size:20px;
+  line-height:28px;
+  visibility:hidden;
+}
+.itemText3{
+  position:absolute;
+  background-image:none;
+  height:25px;
+  width:442px;
+  top:21px;
+  left:44px;
+  font-size:14px;
+  line-height:28px;
+  visibility:hidden;
+}
+.itemText4{
+  position:absolute;
+  background-image:none;
+  height:28px;
+  width:65px;
+  top:16px;
+  left:425px;
+  font-size:20px;
+  line-height:28px;
+  visibility:hidden;
+}
+.itemDigit{
+  position:absolute;
+  height:20px;
+  width:25px;
+  top:2px;
+  left:473px;
+  font-size:14px;
+  visibility:hidden;
+}
+#vvm{
+  position:absolute;
+  visibility:hidden;
+  background-color:#FFF;
+  height:380px;
+  width:500px;
+  top:51px;
+  left:70px;
+}
+#vvm_header{
+  position:absolute;
+  background-image:url('img/list_elements/list_header.png');
+  height:39px;
+  width:500px;
+  top:0px;
+  left:0px;
+  line-height:28px;
+  font-size:20px;
+  color:#FFF;
+  visibility:inherit;
+}
+.vvm_header_text{
+  position:absolute;
+  text-align:left;
+  height:28px;
+  width:234px;
+  top:7px;
+  left:42px;
+  visibility:inherit;
+}
+
+#vvmheaderText2{
+  position:absolute;
+  text-align:right;
+  height:25px;
+  width:200px;
+  top:8px;
+  left:288px;
+  visibility:inherit;
+}
+#vvmheaderImg1{
+  position:absolute;
+  height:28px;
+  width:28px;
+  top:5px;
+  left:7x;
+  visibility:inherit;
+}
+
+#vvmheaderImg2{
+  position:absolute;
+  height:28px;
+  width:28px;
+  top:5px;
+  left:460px;
+  visibility:hidden;
+}
+#vvmheaderImg3{
+  position:absolute;
+  height:28px;
+  width:28px;
+  top:5px;
+  left:460px;
+  visibility:hidden;
+}
+#vvm_body{
+  position:absolute;
+  height:340px;
+  width:500px;
+  top:39px;
+  left:0px;
+  visibility:hidden;
+}
+
+.vvm_item{
+  position:absolute;
+  background-image:url('img/list_elements/list_item.png');
+  height:68px;
+  width:500px;
+  left:0px;
+  visibility:inherit;
+}
+
+.vvmPB{
+  position:absolute;
+  visibility: hidden;
+}
+
+.vvmBG{
+  position:absolute;
+  visibility:inherit;
+  top:0px;
+  height:68px;
+  width:498px;
+  left:0px;
+}
+
+.vvmFG{
+  position:absolute;
+  visibility:inherit;
+  top:0px;
+  height:68px;
+  width:493px;
+  left:7px;
+}
+.vvmBar{
+  position:absolute;
+  visibility:inherit;
+  top:0px;
+  height:68px;
+  width:7px;
+  left:0px;
+}
+
+.vvmitemPic1{
+  position:absolute;
+  height:32px;
+  width:32px;
+  top:18px;
+  left:5px;
+  visibility:hidden;
+}
+
+.vvmitemPic2{
+  position:absolute;
+  height:32px;
+  width:24px;
+  top:15px;
+  left:473px;
+  visibility:hidden;
+}
+
+.vvmitemPic3{
+  position:absolute;
+  height:32px;
+  width:32px;
+  top:18px;
+  left:454px;
+  visibility:inherit;
+}
+
+.vvmitemPic4{
+  position:absolute;
+  height:17px;
+  width:17px;
+  top:39px;
+  left:44px;
+  visibility:hidden;
+}
+.vvmitemTextdiv{
+  position:absolute;
+  height:68px;
+  width:500px;
+  left:0px;
+  visibility:inherit;
+}
+.vvmitemText1{
+  position:absolute;
+  height:25px;
+  width:241px;
+  top:14px;
+  left:44px;
+  font-size:20px;
+  visibility:inherit;
+}
+.vvmitemText2{
+  position:absolute;
+  background-image:none;
+  height:14px;
+  width:241px;
+  top:41px;
+  left:44px;
+  font-size:14px;
+  visibility:inherit;
+}
+.vvmitemText3{
+  position:absolute;
+  background-image:none;
+  height:25px;
+  width:150px;
+  top:14px;
+  left:297px;
+  font-size:20px;
+  visibility:inherit;
+}
+.vvmitemText4{
+  position:absolute;
+  background-image:none;
+  height:14px;
+  width:150px;
+  top:41px;
+  left:297px;
+  font-size:14px;
+  visibility:inherit;
+}
+#vvmbodytext{
+  position:absolute;
+  background-image:none;
+  height:25px;
+  width:490px;
+  top:40px;
+  left:5px;
+  font-size:20px;
+  visibility:hidden;
+}
+#vvm_scroll{
+  position:absolute;
+  height:340px;
+  width:10px;
+  top:0px;
+  left:490px;
+  visibility:hidden;
+}
+#vvm_scroll_bg{
+  position:absolute;
+  width:10px;
+  top:0px;
+  left:0px;
+  visibility:inherit;
+}
+#vvm_scroll_fg{
+  position:absolute;
+  height:34px;
+  width:6px;
+  top:2px;
+  left:2px;
+  visibility:inherit;
+}
+#scroll_bg{
+  position:absolute;
+  height:291px;
+  width:10px;
+  top:0px;
+  left:490px;
+  visibility:hidden;
+}
+#scroll_fg{
+  position:absolute;
+  height:34px;
+  width:6px;
+  top:2px;
+  left:492px;
+  visibility:hidden;
+}
+#xsi_pic{
+  position:absolute;
+  height:291px;
+  width:500px;
+  top:89px;
+  left:0px;
+  visibility:hidden;
+}
+#xsi_info{
+  position:absolute;
+  height:291px;
+  width:500px;
+  top:89px;
+  left:0px;
+  overflow:hidden;
+  line-height:25px;
+  font-size:20px;
+  word-wrap:break-word;
+  visibility:hidden;
+}
+#vvm_info{
+  position:absolute;
+  height:291px;
+  width:500px;
+  top:89px;
+  left:0px;
+  visibility:hidden;
+}
+#vvmInfoTime{
+  position:absolute;
+  height:291px;
+  width:500px;
+  top:0px;
+  left:0px;
+  visibility:hidden;
+}
+#vvmInfoSpeed{
+  position:absolute;
+  height:291px;
+  width:500px;
+  top:0px;
+  left:0px;
+  visibility:hidden;
+}
+#vvmInfoPB{
+  position:absolute;
+  height:291px;
+  width:500px;
+  top:0px;
+  left:0px;
+  visibility:hidden;
+}
+.vvmInfoPicNum{
+  position:absolute;
+  height:65px;
+  width:38px;
+  top:92px;
+  visibility:inherit;
+}
+.vvmInfoPicColon{
+  position:absolute;
+  height:65px;
+  width:18px;
+  top:92px;
+  visibility:inherit;
+}
+#vvmInfoPicSlash{
+  position:absolute;
+  height:65px;
+  width:32px;
+  left:234px;
+  top:92px;
+  visibility:inherit;
+}
+#vvmInfoPicDecimal{
+  position:absolute;
+  height:65px;
+  width:18px;
+  top:92px;
+  left:222px;
+  visibility:inherit;
+}
+#vvmInfoPicX{
+  position:absolute;
+  height:65px;
+  width:38px;
+  top:92px;
+  left:278px;
+  visibility:inherit;
+}
+.vvmInfoPicTick{
+  position:absolute;
+  height:10px;
+  width:2px;
+  top:210px;
+  visibility:inherit;
+}
+
+#vvmInfobg{
+  position:absolute;
+  height:15px;
+  width:320px;
+  top:225px;
+  left:90px;
+  visibility:inherit;
+}
+#vvmInfofg{
+  position:absolute;
+  height:9px;
+  width:0px;
+  top:228px;
+  left:93px;
+  visibility:inherit;
+}
+#vvmInfoslider{
+  position:absolute;
+  height:33px;
+  width:12px;
+  top:216px;
+  left:90px;
+  visibility:inherit;
+}
+#headerImg1{
+  position:absolute;
+  height:28px;
+  width:28px;
+  top:5px;
+  left:466px;
+  visibility:hidden;
+}
+
+#headerImg2{
+  position:absolute;
+  height:28px;
+  width:28px;
+  top:5px;
+  left:454px;
+  visibility:hidden;
+}
+
+#headerImg3{
+  position:absolute;
+  height:28px;
+  width:28px;
+  top:5px;
+  left:12x;
+  visibility:hidden;
+}
+
+#detailView{
+  position:absolute;
+  height:85px;
+  width:498px;
+  top:40px;
+  left:1px;
+  line-height:25px;
+  font-size:20px;
+  border-bottom-style:solid;
+  border-bottom-color:#666;
+  border-bottom-width:1px;
+  visibility:hidden;
+}
+
+#dv_t1{
+  position:absolute;
+  height:25px;
+  width:474px;
+  top:5px;
+  left:12px;
+}
+
+#dv_t2{
+  position:absolute;
+  height:25px;
+  width:362px;
+  top:30px;
+  left:12px;
+}
+
+#dv_t3{
+  position:absolute;
+  text-align:right;
+  height:25px;
+  width:100px;
+  top:30px;
+  left:386px;
+}
+
+#dv_t4{
+  position:absolute;
+  height:25px;
+  width:474px;
+  top:55px;
+  left:12px;
+}
+
+#detailItem{
+  position:absolute;
+  height:68px;
+  width:498px;
+  top:126px;
+  left:1px;
+  line-height:25px;
+  font-size:20px;
+  visibility:hidden;
+}
+
+#di_t1{
+  position:absolute;
+  height:25px;
+  width:269px;
+  top:21px;
+  left:44px;
+}
+
+#di_t2{
+  position:absolute;
+  text-align:right;
+  height:25px;
+  width:161px;
+  top:9px;
+  left:325px;
+}
+
+#di_t3{
+  position:absolute;
+  text-align:right;
+  height:25px;
+  width:161px;
+  top:34px;
+  left:325px;
+}
+
+#predial{
+  position:absolute;
+  visibility:hidden;
+  background-color:#FFF;
+  height:380px;
+  width:500px;
+  top:51px;
+  left:70px;
+}
+
+#pdh{
+  position:absolute;
+  visibility:hidden;
+  background-image:url('img/list_elements/list_header.png');
+  height:39px;
+  width:500px;
+  top:0px;
+  left:0px;
+  line-height:25px;
+  font-size:20px;
+  color:#FFF;
+}
+
+.pdmitem {
+  position: absolute;
+  visibility:inherit;
+  left:0px;
+  width:500px;
+  height:58px;
+  color:rgb(0,0,0);
+  background-image:url('img/list_elements/list_item_small.png');
+}
+
+.pditemt1 {
+  visibility:inherit;
+  position: absolute;
+  left:44px;
+  top:1px;
+  width:217px;
+  height:56px;
+  font-size:20px;
+  line-height:28px;
+}
+
+.pditemt2 {
+  visibility:inherit;
+  position: absolute;
+  left:276px;
+  top:8px;
+  width:163px;
+  height:25px;
+  background-image:none;
+  font-size:20px; 
+  text-align:right;
+}
+
+.pditemt3 {
+  visibility:inherit;
+  position: absolute;
+  left:276px;
+  top:36px;
+  width:163px;
+  height:25px;
+  background-image:none;
+  font-size:14px;
+  text-align:right
+}
+
+.pditemp1 {
+  visibility:inherit;
+  position:absolute;
+  left:5px;
+  top:13px;
+  width:32px;
+  height:32px;
+  line-height:32px;
+}
+
+.pditemp2 {
+  visibility:hidden;
+  position: absolute;
+  left:445px;
+  top:13px;
+  width:32px;
+  height:32px;
+}
+
+.pdbg {
+  visibility:hidden;
+  position: absolute;
+  left:276px;
+  top:8px;
+  width:163px;
+  height:25px;
+  background-color:rgb(173,208,80);
+}
+
+.pddigit {
+  visibility:hidden;
+  position:absolute;
+  left:463px;
+  top:2px;
+  width:25px;
+  height:20px;
+  font-size:14px;
+  text-align:right;
+}
+
+/* IME */
+#imeDiv{
+  position:absolute;
+  background-color:rgba(0, 0, 0, 0.7);
+  height:42px;
+  width:341px;
+  top:150px;
+  left:150px;
+  visibility:hidden;
+}
+.ime_key_item{
+  position:absolute;
+  height:25px;
+  width:25px;
+  top:8px;
+  left:8px;
+  text-align:center;
+  font-size:20px;
+}
+
+/* fullScreen video */
+#fullScreen{
+  position:absolute;
+  display:none;
+  height:480px;
+  width:640px;
+  top:0px;
+  left:0px;
+}
+
+#fullScreenHeader{
+  position:absolute;
+  height:59px;
+  width:640px;
+  top:0px;
+  left:0px;
+  line-height:25px;
+  font-size:20px;
+  color:#FFF;
+  text-shadow:shadow;
+  visibility:hidden;
+}
+
+#muteFront{
+  border-bottom-style:solid;
+  border-bottom-color:#d9d9d9;
+  border-bottom-width:2px;
+  border-top-style:solid;
+  border-top-color:#d9d9d9;
+  border-top-width:2px;
+  border-left-style:solid;
+  border-left-color:#d9d9d9;
+  border-left-width:2px;
+  border-right-style:solid;
+  border-right-color:#d9d9d9;
+  border-right-width:2px;
+}
+
+#fsh_t1{
+  position:absolute;
+  height:25px;
+  width:355px;
+  top:17px;
+  left:12px;
+}
+
+#fsh_t2{
+  position:absolute;
+  height:25px;
+  width:95px;
+  top:17px;
+  left:503px;
+}
+
+#fsh_p1{
+  position:absolute;
+  height:28px;
+  width:28px;
+  top:15px;
+  left:605px;
+}
+
+#fsh_p2{
+  position:absolute;
+  height:12px;
+  width:12px;
+  top:2px;
+  left:626px;
+}
+
+/* toast */
+#toastDiv{
+  position:absolute;
+  visibility:hidden;
+  height:131px;
+  width:400px;
+  top:273px;
+  left:120px;
+  color:#FFFFFF;
+  line-height:28px;
+  font-size:20px;
+}
+
+#toastHeader{
+  position:absolute;
+  display:none;
+  height:38px;
+  width:400px;
+  top:0px;
+  left:0px;
+  z-index:2;
+}
+
+#toastBody{
+  position:absolute;
+  height:101px;
+  width:400px;
+  top:30px;
+  left:0px;
+  z-index:1;
+  word-wrap:break-word;
+}
+
+#toastBody_pic{
+  position:absolute;
+  display:block;
+}
+
+#toastBody_Text{
+  position:absolute;
+  width:371px;
+  left:14px;
+  top:15px;
+}
+
+#toastBody_Icon{
+  position:absolute;
+  visibility:hidden;
+  height:48px;
+  width:48px;
+  left:11px;
+  top:15px;
+}
+
+#toastBody_T3a{
+  position:absolute;
+  height:28px;
+  width:314px;
+  left:71px;
+  top:15px;
+}
+
+#toastBody_T3b{
+  position:absolute;
+  height:36px;
+  width:314px;
+  left:71px;
+  top:43px;
+  line-height:36px;
+  font-size:26px;
+}
+
+#toastBody_T3c{
+  position:absolute;
+  width:314px;
+  left:71px;
+  top:72px;
+}
+
+/* imeArrow */
+#imeArrow{
+  position:absolute;
+  background-image:url('img/list_item_icons/ime_arrow_up.png');
+  height:15px;
+  width:19px;
+  left:150px;
+  top:150px;
+  visibility:hidden;
+}
+
+#logoImg{
+  position:absolute;
+  height:480px;
+  width:640px;
+  left:0px;
+  top:0px;
+  visibility:hidden;
+}
+
+#fac_keyPad{
+  position:absolute;
+  background-color: #add050;
+  height:480px;
+  width:640px;
+  left:0px;
+  top:0px;
+  font-size:16px;
+  line-height:70px;
+  text-align:center;
+  display:none;
+}
+
+#xss {
+    position: absolute;
+    top: 218px;
+    width: 354px;
+    height: 118px;  
+    display: none;
+}
+
+#xss_header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 39px;
+}
+
+#xss_header_bg {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#xss_header_l {
+    position: absolute;
+    top: 7px;
+    left: 6px;
+    width: 278px;
+    height: 25px;
+    font-size: 20px;
+    line-height: 25px;
+}
+
+#xss_header_r {
+    position: absolute;
+    top: 7px;
+    left: 296px;
+    width: 52px;
+    height: 25px;
+    font-size: 20px;
+    line-height: 25px;
+}
+
+#xss_body {
+    position: absolute;
+    top: 39px;
+    left: 0px;
+    height: 79px;
+    width: 354px;
+    background-color: #fff;
+}
+
+#xss_body_img {
+    position: absolute;
+    top: 3px;
+    left: 6px;
+}
+
+</style>
+<body id="body" onload="init();" onkeypress="queueHandler(events);" style="background-color:#ffffff;">
+
+<div  id="main" style="background-image:url('img/call_ui/background.png'); visibility:visible">
+<div id="header" text-shadow="shadow">
+    <p id="h_t1"> </p>
+    <p id="h_t2"> </p>
+    <p id="h_t3"> </p>
+    <p id="h_t4"> </p>  
+    <div id="h_p1"></div>
+    <div id="h_p_bt"></div>
+    <div id="h_p2"></div>
+    <div id="h_p3"></div>
+</div>
+
+<div id="center">
+    <div id="cl" >
+        <div id="cl1" class='cl' style="top:0px;">
+            <p id='cl1_t1' class='cl_t1' text-shadow="shadow"> </p>
+            <p id='cl1_t2' class='cl_t2'> </p>
+            <p id='cl1_t3' class='cl_t3'> </p>
+            <div id="cl1_p1" class='cl_p1'></div>
+            <div id="cl1_p2" class='cl_p2'></div>
+        </div>
+        <div id="cl2" class='cl' style='top:88px;'>
+            <p id='cl2_t1' class='cl_t1' text-shadow="shadow"> </p>
+            <p id='cl2_t2' class='cl_t2'> </p>
+            <p id='cl2_t3' class='cl_t3'> </p>
+            <div id='cl2_p1' class='cl_p1'></div>
+            <div id='cl2_p2' class='cl_p2'></div>
+        </div>
+        <div id="cl3" class='cl' style="top:176px;">
+            <p id='cl3_t1' class='cl_t1' text-shadow="shadow"> </p>
+            <p id='cl3_t2' class='cl_t2'> </p>
+            <p id='cl3_t3' class='cl_t3'> </p>
+            <div id='cl3_p1' class='cl_p1'></div>
+            <div id='cl3_p2' class='cl_p2'></div>
+        </div>
+        <div id="cl4" class='cl' style="top: 264px;">
+            <p id='cl4_t1' class='cl_t1' text-shadow="shadow"> </p>
+            <p id='cl4_t2' class='cl_t2'> </p>
+            <p id='cl4_t3' class='cl_t3'> </p>
+            <div id='cl4_p1' class='cl_p1'></div>
+            <div id='cl4_p2' class='cl_p2'></div>
+        </div>
+    </div>
+    <div id="cr" text-shadow="hightlight-shadow">
+        <div id ="cr4" class="cr" style="top:264px;">
+            <div id="cr4_mwi" class="cr_mwi"></div>
+            <div id="cr4_p1" class="cr_p1"></div>
+            <div id="cr4_p2" class="cr_p2"></div>
+            <p id="cr4_t1" class="cr_t1"> </p>
+            <p id="cr4_t2" class="cr_t2"> </p>
+            <p id="cr4_t3" class="cr_t3"> </p>
+            <p id="cr4_t4" class="cr_t4"> </p>
+            <p id="cr4_t5" class="cr_t5"> </p>
+            <p id="cr4_t6" class="cr_t6"> </p>
+            <p id="cr4_tmwi" class="cr_tmwi" text-shadow="none"> </p>
+        </div>
+        <div id ="cr3" class="cr" style="top:176px;">
+            <div id="cr3_mwi" class="cr_mwi"></div>
+            <div id="cr3_p1" class="cr_p1"></div>
+            <div id="cr3_p2" class="cr_p2"></div>
+            <p id="cr3_t1" class="cr_t1"> </p>
+            <p id="cr3_t2" class="cr_t2"> </p>
+            <p id="cr3_t3" class="cr_t3"> </p>
+            <p id="cr3_t4" class="cr_t4"> </p>
+            <p id="cr3_t5" class="cr_t5"> </p>
+            <p id="cr3_t6" class="cr_t6"> </p>
+            <p id="cr3_tmwi" class="cr_tmwi" text-shadow="none"> </p>
+        </div>
+        <div id ="cr2" class="cr" style="top:88px;">
+            <div id="cr2_mwi" class="cr_mwi"></div>
+            <div id="cr2_p1" class="cr_p1"></div>
+            <div id="cr2_p2" class="cr_p2"></div>
+            <p id="cr2_t1" class="cr_t1"> </p>
+            <p id="cr2_t2" class="cr_t2"> </p>
+            <p id="cr2_t3" class="cr_t3"> </p>
+            <p id="cr2_t4" class="cr_t4"> </p>
+            <p id="cr2_t5" class="cr_t5"> </p>
+            <p id="cr2_t6" class="cr_t6"> </p>
+            <p id="cr2_tmwi" class="cr_tmwi" text-shadow="none"> </p>
+        </div>
+        <div id="cr1" class="cr" style="top:0px;">
+            <div id="cr1_mwi" class="cr_mwi"></div>
+            <div id="cr1_p1" class="cr_p1"></div>
+            <div id="cr1_p2" class="cr_p2"></div>
+            <p id="cr1_t1" class="cr_t1"> </p>
+            <p id="cr1_t2" class="cr_t2"> </p>
+            <p id="cr1_t3" class="cr_t3"> </p>
+            <p id="cr1_t4" class="cr_t4"> </p>
+            <p id="cr1_t5" class="cr_t5"> </p>
+            <p id="cr1_t6" class="cr_t6"> </p>
+            <p id="cr1_tmwi" class="cr_tmwi" text-shadow="none"> </p>
+        </div>
+        <div id="xss">
+            <div id="xss_header">
+                <img id="xss_header_bg" width="354" height="39" src="img/notifications/alert_header.png" />
+                <p id="xss_header_l"> </p>
+                <p id="xss_header_r"> </p>
+            </div>
+            <div id="xss_body">
+                <img id="xss_body_img" />
+            </div>
+        </div>
+        <img  src="img/generic_assets/generic_scrollbar_container.png" style="position: absolute;visibility:hidden;left:370px;top:3px;width:10px;height:346px"></img>
+        <img  src="img/generic_assets/generic_scrollbar.png" style="position: absolute;visibility:hidden;left:372px;top:5px;width:6px;height:34px"></img>
+    </div>
+</div>
+</div>
+
+<div id="videoDiv" >
+    <img src="img/notifications/toast_container.png" style="position:absolute;width:500px;height:380px;"></img>
+    <div id="videoHeader" >
+       <img src="img/list_elements/list_header.png" style="position:absolute;width:500px;height:40px;"></img>
+       <div style="position:absolute;left:14px;top:8px;width:472px;height:25px" ><p style='color:#FFF;'> </p></div>
+    </div>
+    <video id="camera" ></video>
+    <div id="videoBrightnessDiv" >
+       <img id="videoIcon" src="img/generic_assets/video_brightness.png"></img>
+       <img id="vbn_p1" src="img/controls/slider_dark_track_w328.png"></img>
+       <img id="vbn_p2" src="img/controls/slider_track_fill.png"></img>
+       <img id="vbn_p3" src="img/controls/controls_81.png"></img>
+    </div>
+</div>
+
+<div id='menu'>
+    <div id="menu_header" >
+       <p id="headerText1" > </p>
+       <p id="headerText2" > </p>
+       <img id="headerImg1" src="img/list_item_icons/list_header_indefinite_wait01.png" />
+       <img id="headerImg2" src="img/dummy.png" />
+       <img id="headerImg3" src="img/list_item_icons/list_header_indefinite_wait01.png" />
+    </div>
+    <div id="detailView" >
+        <p id="dv_t1" > </p>
+        <p id="dv_t2" > </p>
+        <p id="dv_t3" > </p>
+        <p id="dv_t4" > </p>
+    </div>
+    <div id="detailItem">
+        <img src='img/call_icons/alerting_default.png' style='position:absolute;height:32px;width:32px;top:18px;left:5px;' ></img>
+        <p id="di_t1" > </p>
+        <p id="di_t2" > </p>
+        <p id="di_t3" > </p>
+    </div>
+    <div id="menu_prompt">
+        <img id="promptPic1" src="img/generic_assets/generic_input_box_selected.png"></img>
+        <p id="promptText1"> </p>
+    </div>
+    <div id="menu_body">
+        <div id="menu_item1" class="menu_item" style="top:0px;">
+            <p id="menu_bg11" class="menu_bg1"> </p>
+            <p id="menu_bg12" class="menu_bg2"> </p>
+            <img id="itemPic11" class="itemPic1" src="img/list_item_icons/list_call_history_selected.png" ></img>
+            <img id="itemPic12" class="itemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="itemPic13" class="itemPic3" src="img/generic_assets/generic_input_box.png" ></img>
+            <img id="itemPic14" class="itemPic4" src="img/list_elements/list_arrow.png" ></img>
+            <p id="itemText11" class="itemText1"> </p>
+            <p id="itemText12" class="itemText2"> </p>
+            <p id="itemText13" class="itemText3"> </p>
+            <p id="itemText14" class="itemText4"> </p>
+            <p id="itemDigit1" class="itemDigit"> </p>
+        </div>
+        <div id="menu_item2" class="menu_item" style="top:58px;">
+            <p id="menu_bg21" class="menu_bg1"> </p>
+            <p id="menu_bg22" class="menu_bg2"> </p>
+            <img id="itemPic21" class="itemPic1" src="img/list_item_icons/list_preferences_default.png" ></img>
+            <img id="itemPic22" class="itemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="itemPic23" class="itemPic3" src="img/generic_assets/generic_input_box.png" ></img>
+            <img id="itemPic24" class="itemPic4" src="img/list_elements/list_arrow.png" ></img>
+            <p id="itemText21" class="itemText1"> </p>
+            <p id="itemText22" class="itemText2"> </p>
+            <p id="itemText23" class="itemText3"> </p>
+            <p id="itemText24" class="itemText4"> </p>
+            <p id="itemDigit2" class="itemDigit"> </p>
+        </div>
+        <div id="menu_item3" class="menu_item" style="top:116px;">
+            <p id="menu_bg31" class="menu_bg1"> </p>
+            <p id="menu_bg32" class="menu_bg2"> </p>
+            <img id="itemPic31" class="itemPic1" src="img/list_item_icons/list_accessories_default.png" ></img>
+            <img id="itemPic32" class="itemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="itemPic33" class="itemPic3" src="img/generic_assets/generic_input_box.png" ></img>
+            <img id="itemPic34" class="itemPic4" src="img/list_elements/list_arrow.png" ></img>
+            <p id="itemText31" class="itemText1"> </p>
+            <p id="itemText32" class="itemText2"> </p>
+            <p id="itemText33" class="itemText3"> </p>
+            <p id="itemText34" class="itemText4"> </p>
+            <p id="itemDigit3" class="itemDigit"> </p>
+        </div>
+        <div id="menu_item4" class="menu_item" style="top:174px;">
+            <p id="menu_bg41" class="menu_bg1"> </p>
+            <p id="menu_bg42" class="menu_bg2"> </p>
+            <img id="itemPic41" class="itemPic1" src="img/list_item_icons/list_admin_default.png" ></img>
+            <img id="itemPic42" class="itemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="itemPic43" class="itemPic3" src="img/generic_assets/generic_input_box.png" ></img>
+            <img id="itemPic44" class="itemPic4" src="img/list_elements/list_arrow.png" ></img>
+            <p id="itemText41" class="itemText1"> </p>
+            <p id="itemText42" class="itemText2"> </p>
+            <p id="itemText43" class="itemText3"> </p>
+            <p id="itemText44" class="itemText4"> </p>
+            <p id="itemDigit4" class="itemDigit"> </p>
+        </div>
+        <div id="menu_item5" class="menu_item" style="top:232px;">
+            <p id="menu_bg51" class="menu_bg1"> </p>
+            <p id="menu_bg52" class="menu_bg2"> </p>
+            <img id="itemPic51" class="itemPic1" src="img/list_item_icons/list_phone_info_default.png" ></img>
+            <img id="itemPic52" class="itemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="itemPic53" class="itemPic3" src="img/generic_assets/generic_input_box.png" ></img>
+            <img id="itemPic54" class="itemPic4" src="img/list_elements/list_arrow.png" ></img>
+            <p id="itemText51" class="itemText1"> </p>
+            <p id="itemText52" class="itemText2"> </p>
+            <p id="itemText53" class="itemText3"> </p>
+            <p id="itemText54" class="itemText4"> </p>
+            <p id="itemDigit5" class="itemDigit"> </p>
+        </div>
+        <img id="scroll_bg" src="img/generic_assets/generic_scrollbar_container.png" ></img>
+        <img id="scroll_fg" src="img/generic_assets/generic_scrollbar.png" ></img>
+    </div>
+    
+    <div id="xsi_pic" ></div>
+    <div id="xsi_info" ></div>
+    <div id="vvm_info" >
+        <div id="vvmInfoTime">
+            <img id="vvmInfoPicNum1" class="vvmInfoPicNum" style="left:64px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicNum2" class="vvmInfoPicNum" style="left:102px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicNum3" class="vvmInfoPicNum" style="left:158px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicNum4" class="vvmInfoPicNum" style="left:196px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicNum5" class="vvmInfoPicNum" style="left:266px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicNum6" class="vvmInfoPicNum" style="left:304px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicNum7" class="vvmInfoPicNum" style="left:360px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicNum8" class="vvmInfoPicNum" style="left:398px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicColon1" class="vvmInfoPicColon" style="left:140px" src="img/vvm_elements/colon_default.png"></img>
+            <img id="vvmInfoPicColon2" class="vvmInfoPicColon" style="left:342px" src="img/vvm_elements/colon_default.png"></img>
+            <img id="vvmInfoPicSlash" src="img/vvm_elements/slash_default.png"></img>
+        </div>
+        <div id="vvmInfoSpeed">
+            <img id="vvmInfoPicNum9" class="vvmInfoPicNum" style="left:184px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicNum10" class="vvmInfoPicNum" style="left:240px" src="img/vvm_elements/0_default.png"></img>
+            <img id="vvmInfoPicDecimal" src="img/vvm_elements/decimal_default.png"></img>
+            <img id="vvmInfoPicX" src="img/vvm_elements/x_default.png"></img>
+            <img id="vvmInfoPicTick1" class="vvmInfoPicTick" style="left:96px" src="img/controls/tickmark.png"></img>
+            <img id="vvmInfoPicTick2" class="vvmInfoPicTick" style="left:199px" src="img/controls/tickmark.png"></img>
+            <img id="vvmInfoPicTick3" class="vvmInfoPicTick" style="left:302px" src="img/controls/tickmark.png"></img>
+            <img id="vvmInfoPicTick4" class="vvmInfoPicTick" style="left:405px" src="img/controls/tickmark.png"></img>
+        </div>
+        <div id="vvmInfoPB">
+            <img id="vvmInfobg" src="img/controls/slider_track_320w.png"></img>
+            <img id="vvmInfofg" src="img/controls/slider_track_fill.png"></img>
+            <img id="vvmInfoslider" src="img/controls/slider_default.png"></img>
+        </div>
+    </div>
+	
+    <div id="scroll_bar" style="position: absolute;visibility:hidden;left:490px;top:40px;width:10px;height:340px">
+        <img  src="img/generic_assets/generic_scrollbar_container.png" style="position: absolute;left:0px;top:0px;width:10px;height:340px"></img>
+        <img  src="img/generic_assets/generic_scrollbar.png" style="position: absolute;left:2px;top:2px;width:6px;height:34px"></img>
+    </div>
+</div>
+
+<div id='vvm'>
+    <div id="vvm_header" >
+       <p id="vvmheaderText1" class="vvm_header_text"> </p>
+       <p id="vvmheaderText2" > </p>
+       <p id="vvmheaderText3"  class="vvm_header_text" style="visibility:hidden"> </p>
+       <img id="vvmheaderImg1" src="img/line_key_icons/line_vm_indicator.png" />
+       <img id="vvmheaderImg2" src="img/list_item_icons/list_header_indefinite_wait01.png" />
+       <img id="vvmheaderImg3" src="img/dummy.png" />
+    </div>
+    <div id="vvm_body">
+        <div id="vvm_item1" class="vvm_item" style="top:0px;">
+            <div id="vvmPB1" class="vvmPB">
+                <img id="vvmBG1" class="vvmBG" src="img/list_elements/vvm_progress_bar.png"></img>
+                <img id="vvmFG1" class="vvmFG" src="img/list_elements/list_item_highlight.png"></img>
+                <img id="vvmBar1" class="vvmBar" src="img/list_elements/playback_control.png"></img>
+            </div>
+            <img id="vvmitemPic11" class="vvmitemPic1" src="img/list_item_icons/vvm_alert_default.png" ></img>
+            <img id="vvmitemPic12" class="vvmitemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="vvmitemPic13" class="vvmitemPic3" src="img/list_item_icons/vvm_play.png" ></img>
+            <img id="vvmitemPic14" class="vvmitemPic4" src="img/list_item_icons/vvm_private_default.png" ></img>
+            <div id="vvmitemTextdiv1" class="vvmitemTextdiv">
+                <p id="vvmitemText11" class="vvmitemText1"> </p>
+                <p id="vvmitemText12" class="vvmitemText2"> </p>
+                <p id="vvmitemText13" class="vvmitemText3"> </p>
+                <p id="vvmitemText14" class="vvmitemText4"> </p>
+            </div>
+        </div>
+        <div id="vvm_item2" class="vvm_item" style="top:68px;">
+            <div id="vvmPB2" class="vvmPB">
+                <img id="vvmBG2" class="vvmBG" src="img/list_elements/vvm_progress_bar.png"></img>
+                <img id="vvmFG2" class="vvmFG" src="img/list_elements/list_item_highlight.png"></img>
+                <img id="vvmBar2" class="vvmBar" src="img/list_elements/playback_control.png"></img>
+            </div>
+            <img id="vvmitemPic21" class="vvmitemPic1" src="img/list_item_icons/vvm_alert_default.png" ></img>
+            <img id="vvmitemPic22" class="vvmitemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="vvmitemPic23" class="vvmitemPic3" src="img/list_item_icons/vvm_play.png" ></img>
+            <img id="vvmitemPic24" class="vvmitemPic4" src="img/list_item_icons/vvm_private_default.png" ></img>
+            <div id="vvmitemTextdiv2" class="vvmitemTextdiv">
+                <p id="vvmitemText21" class="vvmitemText1"> </p>
+                <p id="vvmitemText22" class="vvmitemText2"> </p>
+                <p id="vvmitemText23" class="vvmitemText3"> </p>
+                <p id="vvmitemText24" class="vvmitemText4"> </p>
+            </div>
+        </div>
+        <div id="vvm_item3" class="vvm_item" style="top:136px;">
+            <div id="vvmPB3" class="vvmPB">
+                <img id="vvmBG3" class="vvmBG" src="img/list_elements/vvm_progress_bar.png"></img>
+                <img id="vvmFG3" class="vvmFG" src="img/list_elements/list_item_highlight.png"></img>
+                <img id="vvmBar3" class="vvmBar" src="img/list_elements/playback_control.png"></img>
+            </div>
+            <img id="vvmitemPic31" class="vvmitemPic1" src="img/list_item_icons/vvm_alert_default.png" ></img>
+            <img id="vvmitemPic32" class="vvmitemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="vvmitemPic33" class="vvmitemPic3" src="img/list_item_icons/vvm_play.png" ></img>
+            <img id="vvmitemPic34" class="vvmitemPic4" src="img/list_item_icons/vvm_private_default.png" ></img>
+            <div id="vvmitemTextdiv3" class="vvmitemTextdiv">
+                <p id="vvmitemText31" class="vvmitemText1"> </p>
+                <p id="vvmitemText32" class="vvmitemText2"> </p>
+                <p id="vvmitemText33" class="vvmitemText3"> </p>
+                <p id="vvmitemText34" class="vvmitemText4"> </p>
+            </div>
+        </div>
+        <div id="vvm_item4" class="vvm_item" style="top:204px;">
+            <div id="vvmPB4" class="vvmPB">
+                <img id="vvmBG4" class="vvmBG" src="img/list_elements/vvm_progress_bar.png"></img>
+                <img id="vvmFG4" class="vvmFG" src="img/list_elements/list_item_highlight.png"></img>
+                <img id="vvmBar4" class="vvmBar" src="img/list_elements/playback_control.png"></img>
+            </div>
+            <img id="vvmitemPic41" class="vvmitemPic1" src="img/list_item_icons/vvm_alert_default.png" ></img>
+            <img id="vvmitemPic42" class="vvmitemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="vvmitemPic43" class="vvmitemPic3" src="img/list_item_icons/vvm_play.png" ></img>
+            <img id="vvmitemPic44" class="vvmitemPic4" src="img/list_item_icons/vvm_private_default.png" ></img>
+            <div id="vvmitemTextdiv4" class="vvmitemTextdiv">
+                <p id="vvmitemText41" class="vvmitemText1"> </p>
+                <p id="vvmitemText42" class="vvmitemText2"> </p>
+                <p id="vvmitemText43" class="vvmitemText3"> </p>
+                <p id="vvmitemText44" class="vvmitemText4"> </p>
+            </div>
+        </div>
+        <div id="vvm_item5" class="vvm_item" style="top:272px;">
+            <div id="vvmPB5" class="vvmPB">
+                <img id="vvmBG5" class="vvmBG" src="img/list_elements/vvm_progress_bar.png"></img>
+                <img id="vvmFG5" class="vvmFG" src="img/list_elements/list_item_highlight.png"></img>
+                <img id="vvmBar5" class="vvmBar" src="img/list_elements/playback_control.png"></img>
+            </div>
+            <img id="vvmitemPic51" class="vvmitemPic1" src="img/list_item_icons/vvm_alert_default.png" ></img>
+            <img id="vvmitemPic52" class="vvmitemPic2" src="img/list_elements/list_arrow.png" ></img>
+            <img id="vvmitemPic53" class="vvmitemPic3" src="img/list_item_icons/vvm_play.png" ></img>
+            <img id="vvmitemPic54" class="vvmitemPic4" src="img/list_item_icons/vvm_private_default.png" ></img>
+            <div id="vvmitemTextdiv5" class="vvmitemTextdiv">
+                <p id="vvmitemText51" class="vvmitemText1"> </p>
+                <p id="vvmitemText52" class="vvmitemText2"> </p>
+                <p id="vvmitemText53" class="vvmitemText3"> </p>
+                <p id="vvmitemText54" class="vvmitemText4"> </p>
+            </div>
+        </div>
+        <div id="vvm_scroll">
+            <img id="vvm_scroll_bg" src="img/generic_assets/generic_scrollbar_container.png" ></img>
+            <img id="vvm_scroll_fg" src="img/generic_assets/generic_scrollbar.png" ></img>
+        </div>
+    </div>
+    <p id="vvmbodytext"> </p>
+</div>
+
+<div id='predial' style="visibility:hidden;display:inline">
+    <div id="pdh" style="visibility:inherit;">
+       <p id="pdh1" style="position:absolute;visibility:inherit;text_align:left;height:25px;width:478px;top:7px;left:12px"> </p>
+       <p id="pdh2" style="visibility:inherit;"> </p>
+    </div>
+
+    <div id="pdi" style="position: absolute;visibility:inherit;left:0px;top:39px;width:500px;height:50px;background-image:url('img/list_elements/list_prompt.png');font-size:20px">
+        <img id="pdip" src="img/generic_assets/generic_input_box_selected.png" style="visibility:inherit;position: absolute;left:10px;top:8px;width:480px;height:35px;"></img>
+    </div>
+
+    <div id="pdm" style="position: absolute;visibility:inherit;left:0px;top:89px;width:500px;height:340px">
+        <div id="pdm1" class="pdmitem" style="top:0px;">
+            <img id="pditemPic11" class="pditemp1" src="img/list_item_icons/list_placed_call.png"></img>
+            <img id="pditemPic12" class="pditemp2" src="img/list_item_icons/list_blf_onhook_default.png"></img>
+            <p id="pditemText11"  class="pditemt1"> </p>
+            <div id="bg12"        class="pdbg"> </div>
+            <p id="pditemText12"  class="pditemt2"> </p>
+            <p id="pditemText13"  class="pditemt3"> </p>
+            <p id="pditemDigit1"  class="pddigit"> </p>
+        </div>
+        <div id="pdm2" class="pdmitem" style="top:58px;">
+            <img id="pditemPic21" class="pditemp1" src="img/list_item_icons/list_placed_call.png"></img>
+            <img id="pditemPic22" class="pditemp2" src="img/list_item_icons/list_blf_onhook_default.png"></img>
+            <p id="pditemText21"  class="pditemt1"> </p>
+            <div id="bg22"        class="pdbg"> </div>
+            <p id="pditemText22"  class="pditemt2"> </p>
+            <p id="pditemText23"  class="pditemt3"> </p>
+            <p id="pditemDigit2"  class="pddigit"> </p>
+        </div>
+        <div id="pdm3" class="pdmitem" style="top:116px;">
+            <img id="pditemPic31" class="pditemp1" src="img/list_item_icons/list_placed_call.png"></img>
+            <img id="pditemPic32" class="pditemp2" src="img/list_item_icons/list_blf_onhook_default.png"></img>
+            <p id="pditemText31"  class="pditemt1"> </p>
+            <div id="bg32"        class="pdbg"> </div>
+            <p id="pditemText32"  class="pditemt2"> </p>
+            <p id="pditemText33"  class="pditemt3"> </p>
+            <p id="pditemDigit3"  class="pddigit"> </p>
+        </div>
+        <div id="pdm4" class="pdmitem" style="top:174px;">
+            <img id="pditemPic41" class="pditemp1" src="img/list_item_icons/list_placed_call.png"></img>
+            <img id="pditemPic42" class="pditemp2" src="img/list_item_icons/list_blf_onhook_default.png"></img>
+            <p id="pditemText41"  class="pditemt1"> </p>
+            <div id="bg42"        class="pdbg"> </div>
+            <p id="pditemText42"  class="pditemt2"> </p>
+            <p id="pditemText43"  class="pditemt3"> </p>
+            <p id="pditemDigit4"  class="pddigit"> </p>
+        </div>
+        <div id="pdm5" class="pdmitem" style="top:232px;">
+            <img id="pditemPic51" class="pditemp1" src="img/list_item_icons/list_placed_call.png"></img>
+            <img id="pditemPic52" class="pditemp2" src="img/list_item_icons/list_blf_onhook_default.png"></img>
+            <p id="pditemText51"  class="pditemt1"> </p>
+            <div id="bg52"        class="pdbg"> </div>
+            <p id="pditemText52"  class="pditemt2"> </p>
+            <p id="pditemText53"  class="pditemt3"> </p>
+            <p id="pditemDigit5"  class="pddigit"> </p>
+        </div>
+        <img id="pd_scroll_bg" src="img/generic_assets/generic_scrollbar_container.png" style="position: absolute;visibility:inherit;left:490px;top:0px;width:10px;height:291px"></img>
+        <img id="pd_scroll_fg" src="img/generic_assets/generic_scrollbar.png" style="position: absolute;visibility:inherit;left:492px;top:2px;width:6px;height:34px"></img>
+    </div>
+</div>
+
+<div id="inputDiv" style="position:absolute;visibility:hidden;font-size:20px;overflow:hidden;">
+        <p id="input_p" style="position:absolute;" > </p>
+        <input id="input_input" style="position:absolute;" value="" type="text" > </input>
+    <p id="scrollP" style="visibility:hidden;overflow:hidden;" > </p>
+</div>
+
+<div id="imeDiv" >
+    <p  id="imeKey0"  class="ime_key_item" style="left:8px;"  > </p>
+    <p  id="imeKey1"  class="ime_key_item" style="left:33px;" > </p>
+    <p  id="imeKey2"  class="ime_key_item" style="left:58px;" > </p>
+    <p  id="imeKey3"  class="ime_key_item" style="left:83px;" > </p>
+    <p  id="imeKey4"  class="ime_key_item" style="left:108px;"> </p>
+    <p  id="imeKey5"  class="ime_key_item" style="left:133px;"> </p>
+    <p  id="imeKey6"  class="ime_key_item" style="left:158px;"> </p>
+    <p  id="imeKey7"  class="ime_key_item" style="left:183px;"> </p>
+    <p  id="imeKey8"  class="ime_key_item" style="left:208px;"> </p>
+    <p  id="imeKey9"  class="ime_key_item" style="left:233px;"> </p>
+    <p  id="imeKey10" class="ime_key_item" style="left:258px;"> </p>
+    <p  id="imeKey11" class="ime_key_item" style="left:283px;"> </p>
+    <p  id="imeKey12" class="ime_key_item" style="left:308px;"> </p>
+    <p  id="imeKey13" class="ime_key_item" style="left:333px;"> </p>
+    <p  id="imeKey14" class="ime_key_item" style="left:358px;"> </p>
+    <p  id="imeKey15" class="ime_key_item" style="left:383px;"> </p>
+    <p  id="imeKey16" class="ime_key_item" style="left:408px;"> </p>
+    <p  id="imeKey17" class="ime_key_item" style="left:433px;"> </p>
+</div>
+
+<div id="fullScreen" >
+    <div id="muteBehind" style="position:absolute;visibility:hidden;left:0px;top:0px;width:640px;height:480px;">
+    </div>
+    <img id="fullimg" src='img/generic_assets/avatar.png' style="visibility:hidden;position:absolute;left:0px;top:0px;width:640px;height:480px" > </img>
+    <video id="fullvideo" style="position:absolute;left:0px;top:0px;width:640px;height:480px" > </video>
+    <img id="muteimg" src='img/generic_assets/cameraoff.png' style="position:absolute;visibility:hidden;left:470px;top:285px;width:158px;height:118px"> </img>
+    <div id="muteFront" style="position:absolute;visibility:hidden;left:470px;top:285px;width:158px;height:118px"></div>
+    <img id="secure" src='img/call_icons/secure_call_highlighted.png' style="position:absolute;visibility:hidden;left:618px;top:4px;width:17px;height:17px"> </img>
+    
+    <div id="fullScreenHeader" >
+        <p id="fsh_t1"> </p>
+        <p id="fsh_t2"> </p>
+        <img id="fsh_p1" src='img/generic_assets/list_header_video.png'></img>
+        <img id="fsh_p2" src='img/generic_assets/list_header_video_secure_call.png'></img>
+    </div>
+</div>
+
+<div id="footer">
+    <img id='skBGImg' src='img/softk/softk_background.png' style="position:absolute;visibility:hidden;top:-9px;"></img>
+    <div id="softkey1" class='sk' style='left:5px'>
+        <p id="softText1" style='position:absolute;'> </p>
+        <div id="softpic1" class='sk_texttopic'></div>
+    </div>
+    <div id="softkey2" class='sk' style='left:163px;'>
+        <p id="softText2" style='position:absolute;'> </p>
+        <div id="softpic2" class='sk_texttopic'></div>
+    </div>
+    <div id="softkey3" class='sk' style='left:321px;'>
+        <p id="softText3" style='position:absolute;'> </p>
+        <div id="softpic3" class='sk_texttopic'></div>
+    </div>
+    <div id="softkey4" class='sk' style='left:479px;'>
+        <p id="softText4" style='position:absolute;'> </p>
+        <div id="softpic4" class='sk_texttopic'></div>
+    </div>
+    <div id="softkeyPageIcon" >
+        <img id='sk_icon1' src='img/softk/softk_indicator_default.png'></img>
+        <img id='sk_icon2' src='img/softk/softk_indicator_default.png'></img>
+        <img id='sk_icon3' src='img/softk/softk_indicator_default.png'></img>
+    </div>
+</div>
+
+<div id="alertDiv" >
+    <img src='img/notifications/alert_container.png' style='position:absolute;' height='100%' width='100%'></img>
+    <div id="alertHeader" >
+        <p  style="position:absolute;color:#000000;left:14px;top:5px;width:371px;height:28px" > </p>
+    </div>
+    <p id="alert_Text"> </p>
+    <img id="alert_Icon" ></img>
+    <div id="alertBrightness" >
+        <img id="ab_p1" src='img/controls/slider_track_320w.png' width='320px' ></img>
+        <img id="ab_p2" src='img/controls/slider_track_fill.png' ></img>
+        <img id="ab_p3" src='img/controls/slider_default.png' ></img>
+    </div>
+    <div id="alertVolume" style="visibility:hidden;position:absolute;height:167px;width:400px">
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:74px;top:64px;width:9px;height:18px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:94px;top:63px;width:9px;height:20px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:114px;top:62px;width:9px;height:22px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:134px;top:61px;width:9px;height:24px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:154px;top:60px;width:9px;height:26px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:174px;top:59px;width:9px;height:28px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:194px;top:58px;width:9px;height:30px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:214px;top:57px;width:9px;height:32px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:234px;top:56px;width:9px;height:34px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:254px;top:55px;width:9px;height:36px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:274px;top:54px;width:9px;height:38px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:294px;top:53px;width:9px;height:40px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:314px;top:52px;width:9px;height:42px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:334px;top:51px;width:9px;height:44px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:354px;top:50px;width:9px;height:46px"/>
+        <img src='img/notifications/alert_volume_on.png' style="visibility:inherit;position:absolute;left:374px;top:49px;width:9px;height:48px"/>
+    </div>
+    <div id="alertButtonDiv" >
+        <div  id="btn_d1" class='bton' style='left:0px;'><p id="alert_b1" style="position:absolute;"> </p></div>
+        <div  id="btn_d2" class='bton' style='left:158px;'><p id="alert_b2" style="position:absolute;"> </p></div>
+    </div>
+</div>
+
+<div id="toastDiv" >
+    <div id="toastHeader" >
+        <img src='img/notifications/toast_header.png'></img>
+        <p  style="position:absolute;left:14px;top:5px;width:371px;height:28px;" > </p>
+    </div>
+    <div id="toastBody" >
+        <img id="toastBody_pic" src='img/notifications/toast_container_small.png' width='100%'  height='100%' ></img>
+        <p id="toastBody_Text" > </p>
+        <img id="toastBody_Icon" ></img>
+        <p id="toastBody_T3a" > </p>
+        <p id="toastBody_T3b" > </p>
+        <p id="toastBody_T3c" > </p>
+    </div>
+</div>
+
+<div id="toastDyDiv" style="position:absolute;left:120px;top:273px;width:400px;height:131px;color:#FFFFFF;line-height:25px;font-size:20px;">
+    
+</div>
+
+<div id="volDiv" >
+   <img src='img/notifications/hud_ringtone.png'   style="position:absolute;left:13px;top:17px;width:48px;height:48px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:73px;top:31px;width:9px;height:18px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:93px;top:30px;width:9px;height:20px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:113px;top:29px;width:9px;height:22px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:133px;top:28px;width:9px;height:24px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:153px;top:27px;width:9px;height:26px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:173px;top:26px;width:9px;height:28px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:193px;top:25px;width:9px;height:30px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:213px;top:24px;width:9px;height:32px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:233px;top:23px;width:9px;height:34px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:253px;top:22px;width:9px;height:36px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:273px;top:21px;width:9px;height:38px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:293px;top:20px;width:9px;height:40px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:313px;top:19px;width:9px;height:42px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:333px;top:18px;width:9px;height:44px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:353px;top:17px;width:9px;height:46px"/>
+   <img src='img/notifications/hud_volume_off.png' style="position:absolute;left:373px;top:16px;width:9px;height:48px"/>
+</div>
+
+<div id="imeArrow"></div>
+
+<div id="logoImg"></div>
+
+<div id="fac_keyPad"></div>
+
+</body>
+</html>

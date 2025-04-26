@@ -53,6 +53,7 @@ modules			+= tests/01-utils
 modules			+= tests/02-thread
 modules			+= tests/11-tree
 modules			+= tests/20-json
+modules			+= tests/21-expat
 else
 modules			+= src
 endif

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="ietf-system">
+  <revision date="2013-11-07">
+    <description>
+      <text>Initial revision.</text>
+    </description>
+    <reference>
+      <text>RFC XXXX: A YANG Data Model for System Management</text>
+    </reference>
+  </revision>
+  <container name="system">
+    <description>
+      <text>System group configuration.</text>
+    </description>
+    <leaf name="hostname">
+      <type name="inet:domain-name"/>
+      <description>
+        <text>The name of the host.  This name can be a single domain
+label, or the fully qualified domain name of the host.</text>
+      </description>
+    </leaf>
+    <container name="authentication">
+      <if-feature name="authentication"/>
+      <description>
+        <text>The authentication configuration subtree.</text>
+      </description>
+      <leaf-list name="user-authentication-order">
+        <type name="identityref">
+          <base name="authentication-method"/>
+        </type>
+        <must condition='(. != "sys:radius" or ../../radius/server)'>
+          <error-message>
+            <value>When 'radius' is used, a RADIUS server must be configured.</value>
+          </error-message>
+          <description>
+            <text>When 'radius' is used as an authentication method,
+a RADIUS server must be configured.</text>
+          </description>
+        </must>
+        <ordered-by value="user"/>
+        <description>
+          <text>When the device authenticates a user with
+a password, it tries the authentication methods in this
+leaf-list in order.  If authentication with one method
+fails, the next method is used.  If no method succeeds,
+the user is denied access.
+
+If the 'radius-authentication' feature is advertised by
+the NETCONF server, the 'radius' identity can be added to
+this list.
+
+If the 'local-users' feature is advertised by the
+NETCONF server, the 'local-users' identity can be
+added to this list.</text>
+        </description>
+      </leaf-list>
+      <list name="user">
+        <if-feature name="local-users"/>
+        <key value="name"/>
+        <description>
+          <text>The list of local users configured on this device.</text>
+        </description>
+        <leaf name="name">
+          <type name="string"/>
+          <description>
+            <text>The user name string identifying this entry.</text>
+          </description>
+        </leaf>
+        <leaf name="password">
+          <type name="crypt-hash"/>
+          <description>
+            <text>The password for this entry.</text>
+          </description>
+        </leaf>
+        <list name="ssh-key">
+          <key value="name"/>
+          <description>
+            <text>A list of public SSH keys for this user.</text>
+          </description>
+          <reference>
+            <text>RFC 4253: The Secure Shell (SSH) Transport Layer Protocol</text>
+          </reference>
+          <leaf name="name">
+            <type name="string"/>
+            <description>
+              <text>An arbitrary name for the ssh key.</text>
+            </description>
+          </leaf>
+          <leaf name="algorithm">
+            <type name="string"/>
+            <mandatory value="true"/>
+            <description>
+              <text>The public key algorithm name for this ssh key.
+
+Valid values are the values in the IANA Secure Shell
+(SSH) Protocol Parameters registry, Public Key
+Algorithm Names</text>
+            </description>
+            <reference>
+              <text>IANA Secure Shell (SSH) Protocol Parameters registry,
+Public Key Algorithm Names</text>
+            </reference>
+          </leaf>
+          <leaf name="key-data">
+            <type name="binary"/>
+            <mandatory value="true"/>
+            <description>
+              <text>The binary key data for this ssh key.</text>
+            </description>
+          </leaf>
+        </list>
+      </list>
+    </container>
+  </container>
+  <container name="system-state">
+    <config value="false"/>
+    <description>
+      <text>System group operational state.</text>
+    </description>
+    <container name="platform">
+      <description>
+        <text>Contains vendor-specific information for
+identifying the system platform and operating system.</text>
+      </description>
+      <reference>
+        <text>IEEE Std 1003.1-2008 - sys/utsname.h</text>
+      </reference>
+      <leaf name="os-name">
+        <type name="string"/>
+        <description>
+          <text>The name of the operating system in use,
+for example 'Linux'</text>
+        </description>
+        <reference>
+          <text>IEEE Std 1003.1-2008 - utsname.sysname</text>
+        </reference>
+      </leaf>
+      <leaf name="os-release">
+        <type name="string"/>
+        <description>
+          <text>The current release level of the operating
+system in use.  This string MAY indicate
+the OS source code revision.</text>
+        </description>
+        <reference>
+          <text>IEEE Std 1003.1-2008 - utsname.release</text>
+        </reference>
+      </leaf>
+      <leaf name="os-version">
+        <type name="string"/>
+        <description>
+          <text>The current version level of the operating
+system in use.  This string MAY indicate
+the specific OS build date and target variant
+information.</text>
+        </description>
+        <reference>
+          <text>IEEE Std 1003.1-2008 - utsname.version</text>
+        </reference>
+      </leaf>
+      <leaf name="machine">
+        <type name="string"/>
+        <description>
+          <text>A vendor-specific identifier string representing
+the hardware in use.</text>
+        </description>
+        <reference>
+          <text>IEEE Std 1003.1-2008 - utsname.machine</text>
+        </reference>
+      </leaf>
+    </container>
+    <container name="clock">
+      <description>
+        <text>Monitoring of the system
+date and time properties.</text>
+      </description>
+      <leaf name="current-datetime">
+        <type name="yang:date-and-time"/>
+        <description>
+          <text>The current system date and time.</text>
+        </description>
+      </leaf>
+      <leaf name="boot-datetime">
+        <type name="yang:date-and-time"/>
+        <description>
+          <text>The system date and time when the system last restarted.</text>
+        </description>
+      </leaf>
+    </container>
+  </container>
+</module>
