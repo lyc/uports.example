@@ -1,0 +1,79 @@
+# Ports collection:	pcre2
+# Date created:		9/Sep/2013
+# Whom:                 Max Lee <yowching.lee@gmail.com>
+
+PORTNAME		= pcre2
+DISTVERSION		= 10.42
+CATEGORIES		= devel
+MASTER_SITES		= https://github.com/PCRE2Project/$(PORTNAME)/releases/download/$(PORTNAME)-$(PORTVERSION)/
+
+MAINTAINER		= yowching.lee@gmail.com
+COMMENT			= Perl Compatible Regular Expression library, version 2.
+
+LICENSE			= BSD3CLAUSE
+LICENSE_FILE		= $(WRKSRC)/LICENCE
+
+USES			= autoreconf cpe libtool pkgconfig tar:bzip2
+CPE_VENDOR		= pcre
+
+#USE_LDCONFIG		= yes
+
+GNU_CONFIGURE		= yes
+CONFIGURE_ARGS		+= --enable-utf					\
+			   --enable-unicode-properties			\
+			   --enable-pcre2-16				\
+			   --enable-pcre2-32
+
+ifneq ($(ARCH),sparc64)
+ifeq ($(filter-out mips64 riscv64,$(ARCH)),)
+CONFIGURE_ARGS		+= --enable-jit
+endif
+endif
+
+# Optional knobs that accept positive integer parameters (see pcrebuild(3)):
+
+# Allow the use of very large patterns (> 64K) with the 8- and 16-bit
+# libraries, at the expense of longer load times (possible values:
+# 2 (default), 3, and 4):
+ifdef WITH_LINK_SIZE
+CONFIGURE_ARGS		+= --with-link-size=$(WITH_LINK_SIZE)
+endif
+
+# Control PCRE resource use by limiting the default number of times pcre_exec()
+# can call match() during a single operation (default: 10 million):
+ifdef WITH_MATCH_LIMIT
+CONFIGURE_ARGS		+= --with-match-limit=$(WITH_MATCH_LIMIT)
+endif
+
+# Control PCRE resource use by limiting the nesting depth of parentheses in
+# patterns compiled with pcre_compile() (default: 250):
+ifdef WITH_PARENS_NEST_LIMIT
+CONFIGURE_ARGS		+= --with-parens-nest-limit=$(WITH_PARENS_NEST_LIMIT)
+endif
+
+#
+#
+#
+
+MASTERDIR		= $(CURDIR)
+PORTSDIR		?= $(MASTERDIR)/../..
+include $(PORTSDIR)/Mk/linux.port.pre.mk
+
+override_targets	+= do-test
+
+#prevent regression test coredumps from causing failures on the
+#package-building cluster:
+ifndef MAINTAINER_MODE
+CORELIMIT		?= /usr/bin/limits -Sc 0
+endif
+TESTLOGS		?= RunGrepTest RunTest pcre_jit_test		\
+			   pcre_scanner_unittest pcre_stringpiece_unittest \
+			   pcrecpp_unittest
+
+do-test:
+	@cd ${WRKSRC} ; \
+	${SETENV} ${MAKE_ENV} ${CORELIMIT} ${MAKE_CMD} ${MAKE_ARGS} check ; \
+	for _l in ${TESTLOGS} ; do if ${TEST} -f $${_l}.log ; then \
+	${PRINTF} "\n\n$${_l}.log\n\n\n" ; ${CAT} $${_l}.log ; fi ; done
+
+include $(PORTSDIR)/Mk/linux.port.post.mk
