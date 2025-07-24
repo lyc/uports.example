@@ -1,0 +1,14 @@
+./share/man/man3/csv.3
+./share/man/man3
+./share/man
+./share
+./lib/pkgconfig/libcsv.pc
+./lib/pkgconfig
+./lib/libcsv.so.3.0.2
+./lib/libcsv.so.3
+./lib/libcsv.so
+./lib/libcsv.la
+./lib/libcsv.a
+./lib
+./include/csv.h
+./include

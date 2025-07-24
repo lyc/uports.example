@@ -1,0 +1,13 @@
+prefix=%PREFIX%
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: libcsv
+Description: Small, simple and fast CSV parser
+Version: %VERSION%
+
+Requires:
+Libs: -L${libdir} -lcsv
+Cflags: -I${includedir}
