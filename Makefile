@@ -51,6 +51,7 @@ modules			+= libs/libutils
 ifneq (,$(filter test,$(MAKECMDGOALS)))
 modules			+= tests/01-utils
 modules			+= tests/02-tree
+modules			+= tests/03-values
 modules			+= tests/10-thread
 modules			+= tests/20-json
 modules			+= tests/21-expat
