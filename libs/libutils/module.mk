@@ -5,6 +5,7 @@ version			:= 0.0.1
 
 src-y			:= tree.c                                       \
 			   values.c					\
+			   stack.c					\
 			   thread.c
 dep-y			:=
 req-y			:=
