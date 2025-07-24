@@ -3,8 +3,8 @@ pwd			:= $(call subdirectory,module.mk)
 name			:= utils
 version			:= 0.0.1
 
-src-y			:= thread.c					\
-			   tree.c
+src-y			:= tree.c                                       \
+			   thread.c
 dep-y			:=
 req-y			:=
 

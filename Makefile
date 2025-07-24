@@ -50,8 +50,8 @@ EXTRA_EXCLUDE_TARGETS	+= $(depends_exclude_targets) env
 modules			+= libs/libutils
 ifneq (,$(filter test,$(MAKECMDGOALS)))
 modules			+= tests/01-utils
-modules			+= tests/02-thread
-modules			+= tests/11-tree
+modules			+= tests/02-tree
+modules			+= tests/10-thread
 modules			+= tests/20-json
 modules			+= tests/21-expat
 modules			+= tests/22-ezxml
