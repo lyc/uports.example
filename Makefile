@@ -54,6 +54,7 @@ modules			+= tests/02-thread
 modules			+= tests/11-tree
 modules			+= tests/20-json
 modules			+= tests/21-expat
+modules			+= tests/22-ezxml
 else
 modules			+= src
 endif

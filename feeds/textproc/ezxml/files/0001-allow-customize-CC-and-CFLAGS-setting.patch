@@ -1,0 +1,54 @@
+From 280f577c546c65e44ae7a7708cf5477cc494c2d1 Mon Sep 17 00:00:00 2001
+From: Max Lee <max_lee@pegatroncorp.com>
+Date: Fri, 5 May 2023 18:26:02 +0800
+Subject: [PATCH] allow customize CC and CFLAGS setting
+
+---
+ GNUmakefile | 6 +++---
+ Makefile    | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 9299375..1399dfc 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -21,10 +21,10 @@
+ # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+-CC = gcc
++CC ?= gcc
+ AR = ar
+ RM = rm -f
+-CFLAGS = -Wall -O2
++CFLAGS ?= -Wall -O2
+ DEBUG_CFLAGS = -O0 -g
+ OBJS = ezxml.o
+ LIB = libezxml.a
+@@ -60,4 +60,4 @@ ezxml.o: ezxml.h ezxml.c
+ 	$(CC) $(CFLAGS) -c -o $@ $<
+ 
+ clean:
+-	$(RM) $(OBJS) $(LIB) $(TEST) *~
+\ No newline at end of file
++	$(RM) $(OBJS) $(LIB) $(TEST) *~
+diff --git a/Makefile b/Makefile
+index c8a99fc..217dbda 100644
+--- a/Makefile
++++ b/Makefile
+@@ -21,10 +21,10 @@
+ # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+-CC = gcc
++CC ?= gcc
+ AR = ar
+ RM = rm -f
+-CFLAGS = -Wall -O2
++CFLAGS ?= -Wall -O2
+ OBJS = ezxml.o
+ LIB = libezxml.a
+ TEST = ezxmltest
+-- 
+2.30.2
+

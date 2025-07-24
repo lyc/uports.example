@@ -1,0 +1,13 @@
+prefix=%PREFIX%
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: ezxml
+Description: Easy to use C library for parsing XML documents
+Version: %VERSION%
+
+Requires:
+Libs: -L${libdir} -lezxml
+Cflags: -I${includedir}
