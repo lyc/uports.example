@@ -1,0 +1,62 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Thu, 14 May 2026 06:20:00 +0800
+Subject: [PATCH] pass dyld library path to scheme subprocesses
+
+On macOS, DYLD_* variables can be stripped while traversing protected
+system tools such as make.  Allow the build configuration to carry
+DYLD_LIBRARY_PATH explicitly, then pass it to Scheme subprocesses that
+need to load freshly built port libraries.
+---
+ makefiles/boot.zuo |  3 +++
+ makefiles/lib.zuo  | 23 ++++++++++++++---------
+ 2 files changed, 17 insertions(+), 9 deletions(-)
+
+diff --git a/makefiles/boot.zuo b/makefiles/boot.zuo
+index 8c94b30..4440939 100644
+--- a/makefiles/boot.zuo
++++ b/makefiles/boot.zuo
+@@ -34,6 +34,9 @@
+                        (if (or host-scheme host-workarea)
+                            "cross=t\n"
+                            "")
++                       (if (hash-ref config 'DYLD_LIBRARY_PATH #f)
++                           (~a "DYLD_LIBRARY_PATH=" (hash-ref config 'DYLD_LIBRARY_PATH) "\n")
++                           "")
+                        "\n")
+                    (build-path dir "Mf-config")
+                    :truncate)
+diff --git a/makefiles/lib.zuo b/makefiles/lib.zuo
+index 788bdb0..0b03a76 100644
+--- a/makefiles/lib.zuo
++++ b/makefiles/lib.zuo
+@@ -125,14 +125,18 @@
+           (let ([l (shell->strings host-scheme #t)])
+             (list (find-executable-path (car l)) (cdr l)))
+           (list (build-path host-workarea "bin" host-m (.exe "scheme")) '())))
+-    (define env (if (or (lookup 'SCHEMEHEAPDIRS)
+-                        (not (equal? host-workarea "")))
+-                    (cons
+-                     (cons "SCHEMEHEAPDIRS" (path->complete-path
+-                                             (or (lookup 'SCHEMEHEAPDIRS)
+-                                                 (build-path host-workarea "boot" host-m))))
+-                     init-env)
+-                    init-env))
++    (define env
++      (append
++       (if (lookup 'DYLD_LIBRARY_PATH)
++           (list (cons "DYLD_LIBRARY_PATH" (lookup 'DYLD_LIBRARY_PATH)))
++           '())
++       (if (or (lookup 'SCHEMEHEAPDIRS)
++               (not (equal? host-workarea "")))
++           (list (cons "SCHEMEHEAPDIRS" (path->complete-path
++                                         (or (lookup 'SCHEMEHEAPDIRS)
++                                             (build-path host-workarea "boot" host-m)))))
++           '())
++       init-env))
+     (k scheme.exe scheme-args env))
+ 
+   (define (run-scheme/status what script inputs [options (hash)])
+-- 
+2.50.1
+
