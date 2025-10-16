@@ -1,15 +1,5 @@
-./share/man/man1/gforth.1
 ./share/man/man1
 ./share/man
-./share/info/vmgen.info
-./share/info/gforth.info-4
-./share/info/gforth.info-3
-./share/info/gforth.info-2
-./share/info/gforth.info-1
-./share/info/gforth.info
-./share/info/dir
-./share/info
-./share/gforth/site-forth/siteinit.fs
 ./share/gforth/site-forth
 ./share/gforth/0.7.3/xwords.fs
 ./share/gforth/0.7.3/wordsets.fs
@@ -44,6 +34,7 @@
 ./share/gforth/0.7.3/termsize.fs
 ./share/gforth/0.7.3/tasker.fs
 ./share/gforth/0.7.3/tags.fs
+./share/gforth/0.7.3/TAGS
 ./share/gforth/0.7.3/table.fs
 ./share/gforth/0.7.3/stuff.fs
 ./share/gforth/0.7.3/struct0x.fs
@@ -155,11 +146,11 @@
 ./share/gforth/0.7.3/endtry-iferror.fs
 ./share/gforth/0.7.3/ekey.fs
 ./share/gforth/0.7.3/ec/shex.fs
+./share/gforth/0.7.3/ec/README
 ./share/gforth/0.7.3/ec/nesting.fs
 ./share/gforth/0.7.3/ec/mirror.fs
 ./share/gforth/0.7.3/ec/dotx.fs
 ./share/gforth/0.7.3/ec/builttag.fs
-./share/gforth/0.7.3/ec/README
 ./share/gforth/0.7.3/ec
 ./share/gforth/0.7.3/ds2texi.fs
 ./share/gforth/0.7.3/doskey.fs
@@ -177,6 +168,7 @@
 ./share/gforth/0.7.3/compat/struct.fs
 ./share/gforth/0.7.3/compat/strcomp.fs
 ./share/gforth/0.7.3/compat/required.fs
+./share/gforth/0.7.3/compat/README
 ./share/gforth/0.7.3/compat/loops.fs
 ./share/gforth/0.7.3/compat/execute-parsing.fs
 ./share/gforth/0.7.3/compat/exception.fs
@@ -184,7 +176,6 @@
 ./share/gforth/0.7.3/compat/control.fs
 ./share/gforth/0.7.3/compat/assert.fs
 ./share/gforth/0.7.3/compat/anslocal.fs
-./share/gforth/0.7.3/compat/README
 ./share/gforth/0.7.3/compat
 ./share/gforth/0.7.3/comp-i.fs
 ./share/gforth/0.7.3/colorize.fs
@@ -198,11 +189,11 @@
 ./share/gforth/0.7.3/backtrac.fs
 ./share/gforth/0.7.3/assert.fs
 ./share/gforth/0.7.3/asm/target.fs
+./share/gforth/0.7.3/asm/README
 ./share/gforth/0.7.3/asm/numref.fs
 ./share/gforth/0.7.3/asm/generic.fs
 ./share/gforth/0.7.3/asm/bitmask.fs
 ./share/gforth/0.7.3/asm/basic.fs
-./share/gforth/0.7.3/asm/README
 ./share/gforth/0.7.3/asm
 ./share/gforth/0.7.3/arch/sparc
 ./share/gforth/0.7.3/arch/shboom
@@ -245,7 +236,6 @@
 ./share/gforth/0.7.3/ansi.fs
 ./share/gforth/0.7.3/ans-report.fs
 ./share/gforth/0.7.3/add.fs
-./share/gforth/0.7.3/TAGS
 ./share/gforth/0.7.3
 ./share/gforth
 ./share
@@ -262,13 +252,8 @@
 ./include/gforth
 ./include
 ./bin/vmgen-0.7.3
-./bin/vmgen
 ./bin/gforthmi-0.7.3
-./bin/gforthmi
 ./bin/gforth-itc-0.7.3
-./bin/gforth-itc
 ./bin/gforth-fast-0.7.3
-./bin/gforth-fast
 ./bin/gforth-0.7.3
-./bin/gforth
 ./bin
