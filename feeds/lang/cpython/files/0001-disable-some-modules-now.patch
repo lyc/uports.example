@@ -1,0 +1,25 @@
+From 15dec38dd189b1794e14df3f1d322c4274216b36 Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Mon, 20 Oct 2025 15:36:27 +0800
+Subject: [PATCH] disable some modules now
+
+---
+ Modules/Setup | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Modules/Setup b/Modules/Setup
+index e4acf6bc7de..7f6dc94b1e7 100644
+--- a/Modules/Setup
++++ b/Modules/Setup
+@@ -292,7 +292,8 @@ PYTHONPATH=$(COREPYTHONPATH)
+ # Uncommenting the following line tells makesetup that all following modules
+ # are not built (see above for more detail).
+ #
+-#*disabled*
++*disabled*
+ #
+ # _sqlite3 _tkinter _curses pyexpat
++ _tkinter
+ # _codecs_jp _codecs_kr _codecs_tw unicodedata
+-- 
+2.30.2
