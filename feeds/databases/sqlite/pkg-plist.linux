@@ -1,0 +1,16 @@
+./share/man/man1/sqlite3.1
+./share/man/man1
+./share/man
+./share
+./lib/pkgconfig/sqlite3.pc
+./lib/pkgconfig
+./lib/libsqlite3.so.3.53.2
+./lib/libsqlite3.so.0
+./lib/libsqlite3.so
+./lib/libsqlite3.a
+./lib
+./include/sqlite3ext.h
+./include/sqlite3.h
+./include
+./bin/sqlite3
+./bin
