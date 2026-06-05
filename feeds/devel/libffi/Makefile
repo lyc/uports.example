@@ -18,13 +18,11 @@ COMMENT			= A Rortable Foreigh Function Interface Library
 LICENSE			= BSD3CLAUSE
 LICENSE_FILE		= $(WRKSRC)/LICENSE
 
-LIB_DEPENDS		= libncurses.so:devel/ncurses			\
-			  libreadline.so:devel/readline
-
 USES			= autoreconf libtool
 
 GNU_CONFIGURE		= yes
-CONFIGURE_ARGS		+= --disable-multi-os-directory
+CONFIGURE_ARGS		+= --disable-multi-os-directory		\
+			   --disable-docs
 
 #
 #
