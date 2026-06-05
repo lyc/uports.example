@@ -19,7 +19,7 @@ portdir			:= $(sitedir)/uports
 
 FEEDS			?= $(topdir)/feeds
 DESTDIR			?= $(topdir)/local
-PREFIX			?= /usr
+PREFIX			?= /usr/local
 
 PORTS_GROUP_DEFAULT	= compiler
 
@@ -77,4 +77,4 @@ clean:
 	@find . -type f -name \*~ -o -name .DS_Store | xargs rm -fr
 distclean: ports.distclean clean
 	@rm -fr depend $(DESTDIR)
-	@rm -fr $(addprefix $(portdir)/,distfiles packages)
+	@rm -fr $(addprefix $(portdir)/,distfiles packages scm)

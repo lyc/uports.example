@@ -2,8 +2,7 @@
 # Special groups ...
 #
 
-default_ignore_lists	+= archivers/zlib				\
-			   security/openssl
+default_ignore_lists	+=
 
 ignore_lists		+=
 
