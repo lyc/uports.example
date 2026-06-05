@@ -1,0 +1,85 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Thu, 28 May 2026 12:00:00 +0800
+Subject: [PATCH] fix logbitp and signature decoding
+
+---
+ src/compiler.lisp | 42 ++++++++++++++++++++++--------------------
+ src/defs1.lisp   |  9 +++++++++
+ 2 files changed, 31 insertions(+), 20 deletions(-)
+
+diff --git a/src/compiler.lisp b/src/compiler.lisp
+index c89a363cb..e24a34034 100644
+--- a/src/compiler.lisp
++++ b/src/compiler.lisp
+@@ -10810,26 +10810,28 @@ The function make-closure is required.
+                    `(+ (pop ,listvar) (* 256 (pop ,listvar))))))
+       (pop byte-list) (pop byte-list)
+       (pop byte-list) (pop byte-list)
+-      (let* ((req-num (pop2 byte-list))
+-             (opt-num (pop2 byte-list))
+-             (h (pop byte-list))
+-             (key-p (logbitp 7 h)))
+-        (pop byte-list)
+-        (values
+-          req-num
+-          opt-num
+-          (logbitp 0 h)
+-          key-p
+-          (when key-p
+-            (let ((kw-count (pop2 byte-list))
+-                  (kw-offset (pop2 byte-list)))
+-              (subseq (if (logbitp 4 h) ; generic function?
+-                        (coerce (first const-list) 'list)
+-                        const-list)
+-                      kw-offset (+ kw-offset kw-count))))
+-          (logbitp 6 h)
+-          byte-list
+-          const-list)))))
++      (flet ((hbitp (index byte)
++               (not (zerop (logand byte (ash 1 index))))))
++        (let* ((req-num (pop2 byte-list))
++               (opt-num (pop2 byte-list))
++               (h (pop byte-list))
++               (key-p (hbitp 7 h)))
++          (pop byte-list)
++          (values
++            req-num
++            opt-num
++            (hbitp 0 h)
++            key-p
++            (when key-p
++              (let ((kw-count (pop2 byte-list))
++                    (kw-offset (pop2 byte-list)))
++                (subseq (if (hbitp 4 h) ; generic function?
++                          (coerce (first const-list) 'list)
++                          const-list)
++                        kw-offset (+ kw-offset kw-count))))
++            (hbitp 6 h)
++            byte-list
++            const-list))))))
+ 
+ 
+ ;;;;****                  THIRD    PASS
+diff --git a/src/defs1.lisp b/src/defs1.lisp
+index 82e810fd4..21aadcc0d 100644
+--- a/src/defs1.lisp
++++ b/src/defs1.lisp
+@@ -13,6 +13,15 @@
+ 
+ (in-package "SYSTEM")
+ 
++(sys::%putd 'common-lisp:logbitp
++            #'(lambda (index integer)
++                (unless (and (integerp index) (not (minusp index)))
++                  (error-of-type 'type-error
++                    :datum index :expected-type '(integer 0 *)
++                    (TEXT "~S: index ~S is negative")
++                    'logbitp index))
++                (logtest (ash 1 index) integer)))
++
+ ;;; code walker
+ (defun expand-form (form &aux *fenv* *venv*)
+   (%expand-form form))
+-- 
+2.47.1
