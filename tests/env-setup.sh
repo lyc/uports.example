@@ -1,6 +1,7 @@
 export USE_GLOBALBASE=yes
-export DISTDIR_SITE=/opt/distfiles/ports
-export PACKAGES_SITE=/opt/distfiles/ports/packages
+export DISTDIR_SITE=/opt/distfiles/uports
+export SCMDIR_SITE=/opt/distfiles/uports/scm
+export PACKAGES_SITE=/opt/distfiles/uports/packages
 
 #export USE_ALTERNATIVE=yes
 #export ALTERNATIVE_WRKDIR=`pwd`/local/src
