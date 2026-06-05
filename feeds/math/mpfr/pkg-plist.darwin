@@ -1,0 +1,9 @@
+./lib/pkgconfig/mpfr.pc
+./lib/pkgconfig
+./lib/libmpfr.dylib
+./lib/libmpfr.a
+./lib/libmpfr.6.dylib
+./lib
+./include/mpfr.h
+./include/mpf2mpfr.h
+./include
