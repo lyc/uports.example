@@ -1,0 +1,9 @@
+./lib/pkgconfig/mpc.pc
+./lib/pkgconfig
+./lib/libmpc.so.3.4.1
+./lib/libmpc.so.3
+./lib/libmpc.so
+./lib/libmpc.a
+./lib
+./include/mpc.h
+./include

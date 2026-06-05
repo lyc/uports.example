@@ -1,0 +1,8 @@
+./lib/pkgconfig/mpc.pc
+./lib/pkgconfig
+./lib/libmpc.dylib
+./lib/libmpc.a
+./lib/libmpc.3.dylib
+./lib
+./include/mpc.h
+./include
