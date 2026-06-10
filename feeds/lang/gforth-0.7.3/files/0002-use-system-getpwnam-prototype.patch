@@ -1,0 +1,31 @@
+From f1da8bb06ce4e6078dfd72cbf4de6c4a4a039a8b Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Sat, 6 Jun 2026 18:35:00 +0800
+Subject: [PATCH] use system getpwnam prototype
+
+engine/support.c includes <pwd.h>, which declares getpwnam as taking a
+const char * argument.  The old local K&R-style declaration conflicts
+with the system prototype on modern compilers and makes later calls look
+like they pass too many arguments.
+
+Remove the local redeclaration and keep only the user_entry variable.
+---
+ engine/support.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/engine/support.c b/engine/support.c
+index 9d2992b..e3d389e 100644
+--- a/engine/support.c
++++ b/engine/support.c
+@@ -79,7 +79,7 @@ char *tilde_cstr(Char *from, UCell size, int clear)
+ {
+   char *s1,*s2;
+   int s1_len, s2_len;
+-  struct passwd *getpwnam (), *user_entry;
++  struct passwd *user_entry;
+ 
+   if (size<1 || from[0]!='~')
+     return cstr(from, size, clear);
+-- 
+2.47.1
+

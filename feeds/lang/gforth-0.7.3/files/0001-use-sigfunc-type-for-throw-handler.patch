@@ -1,0 +1,31 @@
+From d7275014b4ce259c392a07567cfb3e5689f9910d Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Sat, 6 Jun 2026 18:20:00 +0800
+Subject: [PATCH] use sigfunc type for throw handler
+
+Newer compilers reject the old-style void (*)() throw_handler type when
+it is used with signal handlers that take an int argument.  The file
+already defines Sigfunc as void (int), and bsd_signal expects Sigfunc *.
+
+Use Sigfunc * for throw_handler so graceful_exit, signal_throw, SIG_IGN,
+and bsd_signal all use compatible signal handler types.
+---
+ engine/signals.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/engine/signals.c b/engine/signals.c
+index ca02c8b..9fbf45d 100644
+--- a/engine/signals.c
++++ b/engine/signals.c
+@@ -399,7 +399,7 @@ void install_signal_handlers(void)
+ #endif
+   };
+   int i;
+-  void (*throw_handler)() = die_on_signal ? graceful_exit : signal_throw;
++  Sigfunc *throw_handler = die_on_signal ? graceful_exit : signal_throw;
+ #ifdef SIGSTKSZ 
+   stack_t sigstack;
+   int sas_retval=-1;
+-- 
+2.47.1
+
