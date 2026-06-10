@@ -14,7 +14,7 @@ COMMENT			= GNU database manager
 LICENSE			= GPL-3+
 
 LIB_DEPENDS		= libncurses.so.6:devel/ncurses			\
-			  libreadline.so.6:devel/libreadline6
+			  libreadline.so:devel/readline
 
 USES			= libtool pkgconfig
 
