@@ -36,13 +36,25 @@ export ac_cv_prog_GNU_LIBTOOL	:=
 MASTERDIR 		= $(CURDIR)
 PORTSDIR 		?= $(MASTERDIR)/../..
 include $(PORTSDIR)/Mk/linux.port.pre.mk
-override_targets	+= post-patch post-install
+override_targets	+= post-patch pre-configure post-install
 
 post-patch:
+	@cp $(PORTSDIR)/Tools/config.guess $(WRKSRC)/config.guess
+	@cp $(PORTSDIR)/Tools/config.sub $(WRKSRC)/config.sub
 	@$(REINPLACE_CMD) -e 's|@CC@|CFLAGS=-I$(DESTDIR)$(PREFIX)/include LDFLAGS=$(addprefix -L$(DESTDIR)$(PREFIX)/,$(libdirs))|g' $(WRKSRC)/envos.fs.in
 # don't search PATH for a host gforth, forces the bootstrap path where the freshly built local engine uses the bundled kernl*.fi images through ./preforth.
 	@$(REINPLACE_CMD) -e 's|GFORTH="`cd / && which gforth 2>/dev/null`"|GFORTH=""|g' $(WRKSRC)/configure
 	@$(REINPLACE_CMD) -e 's|GFORTH="`cd / && which gforth 2>/dev/null`"|GFORTH=""|g' $(WRKSRC)/configure.in
+	@$(REINPLACE_CMD) \
+		-e '/doc\/gforth\.info\* .*doc\/vmgen\.info\*/s|.*|		@:|' \
+		-e '/INSTALL_INFO.*gforth\.info/s|.*|		@:|' \
+		-e '/INSTALL_INFO.*vmgen\.info/s|.*|		@:|' \
+		-e 's|$$(man1dir) $$(infodir) $$(libdir)|$$(man1dir) $$(libdir)|' \
+		$(WRKSRC)/Makefile.in
+
+pre-configure:
+	@cp $(PORTSDIR)/Tools/config.guess $(WRKSRC)/config.guess
+	@cp $(PORTSDIR)/Tools/config.sub $(WRKSRC)/config.sub
 
 post-install:
 	@$(RM) $(STAGEDIR)$(PREFIX)/bin/gforth
