@@ -27,12 +27,6 @@
 ./share/doc/clisp/doc/LISP-tutorial.txt
 ./share/doc/clisp/doc/CLOS-guide.txt
 ./share/doc/clisp/doc
-./share/doc/clisp/clisp.ps
-./share/doc/clisp/clisp.pdf
-./share/doc/clisp/clisp.html
-./share/doc/clisp/clisp-link.ps
-./share/doc/clisp/clisp-link.pdf
-./share/doc/clisp/clisp-link.html
 ./share/doc/clisp/SUMMARY
 ./share/doc/clisp/README.es
 ./share/doc/clisp/README.de

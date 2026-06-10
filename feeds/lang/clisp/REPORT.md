@@ -117,23 +117,30 @@ The important uports-specific configure choices are:
 The port has a gettext switch:
 
 ```make
-CLISP_WITH_GETTEXT ?= no
+WITH_GETTEXT ?= no
 ```
 
-The default is `no`, which passes:
+On Darwin, the port forces:
+
+```make
+override WITH_GETTEXT = no
+```
+
+The default no-gettext mode passes:
 
 ```text
 --without-gettext
+--disable-nls
 ```
 
-To enable gettext:
+On non-Darwin hosts, gettext can be enabled with:
 
 ```sh
-make V=1 CLISP_WITH_GETTEXT=yes clisp.configure
-make V=1 CLISP_WITH_GETTEXT=yes clisp.build
+make V=1 WITH_GETTEXT=yes clisp.configure
+make V=1 WITH_GETTEXT=yes clisp.build
 ```
 
-When gettext is enabled, the port passes `--with-gettext`.
+When gettext is enabled on a non-Darwin host, the port passes `--with-gettext`.
 
 On non-Darwin hosts, the port also passes:
 
@@ -145,6 +152,24 @@ On non-Darwin hosts, the port also passes:
 gettext locale step hardlinks message catalogs through CLISP's internal
 `locale` target and can fail in this environment. Disabling gettext removes
 that locale target from the bootstrap dependency path.
+
+`--disable-nls` is also required for no-gettext builds on macOS. CLISP's
+`--without-gettext` adds `-DNO_GETTEXT` for CLISP's own message layer, but the
+bundled gnulib regex code still follows `ENABLE_NLS` and `HAVE_LIBINTL_H`. On
+Intel macOS with gettext headers in `/usr/local`, configure can set
+`ENABLE_NLS=1`; then `libgnu.a` references `_libintl_dgettext`, while the final
+`clisp-link add boot base ...` command does not add `-lintl` because gettext was
+disabled. The resulting link failure looks like:
+
+```text
+Undefined symbols for architecture x86_64:
+  "_libintl_dgettext", referenced from:
+      _rpl_re_compile_pattern in libgnu.a
+      _rpl_regerror in libgnu.a
+```
+
+Keeping `--disable-nls` with `--without-gettext` prevents gnulib from compiling
+those gettext calls and keeps the default package independent of host gettext.
 
 If gettext is enabled, the port patches CLISP's generated build `Makefile`.
 Upstream's build-time locale rule invokes:
@@ -173,6 +198,59 @@ instead of creating `local/compiler..`.
 `--ignore-absence-of-libsigsegv` is used because libsigsegv is recommended by
 upstream, but not currently required by this minimal uports package.
 
+The port also has a documentation switch:
+
+```make
+WITH_DOC ?= yes
+```
+
+The default `WITH_DOC=yes` leaves upstream documentation targets enabled and
+uses the normal `pkg-plist.*` manifests that include `share/doc/clisp`. On
+Linux, complete documentation output needs `groff` for PostScript files and
+`ps2pdf` from Ubuntu's `ghostscript` package for PDF files. If `ps2pdf` is
+installed after CLISP was already configured, rerun `clisp.configure` so the
+generated build `Makefile` records the PDF tool.
+
+CLISP's generated `Makefile` installs the short manuals twice when the full
+documentation tools are available: `install-man` writes `clisp.{html,pdf,ps}`
+and `clisp-link.{html,pdf,ps}` to `share/doc/clisp`, while `install-doc` writes
+the same generated files to `share/doc/clisp/doc`. The port removes the
+top-level copies in `post-install` and keeps the `doc/` copies so the Linux
+plist is deterministic across hosts with different documentation tool sets.
+
+To build a smaller runtime-focused package, set:
+
+```sh
+make V=1 WITH_DOC=no clisp.build
+make V=1 WITH_DOC=no clisp.install
+```
+
+With `WITH_DOC=no`, the package keeps the CLISP runtime, module link kit,
+editor support files, and manpages, but omits `share/doc/clisp`. In this mode
+the port patches CLISP's generated build `Makefile` after configure so:
+
+```text
+all
+```
+
+does not depend on the upstream `manual` target, and:
+
+```text
+install
+```
+
+runs `install-bin install-man` instead of `install-bin install-man install-doc`.
+The `install-man` target is also narrowed to the two installed manpage files, so
+it does not require HTML or PostScript documentation as build prerequisites.
+As a fallback for reused work trees that were configured before this switch was
+added, `post-install` also removes `share/doc/clisp` when `WITH_DOC=no`.
+
+The no-doc package manifest is selected with:
+
+```make
+PLIST_NAME = pkg-plist-nodoc
+```
+
 ### Current Dependencies
 
 The port declares:
@@ -180,11 +258,150 @@ The port declares:
 ```text
 devel/libffcall
 devel/readline
+devel/ncurses       # when readline is enabled
 converters/libiconv    # non-Darwin only
 ```
 
 `libffcall` provides dynamic FFI support. `readline` provides command-line
-editing. `libiconv` is needed for the current Linux/uports prefix setup.
+editing. `ncurses` is listed explicitly because the generated configure probes
+link and run against `libreadline`; on Darwin, `libreadline.8.2.dylib` loads
+`@rpath/libncurses.6.dylib`, so missing ncurses makes probes such as
+`intparam.h` generation abort at runtime. `libiconv` is needed for the current
+Linux/uports prefix setup.
+
+### Optional Module Configuration
+
+CLISP does not have an SBCL-style contrib blocklist that automatically enables
+or disables installed modules from CPU feature probes. SBCL can decide whether
+to install contribs such as `sb-perf` or `sb-simd` from operating-system and
+processor checks. CLISP's comparable extension surface is instead the upstream
+external module system and is mostly controlled by configure arguments.
+
+The upstream build has this default base module set:
+
+```text
+i18n
+syscalls
+regexp
+```
+
+`readline` is special: it is added to the base linking set when readline support
+is enabled and found. Extra modules are only added when configure receives
+explicit module requests such as:
+
+```text
+--with-module=pcre
+--with-module=gdbm
+--with-module=clx/new-clx
+```
+
+In this CLISP 2.49.95 source tree there are 24 top-level directories under
+`modules`:
+
+```text
+asdf
+berkeley-db
+bindings
+clx
+dbus
+dirkey
+editor
+fastcgi
+gdbm
+gtk2
+i18n
+libsvm
+matlab
+netica
+oracle
+pari
+pcre
+postgresql
+queens
+rawsock
+readline
+regexp
+syscalls
+zlib
+```
+
+Counting beyond the base modules and `readline`, this leaves 20 extra module
+directories:
+
+```text
+asdf
+berkeley-db
+bindings
+clx
+dbus
+dirkey
+editor
+fastcgi
+gdbm
+gtk2
+libsvm
+matlab
+netica
+oracle
+pari
+pcre
+postgresql
+queens
+rawsock
+zlib
+```
+
+The configure-backed external module set is smaller. The source tree has 18
+module `configure` scripts:
+
+```text
+berkeley-db
+clx/new-clx
+dbus
+dirkey
+fastcgi
+gdbm
+gtk2
+i18n
+libsvm
+oracle
+pari
+pcre
+postgresql
+rawsock
+readline
+regexp
+syscalls
+zlib
+```
+
+After removing the base modules and `readline`, there are 14 configure-backed
+optional modules:
+
+```text
+berkeley-db
+clx/new-clx
+dbus
+dirkey
+fastcgi
+gdbm
+gtk2
+libsvm
+oracle
+pari
+pcre
+postgresql
+rawsock
+zlib
+```
+
+The current uports CLISP package enables none of those optional modules because
+the port does not pass any `--with-module=...` arguments. The installed module
+layout should therefore be stable across Linux and Darwin except for normal
+platform differences such as shared library handling, paths, and documentation
+tool availability. If optional modules are enabled later, expose them as
+explicit port flags, for example `WITH_GDBM`, `WITH_PCRE`, or `WITH_ZLIB`, and
+update dependencies and package manifests for the selected module set.
 
 ### gdbm Status
 
@@ -207,7 +424,114 @@ the configure arguments should include:
 --with-libgdbm-prefix=$(DESTDIR)$(PREFIX)
 ```
 
-## 3. Built Image Layout And Relationships
+## 3. Port Patches
+
+The CLISP port currently carries three source patches:
+
+```text
+files/0001-fix-logbitp-and-signature-decoding.patch
+files/0002-use-c-compatible-lisp-function-typedef.patch
+files/0003-disable-impnotes-network-check.patch
+```
+
+### Darwin `logbitp` And Compiler Signatures
+
+The Darwin/aarch64 build exposed a CLISP runtime/compiler bootstrap issue where
+the primitive `logbitp` returned the wrong answer for positive fixnums. One
+visible symptom was that compiled-function signature decoding lost `&key`
+metadata, so compiler macros for functions such as `set-difference` could abort
+with:
+
+```text
+(AND (= SYSTEM::OPT-NUM 0) (SYSTEM::MEMQ ':TEST SYSTEM::KEYWORDS)
+     (SYSTEM::MEMQ ':TEST-NOT SYSTEM::KEYWORDS)) must evaluate to a non-NIL value.
+```
+
+This is not a SLIME-specific failure. A standalone CLISP compile was enough to
+trigger it:
+
+```lisp
+(compile nil (lambda (a b) (set-difference a b)))
+```
+
+`0001-fix-logbitp-and-signature-decoding.patch` redefines `cl:logbitp` in the
+Lisp image using the bootstrap-safe `sys::%putd` function binder and working
+primitives:
+
+```lisp
+(logtest (ash 1 index) integer)
+```
+
+The same patch also makes the compiler's internal signature decoder use
+`logand`/`ash` directly for bytecode header flags. That keeps the decoder from
+depending on `logbitp` while the image is being bootstrapped.
+
+After this patch, CLISP was confirmed to work with Emacs SLIME. The original
+SLIME failure was reproduced as a standalone CLISP compiler failure, then
+verified fixed by compiling SLIME's `xref.lisp` and by running SLIME normally
+against the rebuilt installed CLISP.
+
+### ARM64 C Function Typedef
+
+The Linux/ARM64 build failed while compiling `spvw.o` with:
+
+```text
+../src/lispbibl.d:9327:37: error: ISO C requires a named argument before '...'
+  typedef Values (*lisp_function_t)(...);
+```
+
+That declaration uses an ellipsis-only prototype. Plain C does not accept this
+form because a variadic function prototype must have at least one named
+argument before `...`.
+
+`0002-use-c-compatible-lisp-function-typedef.patch` changes the typedef and the
+generated header emitter from:
+
+```c
+Values (*lisp_function_t)(...)
+```
+
+to:
+
+```c
+Values (*lisp_function_t)()
+```
+
+This keeps the old CLISP meaning of a C function pointer with unspecified
+arguments while avoiding the invalid ellipsis-only C syntax. After this patch,
+`make V=1 clisp.build` completed on the ARM64 machine, and the built image
+started successfully with:
+
+```sh
+feeds/lang/clisp/work.compiler/clisp-2.49.95/build/clisp \
+  -K full -q -x '(+ 1 2)'
+```
+
+Expected output:
+
+```text
+3
+```
+
+### Impnotes Network Check
+
+When CLISP is built from an SCM checkout, upstream `src/makemake.in` treats the
+presence of `.git` as a developer build and tries to fetch:
+
+```text
+http://www.gnu.org/software/clisp/impnotes/id-href.map
+```
+
+That fetch is only a freshness check for the upstream implementation notes map;
+it is not a normal package fetch input. In this uports environment it also goes
+through the host `/usr/local/sbin/wget` buildinfo wrapper, which can fail before
+CLISP's own fallback logic completes.
+
+`0003-disable-impnotes-network-check.patch` disables that developer-only
+network check so `WITH_DOC=yes` builds are reproducible from the checked-out
+source tree and bundled documentation files.
+
+## 4. Built Image Layout And Relationships
 
 The current staged package installs the user-facing commands:
 
@@ -333,43 +657,7 @@ codesign --force --sign - \
   $(STAGEDIR)$(PREFIX)/lib/clisp-2.49.95+/base/lisp.run
 ```
 
-### Darwin `logbitp` And Compiler Signatures
-
-The Darwin/aarch64 build exposed a CLISP runtime/compiler bootstrap issue where
-the primitive `logbitp` returned the wrong answer for positive fixnums. One
-visible symptom was that compiled-function signature decoding lost `&key`
-metadata, so compiler macros for functions such as `set-difference` could abort
-with:
-
-```text
-(AND (= SYSTEM::OPT-NUM 0) (SYSTEM::MEMQ ':TEST SYSTEM::KEYWORDS)
-     (SYSTEM::MEMQ ':TEST-NOT SYSTEM::KEYWORDS)) must evaluate to a non-NIL value.
-```
-
-This is not a SLIME-specific failure. A standalone CLISP compile was enough to
-trigger it:
-
-```lisp
-(compile nil (lambda (a b) (set-difference a b)))
-```
-
-The port carries a source patch that redefines `cl:logbitp` in the Lisp image
-using the bootstrap-safe `sys::%putd` function binder and working primitives:
-
-```lisp
-(logtest (ash 1 index) integer)
-```
-
-The same patch also makes the compiler's internal signature decoder use
-`logand`/`ash` directly for bytecode header flags. That keeps the decoder from
-depending on `logbitp` while the image is being bootstrapped.
-
-After this patch, CLISP was confirmed to work with Emacs SLIME. The original
-SLIME failure was reproduced as a standalone CLISP compiler failure, then
-verified fixed by compiling SLIME's `xref.lisp` and by running SLIME normally
-against the rebuilt installed CLISP.
-
-## 4. How To Test The Built Image
+## 5. How To Test The Built Image
 
 ### Test Inside Source Tree After Build
 
@@ -536,7 +824,7 @@ Also check that the installed binary can load the base image and modules:
 
 This should print the CLISP version and exit successfully.
 
-## 5. Installing Outside `/usr`
+## 6. Installing Outside `/usr`
 
 CLISP is prefix-sensitive. Do not build with `PREFIX=/usr` and then move the
 installed tree to `/usr/local`. The installed launcher embeds the CLISP library
@@ -611,6 +899,11 @@ The Makefile has a `post-install` cleanup for this. It rewrites staged
 `base/makevars` and length-preserving strings in `base/lisp.run` so package
 runtime paths refer to `$(PREFIX)/include` and `$(PREFIX)/lib`, not
 `$(DESTDIR)$(PREFIX)/include` or `$(DESTDIR)$(PREFIX)/lib`.
+
+The `lisp.run` rewrite intentionally avoids Perl. The port uses a small Bash
+helper that finds exact byte offsets with `grep -aboF`, then writes the shorter
+runtime path plus NUL padding with `dd conv=notrunc`. This preserves the binary
+size and only changes the embedded path strings.
 
 When testing the staged tree on a host where the uports libraries are not
 actually installed in `/usr/lib`, use `LD_LIBRARY_PATH` only for the local test:

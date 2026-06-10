@@ -7,7 +7,7 @@ DISTVERSION 		= 2.49.95
 CATEGORIES 		= lang
 MASTER_SITES		= https://anduin.linuxfromscratch.org/BLFS/clisp/
 
-#USE_SCM			?= git
+USE_SCM			?= git
 ifeq ($(USE_SCM),git)
 SCM_PROTOCOL		= https://
 MASTER_SITES		= gitlab.com/
@@ -24,11 +24,21 @@ LICENSE_FILE		= $(WRKSRC)/GNU-GPL
 
 WITH_READLINE		?= yes
 WITH_GETTEXT		?= no
+WITH_DOCUMENT		?= yes
+
+ifeq ($(shell uname -s),Darwin)
+override WITH_GETTEXT	= no
+endif
+
+ifeq ($(WITH_DOCUMENT),no)
+PLIST_NAME		= pkg-plist-nodoc
+endif
 
 LIB_DEPENDS		= libavcall.so:devel/libffcall			\
 			  libcallback.so:devel/libffcall
 ifeq ($(WITH_READLINE),yes)
-LIB_DEPENDS		+= libreadline.so:devel/readline
+LIB_DEPENDS		+= libreadline.so:devel/readline			\
+			   libncurses.so.6:devel/ncurses
 endif
 ifneq ($(shell uname -s),Darwin)
 LIB_DEPENDS		+= libiconv.so:converters/libiconv
@@ -61,7 +71,8 @@ endif
 ifeq ($(WITH_GETTEXT),yes)
 CONFIGURE_ARGS		+= --with-gettext
 else
-CONFIGURE_ARGS		+= --without-gettext
+CONFIGURE_ARGS		+= --without-gettext				\
+			   --disable-nls
 endif
 ifneq ($(shell uname -s),Darwin)
 CONFIGURE_ARGS		+= --with-libiconv-prefix=$(DESTDIR)$(PREFIX)
@@ -88,11 +99,30 @@ ifeq ($(WITH_GETTEXT),yes)
 	@$(SED) -i.bak -e "/cd po &&/s|INSTALL_DATA=|DESTDIR= INSTALL_DATA=|" \
 	    $(CLISP_BUILDDIR)/Makefile
 endif
+ifeq ($(WITH_DOCUMENT),no)
+	@$(SED) -i.bak							\
+	    -e 's|^\(all : .*\) manual \(.*\)|\1 \2|'			\
+	    -e 's|^install : install-bin install-man install-doc|install : install-bin install-man|' \
+	    -e 's|^install-man : .* force|install-man : clisp.1 clisp-link.1 force|' \
+	    $(CLISP_BUILDDIR)/Makefile
+endif
 
 pre-install:
 	@mkdir -p $(STAGEDIR)$(PREFIX)
 
 post-install:
+ifeq ($(WITH_DOCUMENT),no)
+	@$(RM) -r $(STAGEDIR)$(PREFIX)/share/doc/$(PORTNAME)
+	@rmdir $(STAGEDIR)$(PREFIX)/share/doc 2>/dev/null || :
+else
+	@$(RM)							\
+	    $(STAGEDIR)$(PREFIX)/share/doc/$(PORTNAME)/clisp.html	\
+	    $(STAGEDIR)$(PREFIX)/share/doc/$(PORTNAME)/clisp.pdf	\
+	    $(STAGEDIR)$(PREFIX)/share/doc/$(PORTNAME)/clisp.ps		\
+	    $(STAGEDIR)$(PREFIX)/share/doc/$(PORTNAME)/clisp-link.html	\
+	    $(STAGEDIR)$(PREFIX)/share/doc/$(PORTNAME)/clisp-link.pdf	\
+	    $(STAGEDIR)$(PREFIX)/share/doc/$(PORTNAME)/clisp-link.ps
+endif
 	@$(SED) -i.bak							\
 	    -e 's| -I$(WRKSRC)/src/gllib||g'				\
 	    -e 's| -I$(CLISP_BUILDDIR)/gllib||g'			\
@@ -100,10 +130,24 @@ post-install:
 	    -e 's|$(CLISP_BUILD_PREFIX)|$(PREFIX)|g'			\
 	    $(STAGEDIR)$(CLISP_LIBDIR)/base/makevars
 	@$(RM) $(STAGEDIR)$(CLISP_LIBDIR)/base/makevars.bak
-	@perl -0777pi -e 'BEGIN { $$from=q{$(CLISP_BUILD_INCLUDEPATH)}; $$to=q{$(CLISP_RUNTIME_INCLUDEPATH)}; die "replacement too long\n" if length($$to) > length($$from); } s/\Q$$from\E/$$to . ("\0" x (length($$from) - length($$to)))/ge' \
-	    $(STAGEDIR)$(CLISP_LIBDIR)/base/lisp.run
-	@perl -0777pi -e 'BEGIN { $$from=q{$(CLISP_BUILD_LIBPATH)}; $$to=q{$(CLISP_RUNTIME_LIBPATH)}; die "replacement too long\n" if length($$to) > length($$from); } s/\Q$$from\E/$$to . ("\0" x (length($$from) - length($$to)))/ge' \
-	    $(STAGEDIR)$(CLISP_LIBDIR)/base/lisp.run
+	@bash -ec '\
+	    rewrite_path() {						\
+	        file=$$1; from=$$2; to=$$3;				\
+	        from_len=$${#from}; to_len=$${#to};			\
+	        if [ $$to_len -gt $$from_len ]; then			\
+	            echo "replacement too long: $$to > $$from" >&2;	\
+	            exit 1;						\
+	        fi;							\
+	        pad=$$((from_len - to_len));				\
+	        grep -aboF "$$from" "$$file" | while IFS=: read -r off _; do \
+	            { printf "%s" "$$to"; head -c "$$pad" /dev/zero; } \
+	                | dd of="$$file" bs=1 seek="$$off" conv=notrunc 2>/dev/null; \
+	        done;							\
+	    };								\
+	    rewrite_path "$(STAGEDIR)$(CLISP_LIBDIR)/base/lisp.run"	\
+	        "$(CLISP_BUILD_INCLUDEPATH)" "$(CLISP_RUNTIME_INCLUDEPATH)"; \
+	    rewrite_path "$(STAGEDIR)$(CLISP_LIBDIR)/base/lisp.run"	\
+	        "$(CLISP_BUILD_LIBPATH)" "$(CLISP_RUNTIME_LIBPATH)"'
 
 post-stage:
 ifeq ($(OPSYS),darwin)
