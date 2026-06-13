@@ -33,17 +33,43 @@ else
 CONFIGURE_SCRIPT	= configure
 endif
 CONFIGURE_ENV		+= CPPFLAGS=-fexceptions
+
+# GMP 6.3.0 x86_64 assembly is not package-safe for shared Darwin builds in
+# this tree: the release libtool path links but mpn tests segfault, and the
+# autoreconf/PIC path still fails the dylib link on RIP-relative addressing.
+# Set GMP_ASM=safe or GMP_ASM=native only for local experiments.
 ifeq ($(shell uname -s),Darwin)
+GMP_DARWIN_MAJOR	:= $(shell uname -r | sed 's/\..*//')
 ifeq ($(shell uname -m),arm64)
+GMP_ASM			?= safe
+GMP_DARWIN_CPU		?= aarch64
+else
+GMP_ASM			?= off
+GMP_DARWIN_CPU		?= x86_64
+endif
+else
+GMP_ASM			?= safe
+endif
+ifeq ($(shell uname -s),Darwin)
+ifneq ($(GMP_ASM),off)
+USES			+= autoreconf
+GMP_LOCALBASE_TOOLS	= $(abspath $(CURDIR)/../../..)/local$(LOCALBASE)/bin
+AUTORECONF		?= env PATH=$(GMP_LOCALBASE_TOOLS):$$PATH autoreconf
+endif
+ifeq ($(GMP_ASM),off)
 CONFIGURE_ARGS		+= --disable-assembly
+else ifeq ($(GMP_ASM),safe)
+CONFIGURE_ARGS		+= --build=$(GMP_DARWIN_CPU)-apple-darwin$(GMP_DARWIN_MAJOR) \
+			   ABI=64
 endif
 endif
 CONFIGURE_ARGS		+= --enable-cxx					\
+			   --with-pic					\
 			   --with-gnu-ld
 
-WITH_DOC		?= no
+WITH_DOCUMENT		?= no
 
-ifneq ($(WITH_DOC),yes)
+ifneq ($(WITH_DOCUMENT),yes)
 override_targets	+= post-configure
 
 post-configure:
