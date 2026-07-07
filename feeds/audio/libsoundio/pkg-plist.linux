@@ -1,0 +1,11 @@
+./lib/pkgconfig/libsoundio.pc
+./lib/pkgconfig
+./lib/libsoundio.so.2.0.0
+./lib/libsoundio.so.2
+./lib/libsoundio.a
+./lib/libsoundio.so
+./lib
+./include/soundio/endian.h
+./include/soundio/soundio.h
+./include/soundio
+./include

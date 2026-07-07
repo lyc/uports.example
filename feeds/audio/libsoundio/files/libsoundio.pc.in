@@ -1,0 +1,13 @@
+prefix=%PREFIX%
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: libsoundio
+Description: Cross-platform real-time audio input and output library
+Version: %VERSION%
+
+Requires:
+Libs: -L${libdir} -lsoundio
+Cflags: -I${includedir}
