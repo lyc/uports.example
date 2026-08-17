@@ -13,7 +13,7 @@ WRKSRC			= $(WRKDIR)/$(PORTNAME)-$(DISTVERSION)
 USE_SCM			?= git
 ifeq ($(USE_SCM),git)
 SCM_TIMEOUT		?= 60s
-SCM_PROTOCOL		= git://
+SCM_PROTOCOL		= https://
 MASTER_SITES		= git.code.sf.net/p/
 MASTER_SITE_SUBDIR	= sbcl
 SCM_DEST		= $(PORTNAME)
@@ -34,7 +34,6 @@ LIB_DEPENDS		= libgmp.so:math/gmp				\
 ifeq ($(WITH_SBCL_BOOTSTRAP),yes)
 BUILD_DEPENDS		+= sbcl-bootstrap>=0:lang/sbcl-bootstrap
 endif
-RUN_DEPENDS		= cl-freebsd-asdf-init>=0:devel/cl-freebsd-asdf-init
 
 USES			= tar:bzip2
 
