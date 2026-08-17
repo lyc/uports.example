@@ -11,7 +11,7 @@ diff --git a/configure b/configure
 index d93080d4..1e4adaa4 100755
 --- a/configure
 +++ b/configure
-@@ -907,8 +907,7 @@ if [ "$addflags" = "yes" ] ; then
+@@ -907,7 +907,7 @@ if [ "$addflags" = "yes" ] ; then
 
    case "${flagsm}" in
      *le|*gnu)
