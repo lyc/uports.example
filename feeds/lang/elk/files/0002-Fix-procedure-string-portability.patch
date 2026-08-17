@@ -1,0 +1,45 @@
+From dd761357480bcff46c2654b0b322ced39cba497a Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Wed, 26 Aug 2026 18:52:33 +0800
+Subject: [PATCH 2/3] Fix procedure string portability
+
+Include the declaration of strlen explicitly.  Also print procedure pointers
+with the standard %p conversion instead of passing a pointer to %lu, which is
+undefined behavior and is diagnosed by current Clang on 64-bit targets.
+---
+ src/proc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/proc.c b/src/proc.c
+index c78134a..83507df 100644
+--- a/src/proc.c
++++ b/src/proc.c
+@@ -30,6 +30,7 @@
+  */
+ 
+ #include "config.h"
++#include <string.h>
+ 
+ #include "kernel.h"
+ 
+@@ -113,7 +114,7 @@ Object P_Compound_To_String (Object x) {
+     Check_Type (x, T_Compound);
+     if (Nullp (COMPOUND(x)->name)) {
+         static char buf[64];
+-        sprintf (buf, "#<compound %lu>", POINTER(x));
++        snprintf (buf, sizeof buf, "#<compound %p>", POINTER(x));
+         return Make_String (buf, strlen(buf));
+     }
+     return COMPOUND(x)->name;
+@@ -127,7 +128,7 @@ Object P_Macro_To_String (Object x) {
+     Check_Type (x, T_Macro);
+     if (Nullp (MACRO(x)->name)) {
+         static char buf[64];
+-        sprintf (buf, "#<macro %lu>", POINTER(x));
++        snprintf (buf, sizeof buf, "#<macro %p>", POINTER(x));
+         return Make_String (buf, strlen(buf));
+     }
+     return MACRO(x)->name;
+-- 
+2.47.3
+

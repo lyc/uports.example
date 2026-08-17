@@ -1,0 +1,29 @@
+From 465ba21e829d516a229128a1e2556a82a4679248 Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Wed, 26 Aug 2026 19:11:51 +0800
+Subject: [PATCH 3/3] Expose wait3 and  wait4 declarations on Darwin
+
+Defining _POSIX_SOURCE hides Darwin's wait3 and wait4 declarations, although
+configure detects both functions and enables their call sites.  Request the
+Darwin extension namespace instead so the declarations match the configured
+features.
+---
+ lib/unix/wait.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/unix/wait.c b/lib/unix/wait.c
+index 1ddf60e..ea0da02 100644
+--- a/lib/unix/wait.c
++++ b/lib/unix/wait.c
+@@ -29,7 +29,7 @@
+  */
+ 
+ #ifdef __MACH__
+-#  define _POSIX_SOURCE
++#  define _DARWIN_C_SOURCE
+ #endif
+ 
+ #include "unix.h"
+-- 
+2.47.3
+

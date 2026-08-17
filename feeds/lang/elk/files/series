@@ -1,0 +1,3 @@
+0001-Fix-in-tree-libelk-dependency-with-modern-Automake.patch
+0002-Fix-procedure-string-portability.patch
+0003-Expose-wait3-and-wait4-declarations-on-Darwin.patch
