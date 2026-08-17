@@ -1,0 +1,58 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Fri, 24 Jul 2026 00:00:00 +0800
+Subject: [PATCH] Use portable fixed-width integer formats
+
+uint64_t and int64_t are not necessarily typedefs of unsigned long and long.
+Use the C99 format macros so current Clang does not diagnose mismatched
+variadic arguments and the generated integer text remains portable.
+---
+ chibicc.h | 1 +
+ codegen.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/chibicc.h b/chibicc.h
+--- a/chibicc.h
++++ b/chibicc.h
+@@ -4,6 +4,7 @@
+ #include <ctype.h>
+ #include <errno.h>
+ #include <glob.h>
++#include <inttypes.h>
+ #include <libgen.h>
+ #include <stdarg.h>
+ #include <stdbool.h>
+diff --git a/codegen.c b/codegen.c
+--- a/codegen.c
++++ b/codegen.c
+@@ -705,7 +705,7 @@ static void gen_expr(Node *node) {
+     }
+     case TY_DOUBLE: {
+       union { double f64; uint64_t u64; } u = { node->fval };
+-      println("  mov $%lu, %%rax  # double %Lf", u.u64, node->fval);
++      println("  mov $%" PRIu64 ", %%rax  # double %Lf", u.u64, node->fval);
+       println("  movq %%rax, %%xmm0");
+       return;
+     }
+@@ -713,16 +713,16 @@ static void gen_expr(Node *node) {
+       union { long double f80; uint64_t u64[2]; } u;
+       memset(&u, 0, sizeof(u));
+       u.f80 = node->fval;
+-      println("  mov $%lu, %%rax  # long double %Lf", u.u64[0], node->fval);
++      println("  mov $%" PRIu64 ", %%rax  # long double %Lf", u.u64[0], node->fval);
+       println("  mov %%rax, -16(%%rsp)");
+-      println("  mov $%lu, %%rax", u.u64[1]);
++      println("  mov $%" PRIu64 ", %%rax", u.u64[1]);
+       println("  mov %%rax, -8(%%rsp)");
+       println("  fldt -16(%%rsp)");
+       return;
+     }
+     }
+ 
+-    println("  mov $%ld, %%rax", node->val);
++    println("  mov $%" PRId64 ", %%rax", node->val);
+     return;
+   }
+   case ND_NEG:
+-- 
+2.50.1
