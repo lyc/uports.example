@@ -1,0 +1,43 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: uports <uports@example.invalid>
+Date: Fri, 24 Jul 2026 23:20:00 +0800
+Subject: [PATCH] make bcheck debug directory reproducible
+
+The -bt compilation of bcheck.o records getcwd() as its DWARF compilation
+directory.  Allow that one build rule to select a stable directory while
+retaining bcheck's own symbols and source-level backtraces.
+---
+ lib/Makefile | 1 +
+ tccdbg.c     | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/lib/Makefile b/lib/Makefile
+index 0d6004d..6d2a9a0 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -95,6 +95,7 @@ $(TOP)/%.o : %.c $(TCC)
+ 	$S$(XCC) -c $< -o $@ $(XFLAGS)
+ 
+ $(TOP)/bcheck.o : XFLAGS += $(BFLAGS)
++$(TOP)/bcheck.o : XCC = TCC_DEBUG_COMP_DIR=. $(XTCC)
+ 
+ $(X)crt1w.o : crt1.c
+ $(X)wincrt1w.o : wincrt1.c
+diff --git a/tccdbg.c b/tccdbg.c
+index b988e14..ac991b0 100644
+--- a/tccdbg.c
++++ b/tccdbg.c
+@@ -1132,7 +1132,10 @@ ST_FUNC void tcc_debug_start(TCCState *s1)
+         n_debug_forw_hash_global = 0;
+         n_debug_forw_hash_local = 0;
+ 
+-        getcwd(buf, sizeof(buf));
++        if (getenv("TCC_DEBUG_COMP_DIR"))
++            pstrcpy(buf, sizeof(buf), getenv("TCC_DEBUG_COMP_DIR"));
++        else
++            getcwd(buf, sizeof(buf));
+ #ifdef _WIN32
+         normalize_slashes(buf);
+ #endif
+-- 
+2.50.1
