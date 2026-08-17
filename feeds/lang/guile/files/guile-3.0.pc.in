@@ -1,0 +1,24 @@
+prefix=${pcfiledir}/../..
+exec_prefix=${prefix}
+bindir=${exec_prefix}/bin
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+datarootdir=${prefix}/share
+datadir=${datarootdir}
+pkgdatadir=${datadir}/guile
+pkgincludedir=${includedir}/guile
+
+sitedir=${pkgdatadir}/site/3.0
+extensiondir=${libdir}/guile/3.0/extensions
+siteccachedir=${libdir}/guile/3.0/site-ccache
+libguileinterface=8:0:7
+
+guild=${bindir}/guild
+guile=${bindir}/guile
+
+Name: GNU Guile
+Description: GNU's Ubiquitous Intelligent Language for Extension
+Version: %VERSION%
+Libs: -L${libdir} -lguile-3.0 -lgc -lpthread
+Libs.private: -lgmp -lffi -lunistring -liconv
+Cflags: -I${pkgincludedir}/3.0 -I${includedir} -D_THREAD_SAFE
