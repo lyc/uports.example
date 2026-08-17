@@ -1,0 +1,11 @@
+prefix=%PREFIX%
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libunistring
+Description: Unicode string library
+Version: %VERSION%
+Requires.private: libiconv
+Libs: -L${libdir} -lunistring
+Cflags: -I${includedir}
