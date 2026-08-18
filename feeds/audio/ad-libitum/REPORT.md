@@ -26,8 +26,7 @@ inside this package:
 chez-soundio
 chez-sockets
 chez-portmidi
-srfi
-violet
+org-html-themes
 ```
 
 This is suitable for first bring-up. If these Chez libraries become useful to
@@ -41,8 +40,12 @@ that PortMidi is needed only when using a MIDI controller. Add an
 
 ## Build Notes
 
-The port builds the helper dynamic libraries through per-FFI Makefiles copied
-into the upstream FFI subdirectories during `post-patch`:
+The port declares all upstream Git submodules through `SCM_SUBMODULES`.
+Portable source changes for `chez-soundio` and `chez-sockets` are maintained as
+V2 `git format-patch` series under `files/submodules/`; the framework prepares
+the exact gitlinks and applies those series before `post-patch`.
+
+The patched per-FFI Makefiles build:
 
 ```text
 port overlay Makefile for chez-soundio -> $(WRKSRC)/chez-soundio/Makefile
@@ -61,8 +64,8 @@ chez-sockets/Makefile:
 ```
 
 This keeps FFI-specific build rules next to each FFI binding while keeping the
-installed package binary-runtime only. The copied Makefiles are removed from the
-staged install.
+installed package binary-runtime only. The patched Makefiles are removed from
+the staged install.
 
 `SCHEMEH` defaults to the installed Chez Scheme `scheme.h` directory found
 under `$(DESTDIR)$(PREFIX)/lib/csv*/`. If auto-detection fails, pass:

@@ -1,0 +1,47 @@
+From 1670e69eb15ff7d516095a4d55e2d68ab154c899 Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Tue, 18 Aug 2026 20:01:56 +0800
+Subject: [PATCH] audio/chez-sockets: add portable shared-library build
+
+---
+ Makefile | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index ef0b01e..8ffee2f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,15 +1,20 @@
+-SCHEMEH=/usr/local/lib/csv9.5.1/ta6osx
++CC ?= cc
++CFLAGS ?=
++LDFLAGS ?=
++SCHEMEH ?=
++SHARED_FLAGS ?= -shared -fPIC
+ 
+-.SUFFIXES: .c .so
++SOCKET_LIBS = ../sockets-stub.so ../socket-ffi-values.so
+ 
+-all: sockets libs
++all: $(SOCKET_LIBS)
+ 
+-libs: sockets-stub.so socket-ffi-values.so
++../sockets-stub.so: sockets-stub.c
++	$(CC) -O3 $(SHARED_FLAGS) -I$(SCHEMEH) $(CFLAGS) $(LDFLAGS) -o $@ $<
+ 
+-sockets: sockets.w
+-	cheztangle sockets.w
+-	chezweave sockets.w
+-	pdftex sockets
++../socket-ffi-values.so: socket-ffi-values.c
++	$(CC) -O3 $(SHARED_FLAGS) -I$(SCHEMEH) $(CFLAGS) $(LDFLAGS) -o $@ $<
+ 
+-.c.so:
+-	cc -O3 -dynamiclib -Wl,-undefined -Wl,dynamic_lookup -I${SCHEMEH} -o $@ $<
++clean:
++	rm -f $(SOCKET_LIBS)
++
++.PHONY: all clean
+-- 
+2.47.3
+

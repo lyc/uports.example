@@ -13,6 +13,8 @@ MASTER_SITE_SUBDIR	= ul
 SCM_DEST		= $(PORTNAME)-$(DISTVERSION)
 SCM_DETACH		= b3cc6cf59deeac553bf070f26313353f1c0baec2
 WRKSRC			= $(WRKDIR)/$(SCM_DEST)
+SCM_SUBMODULES		= chez-soundio chez-sockets chez-portmidi \
+			  org-html-themes
 
 MAINTAINER		= yowching.lee@gmail.com
 COMMENT			= Scheme live coding environment built on Chez Scheme
@@ -24,6 +26,7 @@ RUN_DEPENDS		= scheme:lang/chezscheme
 LIB_DEPENDS		= libsoundio:audio/libsoundio
 
 USE_PATCH		= V1
+SUBMODULE_PATCH_METHOD	= V2
 
 NO_BUILD		=
 ALL_TARGET		=
@@ -50,19 +53,10 @@ ADLIBDIR		= $(PREFIX)/share/ad-libitum
 ADLIB_REMOTE_REPL	?= yes
 
 post-patch:
-	@cd $(WRKSRC);							\
-	git submodule init;						\
-	git submodule update
 ifeq ($(ADLIB_REMOTE_REPL),yes)
 	@cp -p $(MASTERDIR)/files/repl.ss $(WRKSRC)/ad-libitum/repl.ss
 endif
 	@cp -p $(MASTERDIR)/files/sound.ss $(WRKSRC)/ad-libitum/sound.ss
-	@cp -p $(MASTERDIR)/files/soundio.ss $(WRKSRC)/chez-soundio/soundio.ss
-	@cp -p $(MASTERDIR)/files/bridge.c $(WRKSRC)/chez-soundio/bridge.c
-	@cp -p $(MASTERDIR)/files/chez-soundio.Makefile		\
-	    $(WRKSRC)/chez-soundio/Makefile
-	@cp -p $(MASTERDIR)/files/chez-sockets.Makefile		\
-	    $(WRKSRC)/chez-sockets/Makefile
 
 do-build:
 	@if [ -z "$(SCHEMEH)" ]; then					\
