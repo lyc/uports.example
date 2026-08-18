@@ -1,0 +1,81 @@
+From 746350e81ebbd0b8196739bfa9f39bf330bbc6b8 Mon Sep 17 00:00:00 2001
+From: Max Lee <yowching.lee@gmail.com>
+Date: Tue, 18 Aug 2026 20:12:18 +0800
+Subject: [PATCH] audio/ad-libitum: improve sound runtime handling
+
+---
+ ad-libitum/sound.ss | 44 +++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 41 insertions(+), 3 deletions(-)
+
+diff --git a/ad-libitum/sound.ss b/ad-libitum/sound.ss
+index c652765..b83c4bc 100644
+--- a/ad-libitum/sound.ss
++++ b/ad-libitum/sound.ss
+@@ -1,5 +1,7 @@
+ (library (ad-libitum sound (1))
+-  (export start stop set-dsp! hush! *sample-rate* *channels* now)
++  (export start stop set-dsp! hush! *sample-rate* *channels* now
++          last-dsp-error clear-dsp-error! status native-status
++          reset-native-status! flush-events!)
+   (import (chezscheme) (prefix (soundio) soundio:))
+   ;; <sound>
+   (define *time* 0.0)
+@@ -7,17 +9,53 @@
+   
+   (define (silence time channel) 0.0)
+   (define *dsp* silence)
+-  (define (set-dsp! f) (set! *dsp* f))
++
++  (define *last-dsp-error* #f)
++  (define *dsp-error-reported?* #f)
++
++  (define (condition->string c)
++    (with-output-to-string
++      (lambda ()
++        (display-condition c))))
++
++  (define (last-dsp-error) *last-dsp-error*)
++
++  (define (clear-dsp-error!)
++    (set! *last-dsp-error* #f)
++    (set! *dsp-error-reported?* #f))
++
++  (define (set-dsp! f)
++    (clear-dsp-error!)
++    (set! *dsp* f))
++
+   (define (hush!) (set-dsp! silence))
+   
+   (define (write-callback time channel)
+     (set! *time* time)
+-    (guard (_ [else 0.0])
++    (guard (c
++            [else
++             (set! *last-dsp-error* (condition->string c))
++             (unless *dsp-error-reported?*
++               (set! *dsp-error-reported?* #t)
++               (fprintf (current-error-port)
++                        "ad-libitum DSP callback error at time=~s channel=~s:~%~a~%"
++                        time
++                        channel
++                        *last-dsp-error*))
++             0.0])
+       (*dsp* time channel)))
+   
+   (define *sound-out* (soundio:open-default-out-stream write-callback))
+   (define *sample-rate* (soundio:sample-rate *sound-out*))
+   (define *channels* (soundio:channel-count *sound-out*))
++
++  (define (status) (soundio:out-stream-status *sound-out*))
++
++  (define (native-status) (soundio:native-status))
++
++  (define (reset-native-status!) (soundio:reset-native-status!))
++
++  (define (flush-events!) (soundio:flush-events *sound-out*))
+   
+   (define (start) (soundio:start-out-stream *sound-out*))
+   (define (stop) (soundio:stop-out-stream *sound-out*))
+-- 
+2.47.3
+

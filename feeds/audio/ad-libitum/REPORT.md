@@ -45,6 +45,10 @@ Portable source changes for `chez-soundio` and `chez-sockets` are maintained as
 V2 `git format-patch` series under `files/submodules/`; the framework prepares
 the exact gitlinks and applies those series before `post-patch`.
 
+The main source tree also uses V2 patches. `series` contains the sound runtime
+change, while `series.remote` adds the remote REPL patch when
+`ADLIB_REMOTE_REPL=yes`.
+
 The patched per-FFI Makefiles build:
 
 ```text

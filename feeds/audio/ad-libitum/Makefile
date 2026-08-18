@@ -25,8 +25,12 @@ BUILD_DEPENDS		= scheme:lang/chezscheme
 RUN_DEPENDS		= scheme:lang/chezscheme
 LIB_DEPENDS		= libsoundio:audio/libsoundio
 
-USE_PATCH		= V1
-SUBMODULE_PATCH_METHOD	= V2
+USE_PATCH		= V2
+
+ADLIB_REMOTE_REPL	?= yes
+ifeq ($(ADLIB_REMOTE_REPL),yes)
+PATCHLIST_NAME		= series.remote
+endif
 
 NO_BUILD		=
 ALL_TARGET		=
@@ -40,7 +44,7 @@ MASTERDIR		= $(CURDIR)
 PORTSDIR		?= $(MASTERDIR)/../..
 include $(PORTSDIR)/Mk/linux.port.pre.mk
 
-override_targets	+= post-patch do-build do-install
+override_targets	+= do-build do-install
 
 ifeq ($(OPSYS),darwin)
 ADLIB_SHARED_FLAGS	= -dynamiclib -undefined dynamic_lookup
@@ -50,13 +54,6 @@ endif
 
 SCHEMEH			?= $(shell find $(DESTDIR)$(PREFIX)/lib -path '*/csv*/*/scheme.h' -print 2>/dev/null | head -1 | sed -e 's,/scheme.h$$,,')
 ADLIBDIR		= $(PREFIX)/share/ad-libitum
-ADLIB_REMOTE_REPL	?= yes
-
-post-patch:
-ifeq ($(ADLIB_REMOTE_REPL),yes)
-	@cp -p $(MASTERDIR)/files/repl.ss $(WRKSRC)/ad-libitum/repl.ss
-endif
-	@cp -p $(MASTERDIR)/files/sound.ss $(WRKSRC)/ad-libitum/sound.ss
 
 do-build:
 	@if [ -z "$(SCHEMEH)" ]; then					\
@@ -97,14 +94,6 @@ do-install:
 	for d in ad-libitum chez-soundio chez-sockets chez-portmidi srfi violet; do \
 	    [ -d "$$d" ] && cp -R "$$d" $(STAGEDIR)$(ADLIBDIR);		\
 	done
-ifeq ($(ADLIB_REMOTE_REPL),yes)
-	@cp -p $(MASTERDIR)/files/repl.ss				\
-	    $(STAGEDIR)$(ADLIBDIR)/ad-libitum/repl.ss
-endif
-	@cp -p $(MASTERDIR)/files/sound.ss				\
-	    $(STAGEDIR)$(ADLIBDIR)/ad-libitum/sound.ss
-	@cp -p $(MASTERDIR)/files/soundio.ss				\
-	    $(STAGEDIR)$(ADLIBDIR)/chez-soundio/soundio.ss
 	@find $(STAGEDIR)$(ADLIBDIR)					\
 	    \( -name .git -o -name .gitignore \) -exec rm -rf {} +
 	@rm -f							\
