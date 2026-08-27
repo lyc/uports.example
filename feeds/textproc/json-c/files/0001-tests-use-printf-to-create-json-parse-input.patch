@@ -1,0 +1,27 @@
+From c02a396b8772f24fd580391320656be347701554 Mon Sep 17 00:00:00 2001
+From: uPorts <uports@example.invalid>
+Date: Thu, 27 Aug 2026 00:00:00 +0800
+Subject: [PATCH] tests: use printf to create json_parse input
+
+POSIX does not require echo to recognize -n, and macOS /bin/sh prints it as
+part of the output.  Use printf so the test input is generated consistently.
+---
+ tests/test_json_parse_cli.test | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/test_json_parse_cli.test b/tests/test_json_parse_cli.test
+index f02dc0b..21470dd 100755
+--- a/tests/test_json_parse_cli.test
++++ b/tests/test_json_parse_cli.test
+@@ -10,7 +10,7 @@ fi
+ 
+ set -x -v
+ 
+-echo -n '"tenant=blue;note=CANARY_STACK_WINDOW_2026;status=ok"' > file1.dat
++printf '%s' '"tenant=blue;note=CANARY_STACK_WINDOW_2026;status=ok"' > file1.dat
+ (printf '"' ; printf 'A%.0s' $(seq 1 16) ; echo 'e2'  | xxd -r -p) > file2.dat
+ 
+ TESTNAME="${0##*/}"
+-- 
+2.39.5
+

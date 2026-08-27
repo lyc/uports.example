@@ -1,6 +1,6 @@
 ./lib/pkgconfig/json-c.pc
 ./lib/pkgconfig
-./lib/libjson-c.so.5.2.0
+./lib/libjson-c.so.5.5.0
 ./lib/libjson-c.so.5
 ./lib/libjson-c.so
 ./lib/libjson-c.a
@@ -17,6 +17,7 @@
 ./include/json-c/json_types.h
 ./include/json-c/json_tokener.h
 ./include/json-c/json_pointer.h
+./include/json-c/json_patch.h
 ./include/json-c/json_object_iterator.h
 ./include/json-c/json_object.h
 ./include/json-c/json_inttypes.h
