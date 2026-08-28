@@ -3,7 +3,7 @@
 # Whom:                 Max Lee <yowching.lee@gmail.com>
 
 PORTNAME		= expat
-DISTVERSION		= 2.5.0
+DISTVERSION		= 2.8.2
 CATEGORIES		= textproc
 MASTER_SITES		= https://github.com/lib$(PORTNAME)/lib$(PORTNAME)/releases/download/R_$(subst .,_,$(PORTVERSION))/
 
