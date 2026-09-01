@@ -1423,7 +1423,54 @@ Before adding wrappers to an existing type, add or update tests that copy into
 an already-linked destination and verify list linkage, owned data, borrowed
 reference behavior, metadata, and cleanup on failure.
 
-## 5. Maintenance Rules
+## 5. Optional Serialization Layer
+
+`value_codec.[ch]` is the framework's optional, backend-neutral serialization
+contract. It depends only on the value framework and the C runtime; it does not
+depend on XML, NETCONF, TPU, topology, or an application library.
+
+The layer provides versioned type and field descriptors, explicit scalar and
+owned-list access callbacks, a caller-provided bounded registry, serializer
+registration, immutable lookup after sealing, diagnostics, bounded encoded
+output, and generic `value_encode()`/`value_decode()` dispatch. Descriptors and
+serializer contexts are borrowed and must outlive the sealed registry.
+
+Registration and sealing are single-threaded. After a successful seal, lookup,
+encode, and decode are safe for concurrent callers when the registered
+serializer follows the same rule. A serializer call owns its temporary state
+and must not retain caller input or partially constructed output.
+
+Serialization never copies C object memory. Codec descriptors explicitly name
+fields and use access callbacks; intrusive hooks, pointers, borrowed views, and
+runtime `value_config` metadata are not wire data. Encode calls the descriptor's
+`validate(const void *)` callback and never casts away source constness. Decode
+constructs receiver-owned temporary state and calls `validate_decoded(void *)`
+when the descriptor supplies it, otherwise it uses the same const validator as
+encode. The optional decoded-object callback may canonicalize and accept the
+new receiver-owned value; it is never called for encode. Decode returns either
+a complete object or `NULL`, and failure never publishes a partial object.
+`VALUE_CODEC_BIND()` binds the common single-validator case;
+`VALUE_CODEC_BIND_EX()` additionally binds decoded-object finalization.
+`value_encoded_fini()` releases successful encoded output and is safe on empty
+output.
+
+Concrete formats remain outside the framework. The first application is the
+strict, versioned XML serializer in
+`tests/93-mplane-poc/t25_value_xml.[ch]`. This
+separation allows other formats without adding dependencies to `libutils` and
+keeps raw NETCONF XML distinct from normalized value-domain payloads.
+
+Descriptor `max_length` and `max_count` values are per-value/per-message wire
+safety limits, not global production inventory limits. The framework does not
+fix how many RUs, FHMs, interfaces, carriers, endpoints, links, or FIB entries
+an application may manage. Production applications should use dynamically
+allocated value collections within deployment-configured capacity, discovered
+device capability, transport limits, and available system resources. When a
+complete inventory cannot fit one encoded value, the application contract
+must define paging, partitioning, or streaming. Limits are checked explicitly;
+encoders and decoders never silently truncate collections.
+
+## 6. Maintenance Rules
 
 New framework changes must update this document when they alter:
 
