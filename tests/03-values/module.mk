@@ -15,6 +15,7 @@ names_app		:= t_value_list				\
 			   t_value_types			\
 			   t_value_macros			\
 			   t_value_filter_ref			\
+			   t_value_codec			\
 			   t_ru_value_model
 
 t_ru_value_model_srcs	:= t_ru_value_fixture.c t_ru_scenarios.c

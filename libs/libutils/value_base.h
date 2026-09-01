@@ -24,6 +24,8 @@
 #define VALUE_ERR_NOT_FOUND -6
 #define VALUE_ERR_STATE     -7
 #define VALUE_ERR_BOUNDS    -8
+#define VALUE_ERR_UNSUPPORTED -9
+#define VALUE_ERR_CODEC     -10
 
 enum value_compare_mode {
         VALUE_COMPARE_KEY = 0,
