@@ -71,10 +71,13 @@ include $(sitedir)/nonrecursive.mk
 # define your own targets...
 #
 
-env: $(addsuffix .install,pkg-config cmake)
+env: $(addsuffix .install,pkg-config cmake nijna meson)
+
+.PHONY: test
 test: debug
+
 clean:
 	@find . -type f -name \*~ -o -name .DS_Store | xargs rm -fr
-distclean: ports.distclean clean
+distclean: ports.distclean .WAIT clean
 	@rm -fr depend $(DESTDIR)
 	@rm -fr $(addprefix $(portdir)/,distfiles packages scm)
