@@ -41,6 +41,8 @@ void stack_free(struct stack *stack)
                 idx = indices - 1;            \
         } else if (indices < 0) {             \
                 idx = indices + s->index;     \
+        } else {			      \
+                idx = -1;		      \
         }
 
 static void slot_empty(struct stack *s, int idx)
@@ -187,8 +189,8 @@ void stack_settop(struct stack *s, int indices)
 
         /* index convert & range check */
         I2I(indices, idx);
-        if (idx < 0)
-                idx = 0;
+        if (idx < -1)
+                idx = -1;
         else if (idx >= s->size)
                 idx = s->size - 1;
 
@@ -203,7 +205,7 @@ void stack_settop(struct stack *s, int indices)
                         slot_copy_nil(s, i);
         } else if (idx < TOP) {
                 /* popping values */
-                for (i=TOP; i<idx; i--)
+                for (i=TOP; i>idx; i--)
                         slot_empty(s, i);
         }
 

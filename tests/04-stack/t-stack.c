@@ -9,7 +9,6 @@
 #define NOT_USED(a) (void)(a)
 #endif
 
-#include "values.h"
 #include "stack.h"
 
 /* -------------------------------------------------------------------------- */
@@ -51,24 +50,42 @@ void stack_dump(struct stack *s)
 #endif
 }
 
-#define RFORMAT "%38s:       "
-
-void _dump_v_cb(struct value *value, void *data)
+static void test_settop(void)
 {
-        (void)data;
+        struct stack *s = stack_new(4);
 
-        printf(RFORMAT, value->name);
-        printf("(%p)", value);
-        printf("\n");
-}
+        assert(s);
+        stack_pushunsigned(s, 10);
+        stack_pushunsigned(s, 20);
+        stack_pushunsigned(s, 30);
+        stack_settop(s, 1);
+        assert(stack_gettop(s) == 1);
+        assert(stack_tounsigned(s, 1) == 10);
+        assert(s->data[1].type == VT_NONE && s->data[1].value == 0);
+        assert(s->data[2].type == VT_NONE && s->data[2].value == 0);
+        stack_pushunsigned(s, 40);
+        assert(stack_tounsigned(s, -1) == 40);
 
-void *_push_cb(void *carry, struct value *value, void *data)
-{
-        struct stack *stack = (struct stack *)carry;
+        stack_settop(s, 0);
+        assert(stack_gettop(s) == 0);
+        stack_settop(s, 0);
+        stack_settop(s, 4);
+        assert(stack_gettop(s) == 4);
+        for (int i = 1; i <= 4; ++i)
+                assert(stack_type(s, i) == VT_NIL);
+        stack_settop(s, -2);
+        assert(stack_gettop(s) == 3);
+        stack_settop(s, -20);
+        assert(stack_gettop(s) == 0);
+        stack_pushunsigned(s, 50);
 
-        (void)data;
-        stack_pushinteger(stack, (ptrdiff_t)value);
-        return carry;
+        stack_pushvalue(s, 0);
+        stack_remove(s, 0);
+        stack_insert(s, 0);
+        stack_replace(s, 0);
+        assert(stack_gettop(s) == 1);
+        assert(stack_tounsigned(s, 1) == 50);
+        stack_free(s);
 }
 
 int main(int argc, char **argv)
@@ -80,6 +97,8 @@ int main(int argc, char **argv)
 
         NOT_USED(argc);
         NOT_USED(argv);
+
+        test_settop();
 
         ts = stack_new(SLOT_DEFAULT_SIZE);
         if (!ts)
@@ -121,28 +140,5 @@ int main(int argc, char **argv)
         printf("===> (%s,%d) p = %p(%s)\n",
                __func__, __LINE__, (char *)p, (char *)p);
         stack_free(ts);
-
-        printf("========================>\n");
-        LIST_HEAD(values);
-        add_value(new_value("pinapple"), VF_LAST, &values);
-        add_value(new_value("guava"), VF_LAST, &values);
-        add_value(new_value("apple"), VF_LAST, &values);
-        add_value(new_value("orange"), VF_LAST, &values);
-        add_value(new_value("banana"), VF_LAST, &values);
-        add_value(new_value("peach"), VF_LAST, &values);
-        foreach_value_list(_dump_v_cb, NULL, &values);
-        ts = stack_new(SLOT_DEFAULT_SIZE);
-        reduce_value_list(_push_cb, NULL, &values, ts);
-        stack_dump(ts);
-        while(stack_gettop(ts)) {
-                struct value *value = (struct value *)stack_tointeger(ts, 1);
-                printf(RFORMAT, value->name);
-                printf("\n");
-
-                stack_remove(ts, 1);
-        }
-        stack_free(ts);
-        free_value_list(NULL, NULL, &values);
-
         return 0;
 }
