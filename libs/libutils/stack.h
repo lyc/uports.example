@@ -58,7 +58,10 @@ unsigned int stack_tounsigned(struct stack *s, int indices);
 #endif
 
 int stack_gettop(struct stack *s); /* index of top element */
-/* sets the new top, popping values or pushing nils */
+/* Positive indices are one-based; negative indices count back from the top.
+ * Zero is invalid for element operations. stack_settop(s, 0) clears the stack.
+ * Sets the new top, popping values or pushing nils; clamps to available slots.
+ */
 void stack_settop(struct stack *s, int indices);
 /* pushes a copy of the value at indices */
 void stack_pushvalue(struct stack *s, int indices);
