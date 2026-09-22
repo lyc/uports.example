@@ -4,3 +4,7 @@ objd
 local
 TAGS
 feeds/*/*/work*
+AGENTS.md
+HANDOFF.md
+*/AGENTS.md
+*/HANDOFF.md
