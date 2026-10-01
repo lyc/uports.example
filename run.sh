@@ -42,7 +42,7 @@ do
         r)
             debug="";;
 	d)
-	    valgrind="valgrind --leak-check=full --show-leak-kinds=all";;
+	    valgrind="valgrind --fair-sched=yes --leak-check=full --show-leak-kinds=all";;
         s)
             eval sysrepo=$OPTARG;;
         C)
@@ -71,7 +71,18 @@ fi
 args=$*
 pwd=`pwd`
 DESTDIR=${pwd}/local
-ld_path=${DESTDIR}/usr/lib
+ld_paths=("${DESTDIR}/usr/lib" "${DESTDIR}/usr/local/lib")
+for dir in "${DESTDIR}"/*/usr/lib "${DESTDIR}"/*/usr/lib64 \
+           "${DESTDIR}"/*/usr/local/lib "${DESTDIR}"/*/usr/local/lib64
+do
+    if [ -d "${dir}" ]; then
+        ld_paths+=("${dir}")
+    fi
+done
+saved_ifs=${IFS}
+IFS=:
+ld_path="${ld_paths[*]}"
+IFS=${saved_ifs}
 opsys=`uname -s | tr '[:upper:]' '[:lower:]' | sed -e 's/darwin/osx/'`
 
 case $opsys in
@@ -101,8 +112,8 @@ fi
 fi
 
 if [ "$sysrepo" = "1" ]; then
-    export LIBYANG_EXTENSIONS_PLUGINS_DIR=${DESTDIR}/usr/lib/libyang/extensions
-    export LIBYANG_USER_TYPES_PLUGINS_DIR=${DESTDIR}/usr/lib/libyang/user_types
+    export LIBYANG_EXTENSIONS_PLUGINS_DIR=${DESTDIR}/${PREFIX}/lib/libyang/extensions
+    export LIBYANG_USER_TYPES_PLUGINS_DIR=${DESTDIR}/${PREFIX}/lib/libyang/user_types
 fi
 
 if [ "$verbose" = "yes" ]; then
@@ -131,34 +142,34 @@ fi
 #
 
 if [ "$plugin" = "yes" ]; then
-    export SRPD_PLUGINS_PATH=${DESTDIR}/usr/lib/sysrepo/plugins
+    export SRPD_PLUGINS_PATH=${DESTDIR}/${PREFIX}/lib/sysrepo/plugins
 
     ${DESTDIR}/usr/bin/sysrepoctl -l
-    mkdir -p ${DESTDIR}/usr/lib/sysrepo/plugins
-    rm -fr ${DESTDIR}/usr/lib/sysrepo/plugins/*
+    mkdir -p ${DESTDIR}/${PREFIX}/lib/sysrepo/plugins
+    rm -fr ${DESTDIR}/${PREFIX}/lib/sysrepo/plugins/*
 
     for p in $progs; do
         if [ -f ${bins}/lib${p}${debug}.so ]; then
             echo copying ${bins}/lib${p}${debug}.so...
-            cp -p ${bins}/lib${p}${debug}.so ${DESTDIR}/usr/lib/sysrepo/plugins
+            cp -p ${bins}/lib${p}${debug}.so ${DESTDIR}/${PREFIX}/lib/sysrepo/plugins
         fi
     done
     if [ "$verbose" = "yes" ]; then
-        echo "run: [env $ld_env=local/usr/lib:${bins} $valgrind ${DESTDIR}/usr/bin/sysrepo-plugind -d -v4]"
+        echo "run: [env $ld_env=${ld_path}:${libs} $valgrind ${DESTDIR}/usr/bin/sysrepo-plugind -d -v4]"
     fi
-    env ${ld_env}=${ld_path}:${libs} $valgrind ${DESTDIR}/usr/bin/sysrepo-plugind -d -v4
+    env ${ld_env}=${ld_path}:${libs} $valgrind ${DESTDIR}/${PREFIX}/bin/sysrepo-plugind -d -v4
     exit 0
 fi
 
 for p in $progs; do
     if [ -e ${bins}/${p}${debug} ]; then
         if [ "$verbose" = "yes" ]; then
-            echo "run: [env $ld_env=local/usr/lib:${bins} $valgrind ${bins}/${p}${debug} $args $config]"
+            echo "run: [env $ld_env=${ld_path}:${libs} $valgrind ${bins}/${p}${debug} $args $config]"
         fi
         env ${ld_env}=${ld_path}:${libs} $valgrind ${bins}/${p}${debug} $args $config
     elif [ -e ${p}${debug} ]; then
         if [ "$verbose" = "yes" ]; then
-            echo "run: [env $ld_env=local/usr/lib:${bins} $valgrind ${p}${debug} $args $config]"
+            echo "run: [env $ld_env=${ld_path}:${libs} $valgrind ${p}${debug} $args $config]"
         fi
         env ${ld_env}=${ld_path}:${libs} $valgrind ${p}${debug} $args $config
     else
