@@ -31,6 +31,10 @@ LICENSE_FILE		= $(WRKSRC)/COPYING
 LIB_DEPENDS		= libgmp.so:math/gmp				\
 			  libmpfr.so:math/mpfr
 
+# A source build requires a working Common Lisp implementation.  Prefer the
+# reproducible uports bootstrap unless the caller explicitly selects a host
+# implementation with WITH_SBCL_BOOTSTRAP=no and SBCL_XC_HOST.
+WITH_SBCL_BOOTSTRAP	?= yes
 ifeq ($(WITH_SBCL_BOOTSTRAP),yes)
 BUILD_DEPENDS		+= sbcl-bootstrap>=0:lang/sbcl-bootstrap
 endif
