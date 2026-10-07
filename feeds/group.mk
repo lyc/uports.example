@@ -8,6 +8,7 @@ ignore_lists		+=
 
 textproc_lists		= textproc/ezxml				\
 			  textproc/expat2				\
+			  textproc/mxml					\
 			  textproc/json-c				\
 			  textproc/libcsv				\
 			  converters/libiconv				\
