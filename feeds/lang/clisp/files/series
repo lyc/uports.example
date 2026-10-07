@@ -1,3 +1,3 @@
 0001-fix-logbitp-and-signature-decoding.patch
-0002-use-c-compatible-lisp-function-typedef.patch
+#0002-use-c-compatible-lisp-function-typedef.patch
 0003-disable-impnotes-network-check.patch
