@@ -52,6 +52,14 @@ If `PREFIX` is set, the port passes it to upstream make:
 MAKE_ENV += prefix=$(PREFIX)
 ```
 
+The upstream Intl suite compares locally constructed dates with fixed expected
+calendar strings.  The port therefore runs the build and `testall` under UTC
+so the result is independent of the build host timezone:
+
+```make
+MAKE_ENV += TZ=UTC
+```
+
 The port generates `quickjs.pc` from `files/quickjs.pc.in` in `post-patch` and
 installs it under `$(PREFIX)/lib/pkgconfig` in `post-install`.
 

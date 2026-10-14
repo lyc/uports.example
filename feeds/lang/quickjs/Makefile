@@ -33,6 +33,9 @@ USES			+= tar:xz
 ifneq ($(PREFIX),)
 MAKE_ENV		+= prefix=$(PREFIX)
 endif
+# Upstream Intl tests compare local Date values with fixed calendar strings.
+# Run them in UTC so their result does not depend on the build host timezone.
+MAKE_ENV		+= TZ=UTC
 ALL_TARGET		= testall
 
 #
