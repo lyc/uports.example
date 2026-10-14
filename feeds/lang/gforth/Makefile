@@ -70,8 +70,7 @@ LIB_DEPENDS		+= libavcall.so:devel/libffcall
 endif
 BUILD_DEPENDS		+= autoconf>=2.69:devel/autoconf		\
 			   automake>=1.16.1:devel/automake		\
-			   gforth-bootstrap>=0.7.3:lang/gforth-0.7.3	\
-			   libtool:devel/libtool
+			   gforth-bootstrap>=0.7.3:lang/gforth-0.7.3
 
 USES			= tar:xz libtool:build,keepla
 
