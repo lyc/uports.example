@@ -4,6 +4,7 @@
 
 PORTNAME		= clisp
 DISTVERSION 		= 2.49.95
+PORTREVISION		= 1
 CATEGORIES 		= lang
 MASTER_SITES		= https://anduin.linuxfromscratch.org/BLFS/clisp/
 
@@ -13,7 +14,8 @@ SCM_PROTOCOL		= https://
 MASTER_SITES		= gitlab.com/
 MASTER_SITE_SUBDIR	= gnu-clisp
 SCM_DEST		= $(DISTNAME)
-SCM_DETACH		= master
+# Upstream snapshot; update deliberately together with the port patch series.
+SCM_DETACH		= a6744e66c7691e7d6a329596771c9a2e2074dbfa
 endif
 
 MAINTAINER 		= yowching.lee@gmail.com
@@ -37,7 +39,7 @@ endif
 LIB_DEPENDS		= libavcall.so:devel/libffcall			\
 			  libcallback.so:devel/libffcall
 ifeq ($(WITH_READLINE),yes)
-LIB_DEPENDS		+= libreadline.so:devel/readline			\
+LIB_DEPENDS		+= libreadline.so:devel/readline		\
 			   libncurses.so.6:devel/ncurses
 endif
 ifneq ($(shell uname -s),Darwin)

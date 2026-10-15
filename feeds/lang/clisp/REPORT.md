@@ -64,13 +64,22 @@ So the host needs normal build tools and libraries, not a preinstalled CLISP.
 
 The uports port supports both source modes:
 
-- default SCM mode, using the upstream GitLab repository;
+- default SCM mode, using the upstream GitLab repository pinned to commit
+  `a6744e66c7691e7d6a329596771c9a2e2074dbfa`;
 - tarball mode, using the BLFS `clisp-2.49.95.tar.xz` source tarball.
 
 Upstream GNU/SourceForge still publishes the old stable `2.49` release tarball,
 and the GitLab project provides repository archives/tags. The port keeps
 `DISTVERSION=2.49.95` in both modes so `PKGNAME` includes a real
 upstream-derived version instead of the earlier `clisp-g` git package name.
+
+The port revision is 1, making the package name `clisp-2.49.95_1`. The SCM pin
+selects the upstream commit before uports patches are applied; it does not
+track the moving `master` branch. Update the pin together with patch review
+and build/runtime validation. Both active patches have been verified against
+this commit, but full build/install and runtime validation of this pinned
+revision remains pending. Tarball mode continues to select the BLFS release
+archive independently of the SCM pin.
 
 The expected distfile and package base are:
 

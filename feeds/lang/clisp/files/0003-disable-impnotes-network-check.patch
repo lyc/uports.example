@@ -11,14 +11,13 @@ diff --git a/src/makemake.in b/src/makemake.in
 index 333333333..444444444 100644
 --- a/src/makemake.in
 +++ b/src/makemake.in
-@@ -3511,7 +3511,7 @@ fi
- #MYIMPROOT=http://clisp.org/beta/impnotes/
- MYIMPROOT=http://www.gnu.org/software/clisp/impnotes/
- MYTESTURL=${MYIMPROOT}id-href.map
--if test -d "${SRCTOPDIR_}.git" \
-+if false \
-    && { if wget --version >/dev/null 2>/dev/null ; then \
+@@ -3193,6 +3193,6 @@
+-   && { if wget --version >/dev/null 2>/dev/null ; then \
++   && false && { if wget --version >/dev/null 2>/dev/null ; then \
            wget --execute netrc=off --tries=1 --timeout=10 -q ${MYTESTURL}; \
          elif lynx --version >/dev/null 2>/dev/null ; then \
+           lynx -connect_timeout=10 -source ${MYTESTURL} > id-href.map; \
+         elif curl --version >/dev/null 2>/dev/null ; then \
+           curl --max-time 10 --silent ${MYTESTURL} > id-href.map; \
 -- 
 2.47.1
