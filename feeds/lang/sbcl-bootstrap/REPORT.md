@@ -29,6 +29,13 @@ The older platform binaries are intentional: SBCL's download table does not
 publish the newest SBCL binary for every OS/CPU pair, and upstream documents
 using older binaries as bootstrap hosts for newer source builds.
 
+`distinfo` records Linux x86-64 and Darwin ARM64 archives. The Darwin ARM64
+entry was calculated from the upstream SourceForge binary archive on
+2026-10-26; its runtime/core and license paths match this recipe. Fetch and
+runtime acceptance on Darwin remain pending. The other platform selections
+still need archive checksum/size records before fetching; their presence in
+the selection table alone does not establish fetch or runtime validation.
+
 ## Installed Layout
 
 The package avoids colliding with the real `lang/sbcl` package by installing the
