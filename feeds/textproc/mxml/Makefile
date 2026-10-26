@@ -3,12 +3,11 @@
 # Whom:                 yowching.lee@gmail.com
 
 PORTNAME		= mxml
+DISTVERSIONPREFIX	= v
 DISTVERSION		= 4.0.5
 CATEGORIES		= textproc
-MASTER_SITES		= $(MASTER_SITE_GITHUB)
-MASTER_SITE_SUBDIR	= michaelrsweet/$(PORTNAME)
-DISTNAME		= v$(DISTVERSION)
-WRKSRC			= $(WRKDIR)/$(PORTNAME)-$(DISTVERSION)
+USE_GITHUB		= yes
+GH_ACCOUNT		= michaelrsweet
 DIST_SUBDIR		= $(PORTNAME)
 
 MAINTAINER		= yowching.lee@gmail.com
