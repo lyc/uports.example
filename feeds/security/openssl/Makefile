@@ -17,15 +17,10 @@ USES			= git:ownership
 
 LIB_DEPENDS		= libz.so:archivers/zlib
 
-# Set USE_SCM= to use the release tarball from MASTER_SITES.
+# SOURCE_MODE selects the release archive or this Git revision.
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= github.com/
-MASTER_SITE_SUBDIR	= openssl
-SCM_DEST		= $(DISTNAME)
+SCM_REPO_URL		= https://github.com/openssl/openssl.git
 SCM_DETACH		= $(PORTNAME)-$(DISTVERSION)
-endif
 
 ifneq ($(CROSS_COMPILE),)
   CONFIGURE_SCRIPT	:= Configure
