@@ -5,19 +5,13 @@
 PORTNAME		= chibi-scheme
 DISTVERSION 		= 0.12
 CATEGORIES 		= lang
-MASTER_SITES 		= https://github.com/ashinn/$(PORTNAME)/archive/refs/tags/
-DISTFILES		= $(DISTVERSIONFULL)$(EXTRACT_SUFX)
-WRKSRC			= $(WRKDIR)/$(PORTNAME)-$(DISTVERSION)
+USE_GITHUB		= yes
+GH_ACCOUNT		= ashinn
 DIST_SUBDIR		= $(PORTNAME)
 
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= github.com/
-MASTER_SITE_SUBDIR	= ashinn
-SCM_DEST		= $(DISTNAME)
+SCM_REPO_URL		= https://github.com/ashinn/$(PORTNAME).git
 SCM_DETACH		= $(DISTVERSIONFULL)
-endif
 
 MAINTAINER 		= yowching.lee@gmail.com
 COMMENT			= Minimal Scheme Implementation for use as an Extension Langage
