@@ -3,8 +3,7 @@
 PORTNAME		= libunistring
 DISTVERSION		= 1.4.2
 CATEGORIES		= devel
-MASTER_SITES		= $(MASTER_SITE_GNU)
-MASTER_SITE_SUBDIR	= $(PORTNAME)
+MASTER_SITES		= GNU/libunistring
 DIST_SUBDIR		= $(PORTNAME)
 
 MAINTAINER		= yowching.lee@gmail.com
