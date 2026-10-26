@@ -6,18 +6,18 @@ PORTNAME		= cpython
 DISTVERSIONPREFIX	= v
 DISTVERSION 		= 3.14.5
 CATEGORIES 		= lang
+# Keep the official python.org release bundle for dist mode. USE_GITHUB=yes
+# would select a generated tag archive with different checksums and potentially
+# different generated files; adopting it requires separate source validation.
 MASTER_SITES 		= https://www.python.org/ftp/python/$(DISTVERSION)/
 DISTNAME		= Python-$(DISTVERSION)
 WRKSRC			= $(WRKDIR)/$(PORTNAME)-$(DISTVERSION)
 
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= github.com/
-MASTER_SITE_SUBDIR	= python
+# Keep the release archive available independently of Git source selection.
+SCM_REPO_URL		= https://github.com/python/cpython.git
 SCM_DEST		= $(PORTNAME)-$(DISTVERSION)
 SCM_DETACH		= $(DISTVERSIONFULL)
-endif
 
 MAINTAINER 		= yowching.lee@gmail.com
 COMMENT			= The Python programming language
@@ -40,7 +40,8 @@ endif
 
 USES			= tar:xz
 
-EXTRACT_TRANSFORM	= /Python/cpython/g
+# Rename only the archive root; Include/Python.h must retain its name.
+EXTRACT_TRANSFORM	= /^Python-/cpython-/
 
 GNU_CONFIGURE 		= yes
 OPENSSL_LIBDIR		= $(if $(wildcard $(DESTDIR)$(PREFIX)/lib64/libssl.so),lib64,lib)
