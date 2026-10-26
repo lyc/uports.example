@@ -18,6 +18,11 @@ repository:
 make USE_SCM=git V=1 extract
 ```
 
+With the parent wrapper, use `make V=1 compiler@sqlite.extract SOURCE_MODE=git`.
+Explicit `SOURCE_MODE=dist` selects the release archive even if `USE_SCM=git`
+is also set. Both modes retain independent repository/release declarations;
+their source roots are `sqlite-3.53.2` and `sqlite-autoconf-3530200` respectively.
+
 The SCM checkout is pinned to tag `version-3.53.2`.
 
 The release tarball remains the default because upstream describes the
