@@ -6,7 +6,7 @@ PORTNAME		= mpfr
 PORTVERSION		= 4.2.2
 PORTREVISION		= 0
 CATEGORIES		= devel
-MASTER_SITES		= http://www.mpfr.org/mpfr-current/
+MASTER_SITES		= https://www.mpfr.org/mpfr-$(PORTVERSION)/
 
 MAINTAINER		= yowching.lee@gmail.com
 COMMENT			= The MPFR library is a C library for multiple-precision floating-point computations with correct rounding.
@@ -15,15 +15,10 @@ LICENSE			= LGPLv3
 
 LIB_DEPENDS		= libgmp.so:math/gmp
 
-# Set USE_SCM= to use the release tarball from MASTER_SITES.
+# Git remains the default; SOURCE_MODE=dist selects the release tarball.
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= gitlab.inria.fr/
-MASTER_SITE_SUBDIR	= mpfr
-SCM_DEST		= $(DISTNAME)
+SCM_REPO_URL		= https://gitlab.inria.fr/mpfr/mpfr.git
 SCM_DETACH		= $(PORTVERSION)
-endif
 
 # FIXME: should put this setting into project template makefile.
 # Assume we are trying to build a toolchain which config as $(CONFIGURE_TARGET),
