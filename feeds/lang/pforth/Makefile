@@ -6,20 +6,13 @@ PORTNAME		= pforth
 DISTVERSIONPREFIX	= v
 DISTVERSION 		= 2.0.1
 CATEGORIES 		= lang
-MASTER_SITES 		= https://github.com/philburk/$(PORTNAME)/archive/refs/tags/
-DISTFILES		= $(DISTVERSIONFULL)$(EXTRACT_SUFX)
-DISTNAME		= $(PORTNAME)-$(DISTVERSION)
-WRKSRC			= $(WRKDIR)/$(PORTNAME)-$(DISTVERSION)
+USE_GITHUB		= yes
+GH_ACCOUNT		= philburk
 DIST_SUBDIR		= $(PORTNAME)
 
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= github.com/
-MASTER_SITE_SUBDIR	= philburk
-SCM_DEST		= $(DISTNAME)
+SCM_REPO_URL		= https://github.com/philburk/$(PORTNAME).git
 SCM_DETACH		= $(DISTVERSIONFULL)
-endif
 
 MAINTAINER 		= yowching.lee@gmail.com
 COMMENT			= Portable ANS-like Forth written in ANSI C
