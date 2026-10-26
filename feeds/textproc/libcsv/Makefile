@@ -5,7 +5,7 @@
 PORTNAME		= libcsv
 DISTVERSION		= 3.0.3
 CATEGORIES		= textproc
-MASTER_SITES		= https://sourceforge.net/projects/$(PORTNAME)/files/$(PORTNAME)/$(PORTNAME)-$(DISTVERSION)/
+MASTER_SITES		= SF/$(PORTNAME)/$(PORTNAME)/$(PORTNAME)-$(DISTVERSION)
 
 MAINTAINER		= yowching.lee@mail.com
 COMMENT			= Small, simple and fast CSV parser
