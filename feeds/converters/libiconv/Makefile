@@ -5,8 +5,7 @@
 PORTNAME		= libiconv
 DISTVERSION		= 1.18
 CATEGORIES		= converters
-MASTER_SITES		= $(MASTER_SITE_GNU)
-MASTER_SITE_SUBDIR	= libiconv
+MASTER_SITES		= GNU/libiconv
 
 MAINTAINER		= amanda.li@askey.com.tw
 COMMENT			= A character set conversion library
