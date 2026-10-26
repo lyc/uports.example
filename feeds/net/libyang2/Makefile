@@ -6,11 +6,14 @@ PORTNAME		= libyang
 DISTVERSIONPREFIX	= v
 DISTVERSION		= 3.7.8
 CATEGORIES		= net
-MASTER_SITES 		= $(MASTER_SITE_GITHUB)
-MASTER_SITE_SUBDIR	= CESNET/$(PORTNAME)
-DISTNAME		= v$(DISTVERSION)
-WRKSRC			= $(WRKDIR)/$(PORTNAME)-$(PORTVERSION)
+USE_GITHUB		= yes
+GH_ACCOUNT		= CESNET
 DIST_SUBDIR		= $(PORTNAME)
+
+# SOURCE_MODE can override the default Git source selection.
+USE_SCM			?= git
+SCM_REPO_URL		= https://github.com/$(GH_ACCOUNT)/$(PORTNAME).git
+SCM_DETACH		= $(DISTVERSIONFULL)
 
 MAINTAINER		= yowching.lee@gmail.com
 COMMENT			= YANG data modeling language library
@@ -25,10 +28,8 @@ LIB_DEPENDS		= libpcre2-8.so:devel/pcre2
 USES			= cmake cpe pkgconfig
 
 CPE_VENDOR		= cesnet
-#USE_LDCONFIG		= yes
 
-#USE_GITHUB		= yes
-#GH_ACCOUNT		= CESNET
+#USE_LDCONFIG		= yes
 
 CMAKE_ARGS		+= -DCMAKE_INSTALL_LIBDIR=lib			\
 			   -DPLUGINS_DIR=$(PREFIX)/lib/libyang
@@ -45,4 +46,9 @@ CMAKE_ARGS		+= -DCMAKE_INSTALL_LIBDIR=lib			\
 
 MASTERDIR		= $(CURDIR)
 PORTSDIR		?= $(MASTERDIR)/../..
-include $(PORTSDIR)/Mk/linux.port.mk
+include $(PORTSDIR)/Mk/linux.port.pre.mk
+
+# CMake caches the source path; keep archive and Git builds separate.
+CONFIGURE_WRKSRC	= $(WRKDIR)/.build-$(notdir $(WRKSRC))
+
+include $(PORTSDIR)/Mk/linux.port.post.mk
