@@ -9,13 +9,8 @@ CATEGORIES 		= devel
 MASTER_SITES 		= https://www.complang.tuwien.ac.at/forth/gforth/Snapshots/$(DISTVERSIONFULL)/
 
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= git.savannah.gnu.org/
-MASTER_SITE_SUBDIR	= git
+SCM_REPO_URL		= https://git.savannah.gnu.org/git/gforth.git
 SCM_DETACH		= $(DISTVERSIONFULL)
-SCM_DEST		= $(DISTNAME)
-endif
 
 MAINTAINER 		= yowching.lee@gmail.com
 COMMENT			= Fast and portable Forth system
