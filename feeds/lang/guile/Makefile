@@ -5,19 +5,13 @@
 PORTNAME		= guile
 DISTVERSION		= 3.0.10
 CATEGORIES		= lang
-MASTER_SITES		= $(MASTER_SITE_GNU)
-MASTER_SITE_SUBDIR	= $(PORTNAME)
+MASTER_SITES		= GNU/guile
 DIST_SUBDIR		= $(PORTNAME)
 
-# Set USE_SCM= to use the GNU release tarball from MASTER_SITES.
+# Git remains the default; SOURCE_MODE=dist selects the GNU release tarball.
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= git.savannah.gnu.org/
-MASTER_SITE_SUBDIR	= git
-SCM_DEST		= $(DISTNAME)
+SCM_REPO_URL		= https://git.savannah.gnu.org/git/guile.git
 SCM_DETACH		= v$(DISTVERSION)
-endif
 
 MAINTAINER		= yowching.lee@gmail.com
 COMMENT			= GNU extension language and Scheme implementation
