@@ -6,7 +6,7 @@ PORTNAME		= mpc
 PORTVERSION		= 1.4.1
 PORTREVISION		= 0
 CATEGORIES		= devel
-MASTER_SITES		= http://ftp.gnu.org/gnu/mpc/
+MASTER_SITES		= GNU/mpc
 
 MAINTAINER		= yowching.lee@gmail.com
 COMMENT			= Gnu Mpc is a C library for the arithmetic of complex numbers with arbitrarily high precision and correct rounding of the result.
@@ -16,15 +16,10 @@ LICENSE			= LGPLv3
 LIB_DEPENDS		= libgmp.so:math/gmp				\
 			  libmpfr.so:math/mpfr
 
-# Set USE_SCM= to use the release tarball from MASTER_SITES.
+# Git remains the default; SOURCE_MODE=dist selects the release tarball.
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= gitlab.inria.fr/
-MASTER_SITE_SUBDIR	= mpc
-SCM_DEST		= $(DISTNAME)
+SCM_REPO_URL		= https://gitlab.inria.fr/mpc/mpc.git
 SCM_DETACH		= $(PORTVERSION)
-endif
 
 # FIXME: should put this setting into project template makefile.
 # Assume we are trying to build a toolchain which config as $(CONFIGURE_TARGET),
