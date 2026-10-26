@@ -5,11 +5,11 @@
 PORTNAME		= libsoundio
 DISTVERSION		= 2.0.0
 CATEGORIES		= audio
+USE_GITHUB		= yes
+GH_ACCOUNT		= andrewrk
 
-USE_SCM			= git
-SCM_PROTOCOL		= https://
-MASTER_SITES		= github.com/
-MASTER_SITE_SUBDIR	= andrewrk
+USE_SCM			?= git
+SCM_REPO_URL		= https://github.com/andrewrk/$(PORTNAME).git
 SCM_DEST		= $(PORTNAME)-$(DISTVERSION)
 SCM_DETACH		= $(DISTVERSION)
 WRKSRC			= $(WRKDIR)/$(SCM_DEST)
