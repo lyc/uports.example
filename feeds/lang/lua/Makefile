@@ -5,7 +5,7 @@
 PORTNAME		= lua
 DISTVERSION 		= 5.4.7
 CATEGORIES 		= lang
-MASTER_SITES 		= http://www.lua.org/ftp/
+MASTER_SITES		= https://www.lua.org/ftp/
 LICENSE			= MIT
 
 MAINTAINER 		= max_lee@pegatroncorp.com
@@ -15,7 +15,7 @@ LICENSE			= MIT
 
 USE_REINPLACE		= yes
 
-LIB_DEPENDS		= libreadline.so.6:devel/readline
+LIB_DEPENDS		= libreadline.so:devel/readline
 
 #
 #
@@ -24,6 +24,10 @@ LIB_DEPENDS		= libreadline.so.6:devel/readline
 MASTERDIR 		= $(CURDIR)
 PORTSDIR 		?= $(MASTERDIR)/../..
 include $(PORTSDIR)/Mk/linux.port.pre.mk
+
+ifeq ($(SOURCE_MODE_EFFECTIVE),git)
+$(error Lua supports release tarballs only; use SOURCE_MODE=dist)
+endif
 
 override_targets	+= post-patch do-configure pre-install post-install
 ifeq ($(OPSYS),linux)
