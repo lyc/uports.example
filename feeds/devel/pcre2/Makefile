@@ -5,7 +5,15 @@
 PORTNAME		= pcre2
 DISTVERSION		= 10.42
 CATEGORIES		= devel
-MASTER_SITES		= https://github.com/PCRE2Project/$(PORTNAME)/releases/download/$(PORTNAME)-$(PORTVERSION)/
+USE_GITHUB		= yes
+GH_ACCOUNT		= PCRE2Project
+GH_TAGNAME		= $(PORTNAME)-$(DISTVERSION)
+DIST_SUBDIR		= $(PORTNAME)
+
+# SOURCE_MODE can override the default Git source selection.
+USE_SCM			?= git
+SCM_REPO_URL		= https://github.com/$(GH_ACCOUNT)/$(PORTNAME).git
+SCM_DETACH		= $(GH_TAGNAME)
 
 MAINTAINER		= yowching.lee@gmail.com
 COMMENT			= Perl Compatible Regular Expression library, version 2.
@@ -13,7 +21,7 @@ COMMENT			= Perl Compatible Regular Expression library, version 2.
 LICENSE			= BSD3CLAUSE
 LICENSE_FILE		= $(WRKSRC)/LICENCE
 
-USES			= autoreconf cpe libtool pkgconfig tar:bzip2
+USES			= autoreconf cpe libtool pkgconfig
 CPE_VENDOR		= pcre
 
 #USE_LDCONFIG		= yes
