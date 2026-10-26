@@ -1,0 +1,13 @@
+TIMESTAMP = 1792565537
+SHA256 (ChezScheme/cisco-ChezScheme-v10.4.1_GH0.tar.gz) = 3e4045870cc943f4cba7a13d7a33d780d21b4e4a00542b672a957b493532fe9c
+SIZE (ChezScheme/cisco-ChezScheme-v10.4.1_GH0.tar.gz) = 6759549
+SHA256 (ChezScheme/dybvig-stex-afa607564a5662ffd748e824801277a6b5a3d11c_GH0.tar.gz) = 547b79d8d59dee125eba658acca939172feaaa6e95849a90cf0451598d593d5a
+SIZE (ChezScheme/dybvig-stex-afa607564a5662ffd748e824801277a6b5a3d11c_GH0.tar.gz) = 199119
+SHA256 (ChezScheme/lz4-lz4-ebb370ca83af193212df4dcbadcc5d87bc0de2f0_GH0.tar.gz) = eb1a93e934d4fd29df6e2061ba0bf447568561764d758f4a5662c0e29370ffa9
+SIZE (ChezScheme/lz4-lz4-ebb370ca83af193212df4dcbadcc5d87bc0de2f0_GH0.tar.gz) = 387536
+SHA256 (ChezScheme/madler-zlib-da607da739fa6047df13e66a2af6b8bec7c2a498_GH0.tar.gz) = b9258cf6254e7f7c37f1cd61dba943a1c5ea3cff5718c789834dac359094f5f7
+SIZE (ChezScheme/madler-zlib-da607da739fa6047df13e66a2af6b8bec7c2a498_GH0.tar.gz) = 1567269
+SHA256 (ChezScheme/nanopass-nanopass-framework-scheme-bb47b5695a5bffdfd4d99ec9b349f0864b08e0d4_GH0.tar.gz) = 2eefbdf29e0c7da04087e8c6fac4f6f0902e8d52105f572a4eb22055978edba0
+SIZE (ChezScheme/nanopass-nanopass-framework-scheme-bb47b5695a5bffdfd4d99ec9b349f0864b08e0d4_GH0.tar.gz) = 438570
+SHA256 (ChezScheme/racket-zuo-a288cbfe350403899311ca7d8267d570e781ed2c_GH0.tar.gz) = 024f9804c2c6a3b2afab05d0db1cc7cade88cf6930cf601ff3bc18f5f9ccfc26
+SIZE (ChezScheme/racket-zuo-a288cbfe350403899311ca7d8267d570e781ed2c_GH0.tar.gz) = 208621
