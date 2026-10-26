@@ -1,0 +1,205 @@
+From: uports <uports@localhost>
+Subject: [PATCH] check Darwin wide curses headers and libraries together
+
+Reject wide SDK metadata when the compiler selects incompatible local
+headers or libraries, then try the existing narrow curses fallback.
+Generated configure updated with GNU Autoconf 2.72.
+
+---
+diff --git a/configure.ac b/configure.ac
+--- a/configure.ac
++++ b/configure.ac
+@@ -6858,12 +6858,31 @@
+ AS_VAR_PUSHDEF([curses_var], [m4_toupper([$1])])
+ AS_VAR_PUSHDEF([panel_var], [m4_toupper([$2])])
+ PKG_CHECK_MODULES([CURSES], [$1],
+-  [AC_DEFINE([HAVE_]curses_var, [1], [Define if you have the '$1' library])
+-   AS_VAR_SET([have_curses], [yes])
++  [AS_VAR_SET([have_curses], [yes])
++   dnl Darwin SDK metadata can coexist with local narrow curses headers/libs.
++   AS_IF([test "$ac_sys_system" = Darwin && test "$1" = ncursesw], [
++     WITH_SAVE_ENV([
++       AS_VAR_APPEND([CPPFLAGS], [" $CURSES_CFLAGS -D_XOPEN_SOURCE_EXTENDED=1"])
++       AS_VAR_APPEND([LIBS], [" $CURSES_LIBS"])
++       AC_MSG_CHECKING([whether Darwin wide curses headers and libraries match])
++       AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++#include <wchar.h>
++#include <ncurses.h>
++       ]], [[
++         (void)wins_wstr;
++         (void)unget_wch;
++         return wins_wstr((WINDOW *)0, L"") + unget_wch(L'x');
++       ]])], [], [AS_VAR_SET([have_curses], [no])])
++       AC_MSG_RESULT([$have_curses])
++     ])
++   ])
++   AS_VAR_IF([have_curses], [yes], [
++   AC_DEFINE([HAVE_]curses_var, [1], [Define if you have the '$1' library])
+    PKG_CHECK_MODULES([PANEL], [$2],
+     [AC_DEFINE([HAVE_]panel_var, [1], [Define if you have the '$2' library])
+      AS_VAR_SET([have_panel], [yes])],
+-    [AS_VAR_SET([have_panel], [no])])],
++    [AS_VAR_SET([have_panel], [no])])
++   ], [CURSES_CFLAGS=; CURSES_LIBS=])],
+   [AS_VAR_SET([have_curses], [no])])
+ AS_VAR_POPDEF([curses_var])
+ AS_VAR_POPDEF([panel_var])])
+diff --git a/configure b/configure
+--- a/configure
++++ b/configure
+@@ -28388,10 +28388,64 @@
+         CURSES_LIBS=$pkg_cv_CURSES_LIBS
+         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+ printf "%s\n" "yes" >&6; }
++        have_curses=yes
++      if test "$ac_sys_system" = Darwin && test "ncursesw" = ncursesw
++then :
++
++     save_CFLAGS=$CFLAGS
++save_CPPFLAGS=$CPPFLAGS
++save_LDFLAGS=$LDFLAGS
++save_LIBS=$LIBS
++
++
++       as_fn_append CPPFLAGS " $CURSES_CFLAGS -D_XOPEN_SOURCE_EXTENDED=1"
++       as_fn_append LIBS " $CURSES_LIBS"
++       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether Darwin wide curses headers and libraries match" >&5
++printf %s "checking whether Darwin wide curses headers and libraries match... " >&6; }
++       cat confdefs.h - <<_ACEOF >conftest.$ac_ext
++/* end confdefs.h.  */
++
++#include <wchar.h>
++#include <ncurses.h>
++
++int
++main (void)
++{
++
++         (void)wins_wstr;
++         (void)unget_wch;
++         return wins_wstr((WINDOW *)0, L"") + unget_wch(L'x');
++
++  ;
++  return 0;
++}
++_ACEOF
++if ac_fn_c_try_link "$LINENO"
++then :
++
++else case e in #(
++  e) have_curses=no ;;
++esac
++fi
++rm -f core conftest.err conftest.$ac_objext conftest.beam \
++    conftest$ac_exeext conftest.$ac_ext
++       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $have_curses" >&5
++printf "%s\n" "$have_curses" >&6; }
++
++CFLAGS=$save_CFLAGS
++CPPFLAGS=$save_CPPFLAGS
++LDFLAGS=$save_LDFLAGS
++LIBS=$save_LIBS
++
++
++
++fi
++   if test "x$have_curses" = xyes
++then :
++
+ 
+ printf "%s\n" "#define HAVE_NCURSESW 1" >>confdefs.h
+ 
+-   have_curses=yes
+ 
+ pkg_failed=no
+ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for panelw" >&5
+@@ -28466,6 +28520,11 @@
+ 
+      have_panel=yes
+ fi
++
++else case e in #(
++  e) CURSES_CFLAGS=; CURSES_LIBS= ;;
++esac
++fi
+ fi
+ 
+ 
+@@ -28542,10 +28601,64 @@
+         CURSES_LIBS=$pkg_cv_CURSES_LIBS
+         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+ printf "%s\n" "yes" >&6; }
++        have_curses=yes
++      if test "$ac_sys_system" = Darwin && test "ncurses" = ncursesw
++then :
++
++     save_CFLAGS=$CFLAGS
++save_CPPFLAGS=$CPPFLAGS
++save_LDFLAGS=$LDFLAGS
++save_LIBS=$LIBS
++
++
++       as_fn_append CPPFLAGS " $CURSES_CFLAGS -D_XOPEN_SOURCE_EXTENDED=1"
++       as_fn_append LIBS " $CURSES_LIBS"
++       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether Darwin wide curses headers and libraries match" >&5
++printf %s "checking whether Darwin wide curses headers and libraries match... " >&6; }
++       cat confdefs.h - <<_ACEOF >conftest.$ac_ext
++/* end confdefs.h.  */
++
++#include <wchar.h>
++#include <ncurses.h>
++
++int
++main (void)
++{
++
++         (void)wins_wstr;
++         (void)unget_wch;
++         return wins_wstr((WINDOW *)0, L"") + unget_wch(L'x');
++
++  ;
++  return 0;
++}
++_ACEOF
++if ac_fn_c_try_link "$LINENO"
++then :
++
++else case e in #(
++  e) have_curses=no ;;
++esac
++fi
++rm -f core conftest.err conftest.$ac_objext conftest.beam \
++    conftest$ac_exeext conftest.$ac_ext
++       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $have_curses" >&5
++printf "%s\n" "$have_curses" >&6; }
++
++CFLAGS=$save_CFLAGS
++CPPFLAGS=$save_CPPFLAGS
++LDFLAGS=$save_LDFLAGS
++LIBS=$save_LIBS
++
++
++
++fi
++   if test "x$have_curses" = xyes
++then :
++
+ 
+ printf "%s\n" "#define HAVE_NCURSES 1" >>confdefs.h
+ 
+-   have_curses=yes
+ 
+ pkg_failed=no
+ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for panel" >&5
+@@ -28619,6 +28732,11 @@
+ printf "%s\n" "#define HAVE_PANEL 1" >>confdefs.h
+ 
+      have_panel=yes
++fi
++
++else case e in #(
++  e) CURSES_CFLAGS=; CURSES_LIBS= ;;
++esac
+ fi
+ fi
+ 

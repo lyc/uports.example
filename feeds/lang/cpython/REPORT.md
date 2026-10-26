@@ -61,6 +61,7 @@ security/openssl
 databases/sqlite
 databases/gdbm
 devel/libffi
+devel/ncurses
 devel/readline
 devel/libuuid
 ```
@@ -201,6 +202,41 @@ Verify:
 Both should report `/usr/local`.
 
 ## 6. Other Notes
+
+### Darwin curses provider consistency
+
+The host may expose Homebrew SDK ncursesw.pc while /usr/local/include and
+/usr/local/lib supply a narrow ncurses build. Metadata success alone then
+defines HAVE_NCURSESW although the selected headers lack wide functions.
+The port declares devel/ncurses and patches configure.ac plus its Autoconf
+2.72-generated configure to compile/link wide insert and unget calls before
+accepting Darwin ncursesw metadata. A mismatch rejects that candidate and
+uses the existing ncurses/panel fallback; a matching wide installation remains
+supported. No warning is suppressed or module disabled. Linux retains the
+existing selection behavior.
+
+Existing trees need the new patch applied and configure rerun. Darwin build
+and runtime acceptance remain pending. After building, import curses and
+curses.panel, inspect _curses loader dependencies, and use curses.wrapper in
+a real terminal to confirm initialization and terminal I/O. A narrow provider
+does not expose wide-character-only curses methods.
+
+### Darwin SDK and deployment target
+
+New Darwin SDKs declare dup3 and pipe2 as available starting in macOS 27.
+CPython 3.14.5's generic function-link probes can enable them while compiling
+for an older deployment target, then posixmodule.c fails availability checks.
+This port conservatively sets ac_cv_func_dup3=no and ac_cv_func_pipe2=no on
+Darwin, retaining CPython's existing dup2/pipe and descriptor-inheritance
+fallbacks. Linux probes remain unchanged. On macOS 27 this also intentionally
+disables os.pipe2 until the workaround is revisited for an upstream version
+with deployment-aware checks or guarded calls.
+
+Existing configured trees must rerun configure: rebuild alone retains the
+old pyconfig.h. After reconfiguration, HAVE_DUP3 and HAVE_PIPE2 must be
+undefined on Darwin. Validate os.pipe and os.dup2 with data transfer and
+descriptor inheritance checks after a successful build. Darwin acceptance
+of this workaround is pending; no availability warning is suppressed.
 
 The current `_ssl` extension was observed with a RUNPATH pointing at the local
 uports dependency root:

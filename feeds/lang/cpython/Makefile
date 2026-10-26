@@ -33,6 +33,7 @@ LIB_DEPENDS		= libz.so:archivers/zlib			\
 			  libsqlite3.so:databases/sqlite		\
 			  libreadline.so:devel/readline			\
 			  libffi.so:devel/libffi			\
+			  libncurses.so:devel/ncurses			\
 			  libgdbm.so:databases/gdbm
 ifeq ($(shell uname -s),Linux)
 LIB_DEPENDS		+= libuuid.so:devel/libuuid
@@ -44,6 +45,11 @@ USES			= tar:xz
 EXTRACT_TRANSFORM	= /^Python-/cpython-/
 
 GNU_CONFIGURE 		= yes
+ifeq ($(shell uname -s),Darwin)
+# New SDKs expose these before the deployment target supports them.
+# CPython 3.14.5 has no Darwin availability guards for these calls.
+CONFIGURE_ENV		+= ac_cv_func_dup3=no ac_cv_func_pipe2=no
+endif
 OPENSSL_LIBDIR		= $(if $(wildcard $(DESTDIR)$(PREFIX)/lib64/libssl.so),lib64,lib)
 CONFIGURE_ARGS		+= --with-openssl=$(DESTDIR)$(PREFIX)		\
 			   --with-openssl-rpath=$(DESTDIR)$(PREFIX)/$(OPENSSL_LIBDIR)
