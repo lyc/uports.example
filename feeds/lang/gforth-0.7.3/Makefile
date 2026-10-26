@@ -6,8 +6,8 @@ PORTNAME		= gforth
 DISTVERSION 		= 0.7.3
 PKGNAMESUFFIX		= -bootstrap
 CATEGORIES 		= devel
-MASTER_SITES 		= $(MASTER_SITE_GNU)
-MASTER_SITE_SUBDIR	= $(PORTNAME)
+# This bootstrap package supports the release tarball only.
+MASTER_SITES		= GNU/gforth
 
 MAINTAINER 		= yowching.lee@gmail.com
 COMMENT			= Fast and portable Forth system
@@ -36,6 +36,9 @@ export ac_cv_prog_GNU_LIBTOOL	:=
 MASTERDIR 		= $(CURDIR)
 PORTSDIR 		?= $(MASTERDIR)/../..
 include $(PORTSDIR)/Mk/linux.port.pre.mk
+ifeq ($(SOURCE_MODE_EFFECTIVE),git)
+$(error gforth-0.7.3 supports release tarballs only; use SOURCE_MODE=dist)
+endif
 override_targets	+= post-patch pre-configure post-install
 
 post-patch:
