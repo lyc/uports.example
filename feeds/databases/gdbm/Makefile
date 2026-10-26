@@ -5,8 +5,7 @@
 PORTNAME		= gdbm
 DISTVERSION 		= 1.24
 CATEGORIES 		= databases
-MASTER_SITES 		= $(MASTER_SITE_GNU)
-MASTER_SITE_SUBDIR	= $(PORTNAME)
+MASTER_SITES		= GNU/gdbm
 
 MAINTAINER 		= max_lee@pegatroncorp.com
 COMMENT			= GNU database manager
