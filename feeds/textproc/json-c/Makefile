@@ -6,8 +6,9 @@ PORTNAME		= json-c
 DISTVERSION		= 0.19
 DISTVERSIONSUFFIX	= -20260627
 CATEGORIES		= textproc
-MASTER_SITES 		= $(MASTER_SITE_GITHUB)
-MASTER_SITE_SUBDIR	= $(PORTNAME)/$(PORTNAME)
+USE_GITHUB		= yes
+GH_ACCOUNT		= json-c
+GH_TAGNAME		= $(PORTNAME)-$(DISTVERSIONFULL)
 
 MAINTAINER		= dtchang@askey.com.tw
 COMMENT			= A JSON implementation in C
@@ -16,13 +17,8 @@ LICENSE			= MIT
 
 USES			= cmake
 
-ifeq ($(USE_SCM),git)
-MASTER_SITES		:= github.com
-MASTER_SITE_SUBDIR	:= json-c
+# Preserve the existing Git-mode patch policy; dist mode applies files/series.
 NO_SCM_PATCH_APPLY	= yes
-endif
-
-EXTRACT_TRANSFORM	= /json-c-json-c/json-c/g
 
 CMAKE_ARGS		+= -DCMAKE_INSTALL_LIBDIR=lib
 
