@@ -8,17 +8,12 @@ CATEGORIES		= lang
 MASTER_SITES		= https://sam.zoy.org/$(PORTNAME)/
 DIST_SUBDIR		= $(PORTNAME)
 
-# Set USE_SCM= to use the official release tarball from MASTER_SITES.
+# SOURCE_MODE=dist selects the release; SOURCE_MODE=git selects this revision.
+# Keep the legacy default until project policy selects a mode explicitly.
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= gitea.scheme.org/
-MASTER_SITE_SUBDIR	= conservatory
-SCM_DEST		= $(DISTNAME)
+SCM_REPO_URL		= https://gitea.scheme.org/conservatory/elk.git
 SCM_DETACH		= 5ba5ffc44da4943139fa27879df2aa748abf1c71
 SCM_REPO_PREINIT_CMD	= .no-preinit
-SCM_RETRIEVE_TIMEOUT	= 300
-endif
 
 MAINTAINER		= yowching.lee@gmail.com
 COMMENT			= Embeddable Scheme implementation for C and C++ applications

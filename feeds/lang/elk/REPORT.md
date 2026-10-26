@@ -11,11 +11,12 @@ examples, and manual pages.
 The default source mode is `USE_SCM ?= git`.  It uses the Scheme Conservatory
 repository and detaches the checkout at commit
 `5ba5ffc44da4943139fa27879df2aa748abf1c71`, the upstream 3.99.8 release
-revision.  `SCM_RETRIEVE_TIMEOUT=300` gives SCM retrieval bounded failure
-behavior when the host provides the framework's timeout utility.
+revision. Archive sites and the explicit repository URL are declared together;
+`SOURCE_MODE=dist` and `SOURCE_MODE=git` select between them. Retrieval inherits
+the framework/project timeout policy.
 
 An official release tarball is also supported without changing the default:
-set `USE_SCM=` explicitly to fetch `elk-3.99.8.tar.bz2` from
+set `SOURCE_MODE=dist` to fetch `elk-3.99.8.tar.bz2` from
 `https://sam.zoy.org/elk/`.  Its recorded distinfo is:
 
 ```text
@@ -23,13 +24,19 @@ SHA256 (elk/elk-3.99.8.tar.bz2) = a148320c8d2c2b1277ad3572a9d8a9eb4db0473643caa3
 SIZE (elk/elk-3.99.8.tar.bz2) = 701206
 ```
 
-The project wrapper does not preserve an explicitly empty variable for its
-dotted convenience targets.  Invoke the port directly when selecting the
-tarball, while still supplying the framework and target roots:
+The parent wrapper can select the source for this instance without changing
+metadata probes for other, unmigrated ports:
+
+```sh
+make PORTS_compiler_elk_EXTRA_ENVS=SOURCE_MODE=dist compiler@elk.fetch
+make PORTS_compiler_elk_EXTRA_ENVS=SOURCE_MODE=git compiler@elk.fetch
+```
+
+Direct port commands also accept `SOURCE_MODE`:
 
 ```sh
 ROOT=$PWD
-make -C feeds/lang/elk stage USE_SCM= \
+make -C feeds/lang/elk stage SOURCE_MODE=dist \
   PORTSDIR="$ROOT/make/uports" \
   DESTDIR="$ROOT/local/compiler" \
   PREFIX=/usr/local \
@@ -38,8 +45,10 @@ make -C feeds/lang/elk stage USE_SCM= \
   TYPE_SUFFIX=.compiler
 ```
 
-The SCM and release-tarball sources contain `configure.ac` and Automake inputs
-but no generated `configure` script.  The old `bootstrap` script incorrectly
+Both sources contain `configure.ac` and Automake inputs. The release archive
+also contains generated `configure`; the pinned Git tree does not. Both modes
+regenerate build files after the maintained patches, using the same declared
+Autotools dependencies. The old `bootstrap` script incorrectly
 rejects modern Automake versions with more than one dot in their version
 number.  Both source modes therefore use the framework's `autoreconf` support
 and declare the resulting Autoconf, Automake, and libtool build requirements
@@ -165,9 +174,13 @@ Autoconf macros.  It also emits non-fatal libtool probing diagnostics in the
 sandbox, but the generated binaries, bundles, stage, and package complete and
 run successfully.
 
-Linux has not yet been validated.  It needs a native clean stage, a
-platform-generated plist, ELF SONAME and RUNPATH inspection, and the same
-arithmetic, regexp, and UNIX-extension runtime tests.  Linux target-root tests
-should use `LD_LIBRARY_PATH` instead of `DYLD_LIBRARY_PATH`; an actual final
-installation must resolve its final-prefix library through RUNPATH,
-`ldconfig`, or the host loader configuration.
+Linux archive and pinned Git builds now pass the slice 8 real-world script:
+`make -C make/uports/Tools/tests slice8` from the parent project. Both modes
+pass maintained patches, Autotools generation, package creation, source
+provenance, staged arithmetic, regexp and UNIX-extension loading, and repeat
+preservation. `ldd` confirms the interpreter loads the staged libelk. This
+does not establish final-prefix installation, arbitrary relocation, or a new
+Darwin validation of the migrated declarations. Staged Linux tests use
+`LD_LIBRARY_PATH`; final installation needs appropriate loader configuration.
+The release URL, archive name, maintained distinfo and Git cache URL are
+unchanged. No checksum regeneration or cache migration is required.
