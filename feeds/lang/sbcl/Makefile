@@ -7,19 +7,13 @@ DISTVERSION 		= 2.5.7
 CATEGORIES 		= lang
 DISTVERSIONSUFFIX	= -source
 PORTEPOCH		= 1
-MASTER_SITES		= https://sourceforge.net/projects/$(PORTNAME)/files/$(PORTNAME)/$(DISTVERSION)/
-WRKSRC			= $(WRKDIR)/$(PORTNAME)-$(DISTVERSION)
+MASTER_SITES		= SF/$(PORTNAME)/$(PORTNAME)/$(DISTVERSION)
+WRKSRC			= $(WRKDIR)/$(if $(filter git,$(SOURCE_MODE_EFFECTIVE)),$(SCM_DEST),$(PORTNAME)-$(DISTVERSION))
 
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_TIMEOUT		?= 60s
-SCM_PROTOCOL		= https://
-MASTER_SITES		= git.code.sf.net/p/
-MASTER_SITE_SUBDIR	= sbcl
+SCM_REPO_URL		= https://git.code.sf.net/p/sbcl/sbcl.git
 SCM_DEST		= $(PORTNAME)
 SCM_DETACH		= $(PORTNAME)-$(DISTVERSION)
-WRKSRC			= $(WRKDIR)/$(PORTNAME)
-endif
 
 MAINTAINER 		= yowching.lee@gmail.com
 COMMENT			= Common Lisp development system derived from the CMU CL system
