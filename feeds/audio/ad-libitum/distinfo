@@ -1,0 +1,11 @@
+TIMESTAMP = 1792569177
+SHA256 (ad-libitum/fniessen-org-html-themes-20f84182239a537f4c6b533eb65daa2d342428dd_GH0.tar.gz) = fded8178810e594d6f10dbbb439e4b1937bc7625f15b3be2a86e3e79acb3136e
+SIZE (ad-libitum/fniessen-org-html-themes-20f84182239a537f4c6b533eb65daa2d342428dd_GH0.tar.gz) = 566889
+SHA256 (ad-libitum/ul-ad-libitum-20260627-b3cc6cf59deeac553bf070f26313353f1c0baec2_GH0.tar.gz) = 094acde088862ec70e4c86bd6fb4bb93dfaceaad26efdf64776b27fd923edacc
+SIZE (ad-libitum/ul-ad-libitum-20260627-b3cc6cf59deeac553bf070f26313353f1c0baec2_GH0.tar.gz) = 363546
+SHA256 (ad-libitum/ul-chez-portmidi-5f4f30d8dc665b1e1e485a1d149a75f2cb50ba68_GH0.tar.gz) = fc2f390aab86cd90eaea7aab5142939f5d6f83cad3fdb52fa769a369c4134a93
+SIZE (ad-libitum/ul-chez-portmidi-5f4f30d8dc665b1e1e485a1d149a75f2cb50ba68_GH0.tar.gz) = 13267
+SHA256 (ad-libitum/ul-chez-sockets-84d698bdc8a10da9fddd61fb714a2d3bf8f162bb_GH0.tar.gz) = 8c1015a8c995d27b7e593ad3d2db15c8134c3453aa09dbb93c42266ef475842b
+SIZE (ad-libitum/ul-chez-sockets-84d698bdc8a10da9fddd61fb714a2d3bf8f162bb_GH0.tar.gz) = 32210
+SHA256 (ad-libitum/ul-chez-soundio-9071f1f96e0a2f07d5ef0d7573c5351644560cc9_GH0.tar.gz) = 92569b70f8e225105dd6e40bc3353a82147d64f0bace872e1c755a9e5229e8b1
+SIZE (ad-libitum/ul-chez-soundio-9071f1f96e0a2f07d5ef0d7573c5351644560cc9_GH0.tar.gz) = 14866

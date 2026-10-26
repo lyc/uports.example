@@ -5,16 +5,27 @@
 PORTNAME		= ad-libitum
 DISTVERSION		= 20260627
 CATEGORIES		= audio
+DIST_SUBDIR		= $(PORTNAME)
+USE_GITHUB		= yes
+GH_ACCOUNT		= ul
+GH_TAGNAME		= $(SCM_DETACH)
+# Archive pins must match the gitlinks of SCM_DETACH.
+GH_TUPLE		= $(if $(filter dist,$(SOURCE_MODE_EFFECTIVE)), \
+	ul:chez-soundio:9071f1f96e0a2f07d5ef0d7573c5351644560cc9:soundio/chez-soundio \
+	ul:chez-sockets:84d698bdc8a10da9fddd61fb714a2d3bf8f162bb:sockets/chez-sockets \
+	ul:chez-portmidi:5f4f30d8dc665b1e1e485a1d149a75f2cb50ba68:portmidi/chez-portmidi \
+	fniessen:org-html-themes:20f84182239a537f4c6b533eb65daa2d342428dd:themes/org-html-themes)
 
-USE_SCM			= git
-SCM_PROTOCOL		= https://
-MASTER_SITES		= github.com/
-MASTER_SITE_SUBDIR	= ul
+USE_SCM			?= git
+SCM_REPO_URL		= https://github.com/ul/$(PORTNAME).git
 SCM_DEST		= $(PORTNAME)-$(DISTVERSION)
 SCM_DETACH		= b3cc6cf59deeac553bf070f26313353f1c0baec2
-WRKSRC			= $(WRKDIR)/$(SCM_DEST)
-SCM_SUBMODULES		= chez-soundio chez-sockets chez-portmidi \
-			  org-html-themes
+SCM_SUBMODULES		= $(if $(filter git,$(SOURCE_MODE_EFFECTIVE)), \
+			  chez-soundio chez-sockets chez-portmidi org-html-themes)
+
+WRKSRC			= $(WRKDIR)/$(if $(filter git,$(SOURCE_MODE_EFFECTIVE)),$(SCM_DEST),$(PORTNAME)-$(GH_TAGNAME))
+# These maintained patch series apply to both archives and Git checkouts.
+SUBMODULE_PATCH_PATHS	= chez-soundio chez-sockets
 
 MAINTAINER		= yowching.lee@gmail.com
 COMMENT			= Scheme live coding environment built on Chez Scheme
@@ -23,7 +34,7 @@ LICENSE			= MIT
 
 BUILD_DEPENDS		= scheme:lang/chezscheme
 RUN_DEPENDS		= scheme:lang/chezscheme
-LIB_DEPENDS		= libsoundio:audio/libsoundio
+LIB_DEPENDS		= libsoundio.so:audio/libsoundio
 
 USE_PATCH		= V2
 
