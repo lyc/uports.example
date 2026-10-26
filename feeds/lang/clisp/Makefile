@@ -9,14 +9,9 @@ CATEGORIES 		= lang
 MASTER_SITES		= https://anduin.linuxfromscratch.org/BLFS/clisp/
 
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= gitlab.com/
-MASTER_SITE_SUBDIR	= gnu-clisp
-SCM_DEST		= $(DISTNAME)
+SCM_REPO_URL		= https://gitlab.com/gnu-clisp/clisp.git
 # Upstream snapshot; update deliberately together with the port patch series.
 SCM_DETACH		= a6744e66c7691e7d6a329596771c9a2e2074dbfa
-endif
 
 MAINTAINER 		= yowching.lee@gmail.com
 COMMENT			= GNU CLISP is a Common Lisp implementation.
