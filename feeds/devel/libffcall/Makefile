@@ -5,8 +5,7 @@
 PORTNAME		= libffcall
 DISTVERSION		= 2.5
 CATEGORIES		= devel
-MASTER_SITES 		= $(MASTER_SITE_GNU)
-MASTER_SITE_SUBDIR	= $(PORTNAME)
+MASTER_SITES		= GNU/libffcall
 
 MAINTAINER		= yowching.lee@gmail.com
 COMMENT			= Foreigh function call library
