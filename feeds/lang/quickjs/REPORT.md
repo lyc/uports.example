@@ -34,11 +34,15 @@ SCM mode uses:
 
 ```make
 USE_SCM ?= git
-SCM_PROTOCOL = https://
-MASTER_SITES = github.com/
-MASTER_SITE_SUBDIR = bellard
-SCM_DEST = quickjs
+SCM_REPO_URL = https://github.com/bellard/quickjs.git
 ```
+
+Explicit `SOURCE_MODE=dist` selects the two official release archives even
+with the default `USE_SCM=git`. Only effective Git mode uses the `quickjs`
+checkout root and runs `test2-bootstrap`; release mode uses the versioned
+archive root. Git remains unpinned, preserving the existing behavior; it is
+not claimed to match the release archive version. `USE_GITHUB` is not used
+because the distribution includes official release and extras archives.
 
 The upstream build target is:
 

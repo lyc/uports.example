@@ -14,14 +14,8 @@ DISTFILES		= $(addsuffix					\
 WRKSRC			= $(WRKDIR)/$(PORTNAME)-$(DISTVERSION)
 
 USE_SCM			?= git
-ifeq ($(USE_SCM),git)
-SCM_PROTOCOL		= https://
-MASTER_SITES		= github.com/
-MASTER_SITE_SUBDIR	= bellard
-SCM_DEST		= $(PORTNAME)
-#SCM_DETACH		= $(DISTVERSIONFULL) # don't have release branch yet.
-WRKSRC			= $(WRKDIR)/$(PORTNAME)
-endif
+SCM_REPO_URL		= https://github.com/bellard/$(PORTNAME).git
+# Preserve the existing unpinned Git default; release archives are independent.
 
 MAINTAINER 		= max_lee@pegatroncorp.com
 COMMENT			= QuickJS is a small and embedded Javascript engine.
@@ -46,13 +40,17 @@ MASTERDIR 		= $(CURDIR)
 PORTSDIR 		?= $(MASTERDIR)/../..
 include $(PORTSDIR)/Mk/linux.port.pre.mk
 
+ifeq ($(SOURCE_MODE_EFFECTIVE),git)
+WRKSRC			= $(WRKDIR)/$(PORTNAME)
+endif
+
 override_targets	+= post-patch pre-install post-install
 
 post-patch:
 	@$(SED) -e 's|%PREFIX%|$(PREFIX)|g ; s|%VERSION%|$(DISTVERSION)|g' \
 		$(FILESDIR)/$(PORTNAME).pc.in > $(WRKDIR)/$(PORTNAME).pc
-ifeq ($(USE_SCM),git)
-	@(cd $(WRKSRC) && make test2-bootstrap)
+ifeq ($(SOURCE_MODE_EFFECTIVE),git)
+	@$(MAKE) -C $(WRKSRC) test2-bootstrap
 endif
 
 pre-install:
