@@ -13,25 +13,10 @@ COMMENT			= The GNU Multiple Precision Arithmetic Library
 
 LICENSE			= LGPLv3 GPLv2
 
-# FIXME: should put this setting into project template makefile.
-# Assume we are trying to build a toolchain which config as $(CONFIGURE_TARGET),
-# it's a good idea to install gpm/mpfr/mpc ... outside the folder $(PREFIX)
-# toolchain will be installed.
-ifneq ($(CONFIGURE_TARGET),)
-ifneq ($(PREFIX),)
-override PREFIX		:= $(PREFIX)/tools
-endif
-endif
-
 USES			+= tar:xz libtool
 
 GNU_CONFIGURE		= yes
-ifneq ($(CONFIGURE_TARGET),)
-WRKSRC_SUBDIR		:= build-$(word 1,$(subst -, ,$(CONFIGURE_TARGET)))
-CONFIGURE_SCRIPT	= ../configure
-else
 CONFIGURE_SCRIPT	= configure
-endif
 CONFIGURE_ENV		+= CPPFLAGS=-fexceptions
 
 # GMP 6.3.0 x86_64 assembly is not package-safe for shared Darwin builds in
@@ -78,9 +63,9 @@ endif
 
 ALL_TARGET		= all check
 
-# NOTE: there is no need to set --target=... during configure because
-# gmp/mpfr/mpc ... was only built as host tool to support "binutils"
-# and "gcc" building, so we need to unset $(CONFIGURE_TARGET) if it's set.
+# Libraries use build/host configuration, including CROSS_COMPILE when set.
+# CONFIGURE_TARGET selects compiler output, not this library architecture.
+# Keep PREFIX and work layout under project control.
 ifneq ($(CONFIGURE_TARGET),)
 override CONFIGURE_TARGET	:=
 endif
