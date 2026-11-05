@@ -54,15 +54,20 @@ endif
 endif
 endif
 
-WITH_LIBFFCALL		?= no
+FLAVORS			= default libffcall
+libffcall_PKGNAMESUFFIX	= -libffcall
+
+ifeq ($(FLAVOR),libffcall)
+PLIST_SUB		+= LIBFFCALL=""
+else
+PLIST_SUB		+= LIBFFCALL="@comment "
+endif
 WITH_DOCUMENT		?= no
 WITH_X11		?= no
 
 LIB_DEPENDS		= libffi.so:devel/libffi			\
 			  libltdl.so:devel/libltdl
-ifeq ($(WITH_LIBFFCALL),yes)
-LIB_DEPENDS		+= libavcall.so:devel/libffcall
-endif
+libffcall_LIB_DEPENDS	= libavcall.so:devel/libffcall
 BUILD_DEPENDS		+= autoconf>=2.69:devel/autoconf		\
 			   automake>=1.16.1:devel/automake		\
 			   gforth-bootstrap>=0.7.3:lang/gforth-0.7.3
@@ -77,7 +82,7 @@ GFORTH_BOOT_LIBPATH	= $(DESTDIR)$(PREFIX)/lib
 GFORTH_RUNTIME_LIBPATH	= $(PREFIX)/lib
 GFORTH_TOOLS_PATH	= $(DESTDIR)$(PREFIX)/bin:$(PORTSDIR)/../../local/usr/bin
 GFORTH_LIBCC_IMAGE_DEPS	= $$(buildccdir)/libgflibffi.la $$(buildccdir)/libgfpthread.la
-ifeq ($(WITH_LIBFFCALL),yes)
+ifeq ($(FLAVOR),libffcall)
 GFORTH_LIBCC_IMAGE_DEPS	+= $$(buildccdir)/libgffflib.la
 else
 CONFIGURE_ENV		+= ac_cv_lib_avcall___builtin_avcall=no

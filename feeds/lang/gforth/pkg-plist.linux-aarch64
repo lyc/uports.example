@@ -545,6 +545,11 @@
 ./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgfmmap.so
 ./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgfmmap.la
 ./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgfmmap.a
+%%LIBFFCALL%%./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgffflib.so.0.0.0
+%%LIBFFCALL%%./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgffflib.so.0
+%%LIBFFCALL%%./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgffflib.so
+%%LIBFFCALL%%./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgffflib.la
+%%LIBFFCALL%%./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgffflib.a
 ./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgflibffi.so.0.0.0
 ./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgflibffi.so.0
 ./lib/gforth/0.7.9_20260610/arm64/libcc-named/libgflibffi.so

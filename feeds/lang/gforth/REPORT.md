@@ -205,20 +205,46 @@ libgftime.*
 Dependency notes:
 
 - `libgflibffi.so` links to `libffi.so`.
-- `libffcall` is optional and controlled by `WITH_LIBFFCALL`.
-  The default is `WITH_LIBFFCALL=no`, so configure is forced with
+- `libffcall` is selected with `FLAVOR=libffcall` (wrapper target
+  `compiler@gforth:libffcall.build`). The default Flavor sets
+  ffcall disabled, so configure is forced with
   `ac_cv_lib_avcall___builtin_avcall=no` and the installed package does not
   include `libgffflib.*`.
-- With `WITH_LIBFFCALL=yes`, the port adds
+- The libffcall Flavor adds
   `libavcall.so:devel/libffcall`, lets configure enable `FFCALLFLAG=true`, and
   builds the optional `unix/fflib.fs` wrapper as `libgffflib.*`.
-- `pkg-plist.linux` records the default package layout
-  (`WITH_LIBFFCALL=no`). A `WITH_LIBFFCALL=yes` package currently needs either
-  a regenerated plist that includes `libgffflib.*` or future uports conditional
-  plist support.
+- Platform plists use `%%LIBFFCALL%%` for optional `libgffflib.*` files.
+  PLIST_SUB omits these entries for default and includes them for libffcall.
+  FLAVOR directly controls configure and image-wrapper dependencies; no
+  separate WITH_LIBFFCALL selector is used. Other optional
+  documentation/X11 settings retain their existing behavior.
 - `libltdl` is required for gforth's libtool-style dynamic loading path.
 - `swig` is optional. Without swig, configure warns and skips optional generated
   bindings, but the core package builds and runs.
+
+### Flavor Validation And Installation Limits
+
+Both Flavors use the same upstream source pin, but have separate work trees,
+source state and package names (`gforth` versus `gforth-libffcall`). They install
+the same executable/image paths and are alternatives within one runtime
+prefix. Separate package names do not make their payloads safe to coinstall.
+Validate staged runtimes from each work tree before switching the installed
+configuration; do not install both into one prefix as a coexistence test.
+
+The per-port `check-plist` target compares the concrete manifest with the
+actual staged inventory; invoke it with the same instance environment after
+wrapper staging. `makeplist`/`generate-plist` retain concrete
+inventory output, while resolved input manifests remain under each work tree.
+Optional file lists follow existing platform wrapper conventions; real builds
+on each architecture must confirm them, particularly Darwin's libtool files.
+Linux x86_64 default/libffcall staged images, manifests, packages and repeat
+reuse have been checked. Isolated package installation, arithmetic/ffcall
+runtime, deletion previews and actual per-port deinstall also passed in
+temporary destinations. These runtime checks use explicit image/source/libccdir
+paths and the existing native compiler-prefix dependency libraries; they do
+not prove environment-free relocation or installation of an independent SDK.
+Native Darwin/ARM64 acceptance remains pending. Detailed evidence/commands
+belong in the framework's local cross-toolchain tracker W06.
 
 ### Documentation Formats
 
@@ -351,7 +377,7 @@ environment now sets:
 LD_LIBRARY_PATH=$(DESTDIR)$(PREFIX)/lib:$$LD_LIBRARY_PATH
 ```
 
-so the optional ffcall wrapper can be opened when `WITH_LIBFFCALL=yes`.
+so the optional ffcall wrapper can be opened with `FLAVOR=libffcall`.
 Also, `envos.fs` must keep `$(DESTDIR)$(PREFIX)` during build so generated
 libcc wrappers link against the local dependency root; prefix cleanup is applied
 to staged files in `post-install` instead.
