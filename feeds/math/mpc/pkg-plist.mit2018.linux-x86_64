@@ -1,0 +1,11 @@
+./share/info/mpc.info
+./share/info
+./share
+./lib/libmpc.so.2.0.0
+./lib/libmpc.so.2
+./lib/libmpc.so
+./lib/libmpc.la
+./lib/libmpc.a
+./lib
+./include/mpc.h
+./include
