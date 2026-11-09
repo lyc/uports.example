@@ -1,0 +1,3 @@
+GNU C compiler and static target libgcc for the MIT 2018 JOS profile.
+The compiler runs natively and produces i386-jos-elf code without requiring
+target libc, Linux headers or an installed newlib implementation.
