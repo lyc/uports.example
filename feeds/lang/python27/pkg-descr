@@ -1,0 +1,2 @@
+Python 2.7.18 as a versioned native build interpreter for historical tools.
+It installs through altinstall without replacing unversioned Python commands.
