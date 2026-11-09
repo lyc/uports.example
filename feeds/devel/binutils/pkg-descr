@@ -1,0 +1,4 @@
+GNU assembler, linker and binary inspection utilities built as native host
+tools for native use or an explicitly selected output target. The mit2018
+Flavor produces i386-jos-elf tools for JOS; mit2026 produces
+riscv64-unknown-elf tools for xv6. Neither MIT profile requires target libc.
