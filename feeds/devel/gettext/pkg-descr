@@ -1,0 +1,2 @@
+GNU gettext message catalog tools, including msgfmt and xgettext, with native
+runtime support. Supplies the tools required by GLib release configuration.
