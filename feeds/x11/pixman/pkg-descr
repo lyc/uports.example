@@ -1,0 +1,2 @@
+Pixman provides low-level pixel manipulation, image compositing and trapezoid
+rasterization. This native library supports the historical MIT QEMU build.
