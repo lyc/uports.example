@@ -1,0 +1,2 @@
+MIT's QEMU 2.3.0 fork pinned at its September 2018 revision, with JOS-specific
+debugging support. Builds native headless i386 and x86_64 system emulators.
