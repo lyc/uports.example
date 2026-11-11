@@ -1,0 +1,12 @@
+./share/zsh/site-functions/_patchelf
+./share/zsh/site-functions
+./share/zsh
+./share/man/man1/patchelf.1
+./share/man/man1
+./share/man
+./share/doc/patchelf/README.md
+./share/doc/patchelf
+./share/doc
+./share
+./bin/patchelf
+./bin
