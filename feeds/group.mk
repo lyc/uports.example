@@ -10,6 +10,9 @@ ignore_lists		+=
 
 PORTS_GROUPS		= compiler bs host textproc toolchain
 
+# Project export tooling extends the framework's host group.
+host_lists		+= sysutils/patchelf
+
 # Group membership selects the development environment.
 compiler_lists		= devel/libffi archivers/zlib math/gmp	       \
 	math/mpfr math/mpc devel/ncurses devel/readline		       \

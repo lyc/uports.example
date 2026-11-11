@@ -2,6 +2,7 @@ depend
 obj
 objd
 local
+/dist/
 TAGS
 feeds/*/*/work*
 AGENTS.md

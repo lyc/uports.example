@@ -35,7 +35,7 @@ CFLAGS_D		=
 LDFLAGS			= -lpthread -lm
 LDFLAGS_D		=
 
-EXTRA_EXCLUDE_TARGETS	+= $(depends_exclude_targets) env
+EXTRA_EXCLUDE_TARGETS	+= $(depends_exclude_targets) env i386-jos-elf
 
 # add your all modules at here, please be noted
 #
@@ -73,6 +73,35 @@ env: $(addsuffix .install,pkg-config cmake nijna meson)
 
 .PHONY: test
 test: debug
+
+# Historical JOS producers run on the host, regardless of consumer selection.
+EXPORT			?= no
+EXPORT_DIR		?= $(topdir)/dist
+JOS_SOURCE		?=
+PATCHELF		?= $(host_DESTDIR)$(host_PREFIX)/bin/patchelf
+toolchain-jos-targets	= $(addsuffix @mit2018.install,			\
+			  toolchain:binutils				\
+			  toolchain:gcc					\
+			  toolchain:gdb					\
+			  toolchain:qemu-mit)
+toolchain-jos-export	= python3 -B "$(sitedir)/toolchain/export.py"	\
+			  --profile i386-jos-elf			\
+			  --project "$(topdir)"				\
+			  --destdir "$(DESTDIR)"			\
+			  --output "$(EXPORT_DIR)"			\
+			  $(if $(strip $(JOS_SOURCE)),			\
+			    --validation-source "$(JOS_SOURCE)")	\
+			  --patchelf "$(PATCHELF)"
+
+.PHONY: i386-jos-elf
+i386-jos-elf:
+	@case "$(EXPORT)" in yes|no) ;; *)				\
+	    echo 'EXPORT must be yes or no' >&2; exit 1;; esac
+	@if [ "$(EXPORT)" = yes ]; then $(toolchain-jos-export) --check; fi
+	+$(MAKE) -j1 CROSS_COMPILE=					\
+	  $(if $(filter yes,$(EXPORT)),host:patchelf.install)		\
+	  $(toolchain-jos-targets)
+	@if [ "$(EXPORT)" = yes ]; then $(toolchain-jos-export); fi
 
 clean:
 	@find . -type f -name \*~ -o -name .DS_Store | xargs rm -fr

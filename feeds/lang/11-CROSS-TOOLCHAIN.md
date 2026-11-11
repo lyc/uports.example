@@ -142,11 +142,14 @@ The agreed parent-project interface uses CROSS_COMPILE as the public selector
 for both producing a toolchain and consuming it in development. Tuple-named
 aggregate targets map directly to component Flavors and scoped environments,
 without requiring a second profile selector.
-This interface is agreed but implementation is deferred until the user's
-preceding work is complete; it is not current implemented behavior.
+The historical tuple aggregate and optional Linux distribution export are
+implemented in the parent Makefile. Consumer environment resolution and JOS
+module integration remain follow-up work; the consumer command below is still
+the agreed interface rather than completed application integration.
 
 ```sh
 make i386-jos-elf
+make EXPORT=yes i386-jos-elf
 make CROSS_COMPILE=i386-jos-elf
 ```
 
@@ -155,6 +158,177 @@ Binutils, GCC, GDB and MIT QEMU through the existing dependency planner.
 Prerequisites remain declared dependencies. Producer builds must not inherit
 the consumer CROSS_COMPILE; CONFIGURE_TARGET still selects compiler output.
 Preserve DESTDIR/PREFIX installation control rather than hardcoding a host root.
+
+### Historical JOS Distribution
+
+The normal aggregate installs components below DESTDIR/i386-jos-elf (local by
+default). EXPORT=yes additionally assembles a separate distribution; it does
+not alter installed binaries, group layouts or component configurations. Other
+EXPORT values than yes/no are rejected. Consumer CROSS_COMPILE is cleared in
+the producer invocation. Component lifecycles run with one job because the
+current package/stage prerequisites are not safe under parallel installation.
+Development source preparation and compatible package
+reuse retain their existing framework behavior.
+
+The operational entry point is make/toolchain/export.py. The exporter supports
+Linux ELF hosts and requires Python3, readelf, ldd, make, git and Debian package
+metadata for host libraries. EXPORT=yes adds host:patchelf.install to the producer
+invocation. The project selects feeds/sysutils/patchelf in host; framework base
+group membership is unchanged. Its release source includes generated configure
+files, so only a native C/C++17 compiler and ordinary Make tools are needed.
+PATCHELF defaults to $(host_DESTDIR)$(host_PREFIX)/bin/patchelf (normally
+local/usr/local/bin/patchelf); it may still name an explicit executable.
+Patchelf is an export-only build tool and is not copied into the distribution.
+Darwin exports are rejected, not silently treated as ELF distributions.
+
+Keep the export machinery separate from target-specific composition and
+validation. The parent Makefile remains the build/install interface; the Python
+exporter operates on installed packages and does not resolve or build recipes.
+
+| Module under make/toolchain | Responsibility |
+| --- | --- |
+| export.py | Input preparation, assembly order, invocation of exported validators and publication gate |
+| packages.py | Package inventory/copying, notices, shipped validators/source, metadata/checksum/archive publication |
+| linux.py | Host ELF dependencies, private runtime libraries, relative paths and Linux runtime notices/data |
+| common.py | Command execution, clean environment and missing validation-source preparation through the framework SCM helper |
+| profiles/jos.py | Historical composition, host-tool paths, source pin/default location and shell-validator configuration |
+| validate.sh | Template installed at the distribution root as the standalone acceptance entry point |
+| validators/*.sh | Shared shell helpers, runtime/compiler checks and real JOS build/boot/GDB acceptance |
+
+Only i386-jos-elf is implemented. RISC-V and ARM64 will add composition/source
+settings in profile modules and real-world checks in separate shell scripts,
+then register their tuple and expose the parent make target. Reuse the
+package and Linux runtime modules; do not copy the JOS exporter or make shared
+code depend on JOS kernel names, firmware settings or lab commits. ARM64 sysroot
+contents remain selected package payloads; their bootstrap/recipe implementation
+is separate work. Runtime relocation scans declared host-tool paths and private
+runtime libraries, not the target sysroot. Host/target CPU equality must never
+cause target libraries to be patched as host libraries. Additional host formats
+need an explicit backend rather than
+ELF assumptions in a target profile. No dynamic plugin/configuration mechanism
+or placeholder support for unfinished profiles is introduced.
+
+Without JOS_SOURCE, EXPORT=yes prepares the accepted MIT 2018 lab1 commit
+a56269d4beefc7d0b3672180aa46c654cfb63af4 automatically under
+DESTDIR/src/jos-validation/<commit>. The profile supplies the upstream repository
+and pin. The existing framework SCM checkout helper provides bounded network
+operations, locking, atomic publication and protection of existing trees. This
+small validation-only project checkout uses SCM_CACHE=no, not a new mirror/cache
+layout. Repeated exports reuse it. The first preparation requires network access.
+
+JOS_SOURCE may select an existing clean checkout instead; explicit source paths
+are checked, never created/reset by the exporter. Export copies the accepted
+source and rebuilds that copy for validation; the input checkout is not modified.
+No src/jos module or application integration is implied. Normal installation
+does not prepare validation sources. Generated dist outputs are ignored by Git.
+Host/source input checks run before installation and do not require patchelf
+to exist yet. The normal producer invocation then installs the export tool
+and components. The full export requires the resulting patchelf executable.
+
+Distribution contents and acceptance:
+
+- Copy only package-owned files from historical Binutils, GCC/libgcc, GDB and
+  MIT QEMU, including firmware and debugger/compiler data. Native static math
+  archives and headers are build prerequisites, not blanket profile exports.
+- Resolve host ELF runtime dependencies recursively, preferring installed native
+  provider libraries. Copy non-libc runtime libraries to private lib/runtime;
+  reject conflicting libraries with the same loader name. Keep libc and the
+  ELF loader as host prerequisites. Do not install libraries into system paths.
+- Patch copied executables and libraries with relative $ORIGIN runtime paths.
+  No global loader environment or ldconfig changes. Include terminal data under
+  share/terminfo; terminal users can set TERMINFO to that directory.
+- Include component recipes/distinfo, available patches, prepared source license
+  files and host runtime copyright notices. DISTRIBUTION.json records component
+  and library versions, original library checksums, validation and required
+  GLIBC symbol versions; SHA256SUMS covers regular payload files except mutable
+  validation-source Git administration files.
+- Ship validate.sh plus the selected validators, profile.conf, checks.list,
+  host-elf.list and pinned JOS source below share/toolchain/validation. Keep the
+  JOS .git directory, course refs/history and MIT upstream origin; omit build
+  outputs. Materialize an independent repository even when the construction
+  input is a linked worktree or uses another object store. Formal checks use only
+  the exported folder as input; no workspace, Python, Git, uports scripts or
+  separate lab checkout is needed after distribution creation.
+- Move the assembled profile to a different parent/name before testing. Clear
+  workspace loader/compiler variables, check the runtime closure, compile/link
+  freestanding ELF32 code with libgcc, build the real JOS lab, boot it using
+  bundled firmware, and check a GDB breakpoint/registers/instruction step.
+- Publish only after acceptance. EXPORT_DIR defaults to dist. Outputs use an
+  immutable i386-jos-elf-linux-<arch>-<UTC timestamp> directory and matching
+  .tar.xz archive, plus a separate .checks directory for validation evidence.
+  Failed staging/log directories are retained; prior exports are not replaced.
+
+### Standalone Shell Validation
+
+After unpacking or moving the distribution:
+
+```sh
+sh /path/to/toolchain/validate.sh
+sh /path/to/toolchain/validate.sh compiler
+sh /path/to/toolchain/validate.sh runtime /tmp/new-runtime-checks
+sh /path/to/toolchain/validate.sh jos /tmp/new-jos-checks
+```
+
+The default all mode runs the profile's ordered checks. Runtime verifies the
+private shared-library closure; compiler checks version, target and internal
+tool/libgcc paths. JOS compiles/links freestanding code with libgcc/STABS, builds
+the shipped real lab source, boots QEMU and checks GDB breakpoint/registers/step.
+Publication uses this same entry point against the relocated assembly, not a
+separate Python implementation. Python retains distribution construction and
+source-input preparation only.
+
+JOS intentionally retains its MIT course context. The exported validation source
+is a normal Git checkout at the accepted commit, with origin pointing to MIT.
+It has its own objects/refs, not links to workspace Git metadata or alternates.
+SOURCE_GIT in the profile selects this policy. Use host Git on a writable source
+copy for course development; formal shell acceptance still does not require Git.
+Mutable source/.git administration files are excluded from SHA256SUMS so index
+refreshes and Git queries do not invalidate payload checks. Source content,
+tools, libraries and validator scripts remain covered by the checksums.
+
+Output defaults to a newly created /tmp directory, printed at startup. Explicit
+output directories must be empty and outside the distribution. Validators clear
+loader/compiler environment overrides, retain commands/statuses and stage logs,
+and terminate their QEMU child on completion or failure. Published distributions
+also verify SHA256SUMS before checks. The source is built in a writable output
+copy; a read-only exported directory remains unchanged.
+
+Validation also serves as a tutorial: exercised commands print before execution
+with shell-quoted arguments and their working directory. This remains visible
+when results are redirected to logs or captured for assertions. The C probe,
+QEMU background command and generated GDB commands are displayed. Shared run,
+start_background and show_commands helpers provide this behavior for later
+profiles. Result logs and exit-status checks remain intact; tutorial text does
+not enter captured compiler-path values.
+
+The exporter streams the same tutorial output live into its console and
+validation.log. Export-time command paths name the temporary assembly; rerunning
+the published validate.sh displays the distribution's current path and fresh
+output paths for direct study or reuse.
+
+Full acceptance requires standard Linux host utilities: sh, coreutils including
+timeout/readlink/sha256sum, awk, sed, grep, ldd, make, tar and Perl. Linux /proc
+is used to identify QEMU's own localhost GDB socket without Python/netcat/socat.
+The unused JOS hand-in UPSTREAM discovery is disabled during validation builds,
+so the course Makefile does not require Git. No native host compiler is used by
+the JOS checks. Compiler mode is a reusable preflight for other standalone
+projects; those projects add their own build/run checks using the same exported
+tools and shell helpers. Future toolchain profiles must ship all their validator
+scripts and data with the distribution and keep architecture-specific checks
+out of the exporter.
+
+For an existing lab checkout:
+
+```sh
+make EXPORT=yes i386-jos-elf \
+  JOS_SOURCE=/path/to/accepted/jos
+```
+
+An export tested on the build host is not proof of compatibility with older
+libc releases, another architecture or macOS. Test on another machine within
+the documented baseline before claiming cross-host distribution acceptance.
+The first accepted Linux x86_64 export requires GLIBC symbols through 2.38;
+it is not a distribution for arbitrary older Linux hosts.
 
 Normalize the public selector's optional trailing dash and resolve it to the
 installed executable prefix, including the final dash. Resolve matching debugger,
